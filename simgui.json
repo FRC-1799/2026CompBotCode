@@ -59,9 +59,11 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard//Mechanisms/Elevator/LiveTuning": "Command",
       "/SmartDashboard/AIRobotBehaviors/Opponent Robot 1 Behavior": "String Chooser",
       "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Control chooser": "String Chooser",
+      "/SmartDashboard/Elevator/mechanism": "Mechanism2d",
       "/SmartDashboard/Encoders": "Alerts",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/IMU": "Alerts",

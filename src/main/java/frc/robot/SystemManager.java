@@ -18,9 +18,7 @@ import frc.robot.subsystems.AlgaeRemover.simAlgaeRemover;
 import frc.robot.subsystems.CoralGUI.compassGUI;
 import frc.robot.subsystems.CoralGUI.coralGUI;
 import frc.robot.subsystems.blinkin.blinkinInterface;
-import frc.robot.subsystems.elevator.elevatorIO;
-import frc.robot.subsystems.elevator.realElevator;
-import frc.robot.subsystems.elevator.simElevator;
+import frc.robot.subsystems.elevator.elevator;
 import frc.robot.subsystems.intake.intakeIO;
 import frc.robot.subsystems.intake.realIntake;
 import frc.robot.subsystems.intake.simIntake;
@@ -44,7 +42,7 @@ public class SystemManager{
     public static boolean hasNote = false;
     public static intakeIO intake;
     public static aprilTagInterface aprilTag;
-    public static elevatorIO elevator;
+    public static elevator elevator;
     public static reefIndexerIO reefIndexer;
     public static lidarInterface lidar;
     public static realSimulatedDriveTrain simButRealTrain = null;
@@ -87,11 +85,9 @@ public class SystemManager{
         }
 
         // Elevator
-        if (Constants.simConfigs.elevatorShouldBeSim){
-            elevator = new simElevator();
-        } else {
-            elevator = new realElevator();
-        }
+
+        elevator = new elevator();
+        
 
 
 
