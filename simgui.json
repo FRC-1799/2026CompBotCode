@@ -67,9 +67,12 @@
       "/SmartDashboard/IMU": "Alerts",
       "/SmartDashboard/JSON": "Alerts",
       "/SmartDashboard/Motors": "Alerts",
+      "/SmartDashboard/PathPlanner": "Alerts",
+      "/SmartDashboard/PhotonAlerts": "Alerts",
       "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
       "/SmartDashboard/SendableChooser[1]": "String Chooser",
       "/SmartDashboard/SendableChooser[2]": "String Chooser",
+      "/SmartDashboard/Starting chooser": "String Chooser",
       "/SmartDashboard/Swerve Drive": "Alerts",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d",
       "/SmartDashboard/auto chooser": "String Chooser",
@@ -89,7 +92,6 @@
       },
       "/SmartDashboard/Field": {
         "bottom": 1638,
-        "builtin": "2025 Reefscape",
         "height": 8.051901817321777,
         "left": 534,
         "right": 3466,
@@ -129,9 +131,6 @@
         "open": true
       },
       "SmartDashboard": {
-        "Control chooser": {
-          "open": true
-        },
         "Field": {
           "double[]##v_/SmartDashboard/Field/Bot Chara": {
             "open": false
@@ -144,6 +143,14 @@
           },
           "double[]##v_/SmartDashboard/Field/XModules": {
             "open": false
+          }
+        },
+        "MapleSim": {
+          "MatchData": {
+            "Breakdown": {
+              "open": true
+            },
+            "open": true
           }
         },
         "bot chara map": {
@@ -184,9 +191,6 @@
       "Subscribers": {
         "open": true
       },
-      "open": true
-    },
-    "Server": {
       "open": true
     },
     "visible": true

@@ -1,6 +1,10 @@
 package frc.robot.subsystems.vision;
 
+
+import org.ironmaple.simulation.SimulatedArena;
+import org.ironmaple.simulation.seasonspecific.reefscape2025.Arena2025Reefscape;
 import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeReefSimulation;
+
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -17,7 +21,7 @@ public class simReefIndexer extends reefIndexerIO{
      final boolean[][] algaeSource={{true,false},{false,true},{true,false},{false,true},{true,false},{false,true}};;
      boolean[][] algae = algaeSource;
 
-
+    Arena2025Reefscape arena = (Arena2025Reefscape) SimulatedArena.getInstance();
         StructArrayPublisher<Pose3d> algaePublisher = NetworkTableInstance.getDefault()
     .getStructArrayTopic("reefAlgae", Pose3d.struct).publish();
 
@@ -45,7 +49,7 @@ public class simReefIndexer extends reefIndexerIO{
 
     @Override
     public boolean[][] getFullReefState() {
-        int[][]base = ReefscapeReefSimulation.getInstance().get().getBranches(DriverStation.Alliance.Blue);
+        int[][]base = arena.blueReefSimulation.getBranches();
         boolean[][]returnable = new boolean[12][4];
         int i = 0;
         
@@ -73,7 +77,7 @@ public class simReefIndexer extends reefIndexerIO{
 
     @Override
     public void resetSIMONLY(){
-        ReefscapeReefSimulation.getInstance().get().clearReef();
+        arena.resetFieldForAuto();;
     }
 
 
