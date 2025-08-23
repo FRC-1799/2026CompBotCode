@@ -22,7 +22,6 @@ public class scoreConfig extends Command{
     /**initializes the command */
     @Override
     public void initialize(){
-        SystemManager.wrist.setSetpoint(scoreLevel.getWristVal());
         SystemManager.elevator.setSetpoint(scoreLevel.getElevatorValue());
         SystemManager.intake.stop();
     }
@@ -40,7 +39,7 @@ public class scoreConfig extends Command{
     /**returns true when the mec is configured to the requested level */
     @Override
     public boolean isFinished(){
-        return SystemManager.wrist.isAtSetpoint() && SystemManager.elevator.isAtSetpoint();
+        return SystemManager.elevator.isAtSetpoint();
     }
 
 

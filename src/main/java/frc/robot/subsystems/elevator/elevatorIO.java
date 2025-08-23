@@ -17,11 +17,9 @@ public abstract class elevatorIO extends SubsystemBase {
     protected Mechanism2d mech = new Mechanism2d(0,0);//Constants.elevatorConstants.fromRobotCenter.getX(), Constants.elevatorConstants.fromRobotCenter.getZ());//0.86, 1.75);
     protected MechanismRoot2d root = mech.getRoot("elevatorRoot", Constants.elevatorConstants.fromRobotCenter.getX(), Constants.elevatorConstants.fromRobotCenter.getY());
     protected MechanismLigament2d elevator = new MechanismLigament2d("elevator main", Constants.elevatorConstants.compressedLen, Constants.elevatorConstants.angle.getDegrees());
-    protected MechanismLigament2d wrist;
 
     public elevatorIO(){
         root.append(elevator);
-        wrist = elevator.append(new MechanismLigament2d("wrist ligament", Constants.intakeConstants.intakeLength, 0, 10, new Color8Bit(0,0,365)));
         SmartDashboard.putData("elevator", mech);
     }
 
@@ -49,7 +47,7 @@ public abstract class elevatorIO extends SubsystemBase {
 
     /**@return the 3d translation from the bottom of the elevator to the current point. all measurements use the rotation point of the wrist for consistency*/
     public Translation3d getTranslation(){
-        return new Translation3d(getHeight()*Math.cos(Constants.elevatorConstants.angle.getRadians()), 0, getHeight()*Math.sin(Constants.elevatorConstants.angle.getRadians())).plus(Constants.elevatorConstants.fromRobotCenter);
+        return new Translation3d(getHeightRender()*Math.cos(Constants.elevatorConstants.angle.getRadians()), 0, getHeightRender()*Math.sin(Constants.elevatorConstants.angle.getRadians())).plus(Constants.elevatorConstants.fromRobotCenter);
     };
 
 
@@ -58,6 +56,9 @@ public abstract class elevatorIO extends SubsystemBase {
     public double getHeight(){
         return this.getEncoderVal()/Constants.elevatorConstants.encoderToMeters;
     };
+    public double getHeightRender(){
+        return getHeight()+Constants.elevatorConstants.elevatorIntakeEndOffset;
+    }
 
     /**resets the elevator to its starting config */
     public void reset(){
@@ -70,17 +71,12 @@ public abstract class elevatorIO extends SubsystemBase {
     }
 
 
-    /**@return true if the elevator is at a point in which the wrist can move without breaking anything */
-    public boolean atLegalNonControlState(){
-        return Math.abs(getHeight()-Constants.elevatorConstants.maxHeight)<Constants.elevatorConstants.tolerance;
-    }
+
 
     /**updates the internal mechanism  */
     public void updateRender(){
         
-        elevator.setLength(getHeight()+Constants.elevatorConstants.fromRobotCenter.getZ());
-        wrist.setAngle(SystemManager.wrist.getCurrentLocationR2D().getDegrees());
-        SmartDashboard.putNumber("wristVal", SystemManager.wrist.getCurrentLocationR2D().getDegrees());
+        elevator.setLength(getHeightRender()+Constants.elevatorConstants.fromRobotCenter.getZ());
     }
 
     /**@return returns the internal encoder value of the elevator encoder. use getHeight instead*/

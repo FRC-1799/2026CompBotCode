@@ -253,21 +253,7 @@ public class FieldPosits {
             }
         }
 
-        /**returns the wrist value needed for this level in the form of a rotation 2d */
-        public Rotation2d getWristVal(){
-            switch (this){
-                case L1:
-                    return Constants.wristConstants.l1EncoderVal;
-                case L2:
-                    return Constants.wristConstants.l2EncoderVal;
-                case L3:
-                    return Constants.wristConstants.l3EncoderVal;
-                case L4:
-                    return Constants.wristConstants.l4EncoderVal;
-                default:
-                    throw new Error("This case is impossible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user something has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
-            }
-        }
+
 
         /**returns the elevator value needed for this level */
         public double getElevatorValue(){
@@ -362,9 +348,6 @@ public class FieldPosits {
 
 
 
-            public Rotation2d getWristValue(){
-                return Constants.wristConstants.algaePosit;
-            }
 
             public Pose2d getPose(){
                 if (side==-1){

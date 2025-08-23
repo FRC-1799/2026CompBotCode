@@ -306,7 +306,7 @@ public class autoManager{
         boolean[] guiArr = utilFunctions.flipBoolArray(SystemManager.coralArray.getGUIArray())[level];
         for (int i=3; i>=0;i--){
             if (!reefArr[i]&&guiArr[i]){
-                return i+1;
+                return i;
             }
         }
         return -1;

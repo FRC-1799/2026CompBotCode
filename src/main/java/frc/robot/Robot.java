@@ -150,7 +150,6 @@ public class Robot extends TimedRobot{
       disabledTimer.start();
       generalManager.resting();
       SystemManager.elevator.setSetpoint(0);
-      SystemManager.wrist.setSetpoint(new Rotation2d());
       SystemManager.intake.reset();
     }
 

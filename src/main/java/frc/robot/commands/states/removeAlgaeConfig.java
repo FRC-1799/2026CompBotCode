@@ -19,7 +19,6 @@ public class removeAlgaeConfig extends Command {
     @Override
     public void initialize(){
         SystemManager.elevator.setSetpoint(level.getElevatorValue());
-        SystemManager.wrist.setSetpoint(level.getWristValue());
         
     }
 
@@ -27,7 +26,7 @@ public class removeAlgaeConfig extends Command {
     /**@return true once the robot has entered the correct config */
     @Override
     public boolean isFinished(){
-        return SystemManager.elevator.isAtSetpoint()&&SystemManager.wrist.isAtSetpoint();
+        return SystemManager.elevator.isAtSetpoint();
     }
 
 

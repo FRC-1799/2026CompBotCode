@@ -58,7 +58,6 @@ public class generalManager{
     /**initializes the general manager. Should be called before any other general manager actions are taken*/
     public static void generalManagerInit(){
       start();
-      subsystems.add(SystemManager.wrist);
       subsystems.add(SystemManager.intake);
       subsystems.add(SystemManager.elevator);
       subsystems.add(SystemManager.algaeRemover);

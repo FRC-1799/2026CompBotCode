@@ -134,7 +134,7 @@ public final class Constants
     public static final double intakeLength=0.245745;
     public static final int topIntake = 10;
     public static final int bottomIntake = 7;
-    public static final double coralFromWristLen = 0.0715772;
+    public static final double coralFromWristLen = 0.1715772;
     public static final double coralLength = 0.3;
     public static final double coralWidth = 0.11;
 
@@ -173,8 +173,7 @@ public final class Constants
 
 
     public static final double maxHeight = l4EncoderVal;
-    public static final Rotation2d angle = Rotation2d.fromDegrees(70);
-    public static final Translation3d fromRobotCenter = new Translation3d(0.0584454, 0, 0.583565 );
+    public static final Rotation2d angle = Rotation2d.fromDegrees(110);
     public static final double intakePosit = 0;
     public static final double startingPosit = 0;
     public static final double tolerance = 0.05;
@@ -208,7 +207,9 @@ public final class Constants
         .withKG(1.8)
     ;
     public static final double elevatorResetTolerance = 0.3;
-    
+    public static final double elevatorIntakeEndOffset = 0.4;
+        public static final Translation3d fromRobotCenter = new Translation3d(-0.0584454, 0, 0.583565 );
+
 
     // set Motion Magic settings
     public static MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
@@ -222,30 +223,30 @@ public final class Constants
   }
 
   /**constants for the wrist */
-  public static class wristConstants{
-    public static final Rotation2d l4EncoderVal = Rotation2d.fromDegrees(210);
-    public static final Rotation2d l3EncoderVal = Rotation2d.fromDegrees(0);
-    public static final Rotation2d l2EncoderVal = Rotation2d.fromDegrees(0);
-    public static final Rotation2d l1EncoderVal = Rotation2d.fromDegrees(0);
-    public static final Rotation2d restingPosit = Rotation2d.fromDegrees(0);
-    public static final Rotation2d intakePosit = Rotation2d.fromDegrees(0);
-    public static final Rotation2d algaePosit = Rotation2d.fromDegrees(0);
+  // public static class wristConstants{
+  //   public static final Rotation2d l4EncoderVal = Rotation2d.fromDegrees(210);
+  //   public static final Rotation2d l3EncoderVal = Rotation2d.fromDegrees(0);
+  //   public static final Rotation2d l2EncoderVal = Rotation2d.fromDegrees(0);
+  //   public static final Rotation2d l1EncoderVal = Rotation2d.fromDegrees(0);
+  //   public static final Rotation2d restingPosit = Rotation2d.fromDegrees(0);
+  //   public static final Rotation2d intakePosit = Rotation2d.fromDegrees(0);
+  //   public static final Rotation2d algaePosit = Rotation2d.fromDegrees(0);
 
-    public static final Rotation2d minDegrees = new Rotation2d();
-    public static final Rotation2d maxDegrees = new Rotation2d();
+  //   public static final Rotation2d minDegrees = new Rotation2d();
+  //   public static final Rotation2d maxDegrees = new Rotation2d();
     
-    public static final double tolerance = 3;
-    public static final double speedForSim=5;
-    public static final int CANCoderID=3;
-    public static final int throughBoreID = Constants.intakeConstants.topIntake;
-    public static final double CANCoderOffset=0;//5.4;
-    public static final int motorID=8;
-    public static final double fConstant=0.01;
-    public static final PIDConstants wristPID = new PIDConstants(0.0015, 0, 0.);
-    public static final double maxVel = 0;
-    public static final double maxAccel = 0;
+  //   public static final double tolerance = 3;
+  //   public static final double speedForSim=5;
+  //   public static final int CANCoderID=3;
+  //   public static final int throughBoreID = Constants.intakeConstants.topIntake;
+  //   public static final double CANCoderOffset=0;//5.4;
+  //   public static final int motorID=8;
+  //   public static final double fConstant=0.01;
+  //   public static final PIDConstants wristPID = new PIDConstants(0.0015, 0, 0.);
+  //   public static final double maxVel = 0;
+  //   public static final double maxAccel = 0;
   
-  }
+  // }
 
   //constants used for the simulated camera
   public static class cameraConstants{

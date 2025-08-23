@@ -2,7 +2,6 @@ package frc.robot.subsystems.elevator;
 
 
 import frc.robot.Constants;
-import frc.robot.subsystems.wristElevatorControlManager;
 
 public class simElevator  extends elevatorIO{
 
@@ -25,14 +24,8 @@ public class simElevator  extends elevatorIO{
     public void periodic(){
 
 
-        if (wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.elevator||
-            wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.resting){
-
-            goal=setpoint;
-        }
-        else{
-            goal=Constants.elevatorConstants.maxHeight;
-        }
+        goal=setpoint;
+       
 
 
         if (Math.abs(goal-position)<Constants.elevatorConstants.speedForSim){

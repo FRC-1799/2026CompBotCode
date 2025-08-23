@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
-import frc.robot.subsystems.wristElevatorControlManager;
 import frc.robot.subsystems.AlgaeRemover.algaeRemoverInterface;
 import frc.robot.subsystems.AlgaeRemover.realAlgaeRemover;
 import frc.robot.subsystems.AlgaeRemover.simAlgaeRemover;
@@ -34,9 +33,7 @@ import frc.robot.subsystems.vision.photonSim;
 import frc.robot.subsystems.vision.realVision;
 import frc.robot.subsystems.vision.reefIndexerIO;
 import frc.robot.subsystems.vision.simReefIndexer;
-import frc.robot.subsystems.wrist.realWrist;
-import frc.robot.subsystems.wrist.simWrist;
-import frc.robot.subsystems.wrist.wristIO;
+
 
 public class SystemManager{
     public static SwerveSubsystem swerve;
@@ -47,7 +44,6 @@ public class SystemManager{
     public static boolean hasNote = false;
     public static intakeIO intake;
     public static aprilTagInterface aprilTag;
-    public static wristIO wrist;
     public static elevatorIO elevator;
     public static reefIndexerIO reefIndexer;
     public static lidarInterface lidar;
@@ -79,12 +75,6 @@ public class SystemManager{
         // Initializes all the systems
         // Each block should initialize one system as either real or imaginary based on the constants value 
     
-            // Wrist
-            if (Constants.simConfigs.wristShouldBeSim){
-                wrist = new simWrist();
-            } else {
-                wrist = new realWrist();
-            }
 
 
 
@@ -158,7 +148,6 @@ public class SystemManager{
 
         //initializes and distributes the managers
 
-        wristElevatorControlManager.addSystems(wrist, elevator);
         generalManager.generalManagerInit();
         autoManager.autoManagerInit();
         
@@ -170,7 +159,6 @@ public class SystemManager{
 
     /** Calls periodic on all the systems that do not inherit subsystem base. This function should be called in robot periodic */
     public static void periodic(){
-        wristElevatorControlManager.periodic();
         generalManager.periodic();
         autoManager.periodic();
         reefIndexer.periodic();
@@ -191,6 +179,6 @@ public class SystemManager{
 
     /** Returns the pose3 of a coral in the intake */
     public static Pose3d getIntakePosit(){
-        return new Pose3d(getSwervePose()).plus(new Transform3d(intake.getTranslation(), new Rotation3d(0, SystemManager.wrist.getCurrentLocationR2D().getRadians() + Constants.elevatorConstants.angle.getRadians() + Math.PI / 2, Math.PI)));
+        return new Pose3d(getSwervePose()).plus(new Transform3d(intake.getTranslation(), new Rotation3d(0, Constants.elevatorConstants.angle.getRadians() + Math.PI / 2, Math.PI)));
     }
 }

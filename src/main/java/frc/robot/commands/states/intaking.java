@@ -25,14 +25,13 @@ public class intaking extends Command{
         isInIntakingPhase=false;
 
         SystemManager.elevator.setSetpoint(Constants.elevatorConstants.intakePosit);
-        SystemManager.wrist.setSetpoint(Constants.wristConstants.intakePosit);
     }
 
 
     /**called ever rio cycle while the command is scheduled*/
     @Override
     public void execute(){
-        if (!isInIntakingPhase && SystemManager.elevator.isAtSetpoint() && SystemManager.wrist.isAtSetpoint()){
+        if (!isInIntakingPhase && SystemManager.elevator.isAtSetpoint() ){
             SystemManager.intake.intake();
             isInIntakingPhase=true;
         }    

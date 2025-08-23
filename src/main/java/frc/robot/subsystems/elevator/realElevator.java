@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
-import frc.robot.subsystems.wristElevatorControlManager;
  
  
  public class realElevator  extends elevatorIO{
@@ -42,13 +41,10 @@ import frc.robot.subsystems.wristElevatorControlManager;
      
      @Override
      public void periodic(){
-        if (wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.elevator||wristElevatorControlManager.getState()==wristElevatorControlManager.wristElevatorControlState.resting){
-            goal=setpoint;
-        }
+        goal=setpoint;
+        
 
-        else{
-            goal=Constants.elevatorConstants.maxHeight;
-        } 
+
         SmartDashboard.putBoolean("reset switch", !resetSwitch.get());
         if (!resetSwitch.get()){
             mainMotor.setPosition(0);
