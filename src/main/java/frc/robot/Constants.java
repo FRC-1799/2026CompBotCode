@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.pathplanner.lib.config.PIDConstants;
@@ -15,6 +17,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.math.Matter;
 
@@ -173,7 +176,7 @@ public final class Constants
 
 
     public static final double maxHeight = l4EncoderVal;
-    public static final Rotation2d angle = Rotation2d.fromDegrees(110);
+    public static final Angle angle = Degrees.of(110);
     public static final double intakePosit = 0;
     public static final double startingPosit = 0;
     public static final double tolerance = 0.05;

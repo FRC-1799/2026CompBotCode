@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
+import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Volts;
 import static yams.mechanisms.SmartMechanism.gearbox;
@@ -79,6 +80,7 @@ public class elevator extends SubsystemBase
       .withHardLimits(Meters.of(0), Meters.of(3))
       .withTelemetry("Elevator", TelemetryVerbosity.HIGH)
       .withMechanismPositionConfig(m_robotToMechanism)
+      .withAngle(Constants.elevatorConstants.angle)
       .withMass(Pounds.of(16));
   
   private final Elevator m_elevator = new Elevator(m_config);
@@ -127,7 +129,7 @@ public class elevator extends SubsystemBase
 
     /**@return the 3d translation from the bottom of the elevator to the current point. all measurements use the rotation point of the wrist for consistency*/
   public Translation3d getTranslation(){
-      return new Translation3d(getHeightRender()*Math.cos(Constants.elevatorConstants.angle.getRadians()), 0, getHeightRender()*Math.sin(Constants.elevatorConstants.angle.getRadians())).plus(Constants.elevatorConstants.fromRobotCenter);
+      return new Translation3d(getHeightRender()*Math.cos(Constants.elevatorConstants.angle.in(Radians)), 0, getHeightRender()*Math.sin(Constants.elevatorConstants.angle.in(Radians))).plus(Constants.elevatorConstants.fromRobotCenter);
   };
 
   public boolean isAtSetpoint(){

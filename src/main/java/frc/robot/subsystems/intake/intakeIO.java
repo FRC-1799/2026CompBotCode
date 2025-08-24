@@ -1,5 +1,7 @@
 package frc.robot.subsystems.intake;
 
+import static edu.wpi.first.units.Units.Radians;
+
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -75,9 +77,9 @@ public abstract class intakeIO extends SubsystemBase{
     public Translation3d getTranslation(){
         
         return new Translation3d(
-            -(Math.sin(Constants.elevatorConstants.angle.getRadians())*Constants.intakeConstants.coralFromWristLen+Constants.intakeConstants.coralLength),
+            -(Math.sin(Constants.elevatorConstants.angle.in(Radians))*Constants.intakeConstants.coralFromWristLen+Constants.intakeConstants.coralLength),
             0,
-            Math.cos(Constants.elevatorConstants.angle.getRadians())*Constants.intakeConstants.coralFromWristLen)
+            Math.cos(Constants.elevatorConstants.angle.in(Radians))*Constants.intakeConstants.coralFromWristLen)
             
             
             .plus(SystemManager.elevator.getTranslation());    

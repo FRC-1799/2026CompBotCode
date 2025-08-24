@@ -133,6 +133,9 @@
         "open": true
       },
       "SmartDashboard": {
+        "Control chooser": {
+          "open": true
+        },
         "Field": {
           "double[]##v_/SmartDashboard/Field/Bot Chara": {
             "open": false
@@ -145,14 +148,6 @@
           },
           "double[]##v_/SmartDashboard/Field/XModules": {
             "open": false
-          }
-        },
-        "MapleSim": {
-          "MatchData": {
-            "Breakdown": {
-              "open": true
-            },
-            "open": true
           }
         },
         "bot chara map": {
@@ -193,6 +188,9 @@
       "Subscribers": {
         "open": true
       },
+      "open": true
+    },
+    "Server": {
       "open": true
     },
     "visible": true

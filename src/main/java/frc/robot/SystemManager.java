@@ -1,5 +1,7 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Radians;
+
 import java.io.File;
 import org.ironmaple.simulation.SimulatedArena;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -175,6 +177,6 @@ public class SystemManager{
 
     /** Returns the pose3 of a coral in the intake */
     public static Pose3d getIntakePosit(){
-        return new Pose3d(getSwervePose()).plus(new Transform3d(intake.getTranslation(), new Rotation3d(0, Constants.elevatorConstants.angle.getRadians() + Math.PI / 2, Math.PI)));
+        return new Pose3d(getSwervePose()).plus(new Transform3d(intake.getTranslation(), new Rotation3d(0, Constants.elevatorConstants.angle.in(Radians) + Math.PI / 2, Math.PI)));
     }
 }
