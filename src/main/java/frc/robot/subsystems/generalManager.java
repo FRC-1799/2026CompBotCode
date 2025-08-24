@@ -87,16 +87,16 @@ public class generalManager{
      */
     public static void scoreAt(int level){
         switch (level) {
-            case 1:
+            case 0:
                 scoreL1();
                 break;
-            case 2:
+            case 1:
                 scoreL2();
                 break;
-            case 3:
+            case 2:
                 scoreL3();
                 break;
-            case 4:
+            case 3:
                 scoreL4();
                 break;
             default:

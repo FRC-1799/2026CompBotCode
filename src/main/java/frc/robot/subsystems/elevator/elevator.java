@@ -73,12 +73,14 @@ public class elevator extends SubsystemBase
   private final MechanismPositionConfig m_robotToMechanism = new MechanismPositionConfig()
       .withMaxRobotHeight(Meters.of(1.5))
       .withMaxRobotLength(Meters.of(0.75))
+      
       .withRelativePosition(Constants.elevatorConstants.fromRobotCenter);
   
   private ElevatorConfig m_config = new ElevatorConfig(motor)
-      .withStartingHeight(Meters.of(0.5))
-      .withHardLimits(Meters.of(0), Meters.of(3))
+      .withStartingHeight(Meters.of(0))
+      .withHardLimits(Meters.of(0), Meters.of(Constants.elevatorConstants.maxHeight))
       .withTelemetry("Elevator", TelemetryVerbosity.HIGH)
+      
       .withMechanismPositionConfig(m_robotToMechanism)
       .withAngle(Constants.elevatorConstants.angle)
       .withMass(Pounds.of(16));
