@@ -14,6 +14,7 @@ import static edu.wpi.first.units.Units.Volts;
 import static yams.mechanisms.SmartMechanism.gearbox;
 import static yams.mechanisms.SmartMechanism.gearing;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
@@ -53,7 +54,7 @@ public class elevator extends SubsystemBase
       .withClosedLoopController(elevatorConstants.KP, elevatorConstants.KI, elevatorConstants.KD,elevatorConstants.maxSpeed, elevatorConstants.maxAccel)
       .withSoftLimit(Meters.of(0), Meters.of(Constants.elevatorConstants.maxHeight))
       
-      .withGearing(gearing(gearbox(5, 4)))
+      .withGearing(gearing(gearbox(5, 2)))
 //      .withExternalEncoder(armMotor.getAbsoluteEncoder())
       .withIdleMode(MotorMode.BRAKE)
       .withTelemetry("ElevatorMotor", TelemetryVerbosity.HIGH)
@@ -89,16 +90,18 @@ public class elevator extends SubsystemBase
   
   private final Elevator m_elevator = new Elevator(m_config);
 
-  public elevator()
-  {
 
+  protected TalonFX offMotor = new TalonFX(Constants.elevatorConstants.altMotorID);
+
+  public elevator(){
+    offMotor.setControl(new Follower(Constants.elevatorConstants.mainMotorID, true));
   }
 
   public void periodic()
   {
     m_elevator.updateTelemetry();
     motor.setPosition(setpoint);
-    System.out.println(m_elevator.getConfig().getMaximumHeight().get().in(Meters));
+    SmartDashboard.putNumber("elevatorHeight", getHeight());
   }
 
   public void simulationPeriodic()

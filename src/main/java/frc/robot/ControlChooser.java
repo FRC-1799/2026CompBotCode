@@ -64,6 +64,7 @@ public class ControlChooser {
         chooser.addOption("runAutoControl", runAutoDrive());
         chooser.addOption("autoAlign", autoAlignControl());
         chooser.addOption("stinkyControl", stinkyControl());
+        chooser.addOption("SysIDControll", sysIDControl());
         
         
         chooser.onChange((EventLoop scheme)->{changeControl(scheme);});
@@ -179,7 +180,7 @@ public class ControlChooser {
     private EventLoop sysIDControl(){
         EventLoop loop = new EventLoop();
 
-        elevatorSysID = new Trigger(loop, new BooleanSupplier(()->{xbox1.getLeftTriggerAxis()=>0.6&&xbox1.getRightTriggerAxis()=>0.6}));
+        new Trigger(loop, ()->{return xbox1.getLeftTriggerAxis()>=0.6&&xbox1.getRightTriggerAxis()>=0.6;}).onTrue(SystemManager.elevator.sysId());
         return loop;
     }
 

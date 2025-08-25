@@ -163,12 +163,12 @@ public final class Constants
 
   /**constants for the elevator */
   public static class elevatorConstants{
-    public static final double l4EncoderVal = 1.42;
+    public static final double l4EncoderVal = 1.40;
     public static final double l3EncoderVal = 1.02381;
     public static final double l2EncoderVal = 0.6514528;
 
     public static final double l1EncoderVal = 0.37;
-    public static final double encoderToMeters =69.1514; //1/141;
+    //public static final double encoderToMeters =69.1514; //1/141;
     public static final int resetSwitchID = 7;
 
 
