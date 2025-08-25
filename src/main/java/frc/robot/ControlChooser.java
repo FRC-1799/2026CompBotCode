@@ -2,6 +2,7 @@ package frc.robot;
 
 
 import java.util.HashSet;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 
@@ -172,6 +173,13 @@ public class ControlChooser {
         EventLoop loop  = new EventLoop();
         setDefaultCommand(new AbsoluteFieldDrive(SystemManager.swerve, ()->xbox1.getLeftX(), ()->-xbox1.getLeftY(),()-> getPOVForTest(xbox1)),SystemManager.swerve, loop);
         ///xbox1.b(loop).onTrue(SystemManager.swerve.driveToPose(new Pose2d(15,1.2, new Rotation2d(Math.PI))));
+        return loop;
+    }
+
+    private EventLoop sysIDControl(){
+        EventLoop loop = new EventLoop();
+
+        elevatorSysID = new Trigger(loop, new BooleanSupplier(()->{xbox1.getLeftTriggerAxis()=>0.6&&xbox1.getRightTriggerAxis()=>0.6}));
         return loop;
     }
 
