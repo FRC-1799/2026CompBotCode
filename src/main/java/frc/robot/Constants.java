@@ -6,6 +6,8 @@ package frc.robot;
 
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -18,6 +20,8 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.LinearAcceleration;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.math.Matter;
 
@@ -196,19 +200,20 @@ public final class Constants
     public static final int mainMotorID=2;
     public static final int altMotorID=1;
 
+    public static final double KP = 7.4;
+    public static final double KI = 0;
+    public static final double KD = 0.005;
+    public static final double KS = 0.25;
+    public static final double KG = 1.8;
+    public static final double KV = 0.35;
+    public static final double KA = 0.15;
+
+    public static final LinearVelocity maxSpeed = MetersPerSecond.of(1);
+    public static final LinearAcceleration maxAccel = MetersPerSecondPerSecond.of(1);
+
 
     // in init function
 
-    // set slot 0 gains
-    public static final Slot0Configs slot0Configs = new Slot0Configs()
-        .withKS(0.25) // Add 0.25 V output to overcome static friction
-        .withKV(0.35) // A velocity target of 1 rps results in 0.12 V output
-        .withKA(0.15) // An acceleration of 1 rps/s requires 0.01 V output
-        .withKP(7.4) // A position error of 2.5 rotations results in 12 V output
-        .withKI(0) // no output for integrated error
-        .withKD(0.005) // A velocity error of 1 rps results in 0.1 V output
-        .withKG(1.8)
-    ;
     public static final double elevatorResetTolerance = 0.3;
     public static final double elevatorIntakeEndOffset = 0;
         public static final Translation3d fromRobotCenter = new Translation3d(-0.0584454, 0, 0.583565 +elevatorIntakeEndOffset);

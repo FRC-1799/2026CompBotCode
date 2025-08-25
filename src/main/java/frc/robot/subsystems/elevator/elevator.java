@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.elevatorConstants;
 import yams.mechanisms.config.ElevatorConfig;
 import yams.mechanisms.config.MechanismPositionConfig;
 import yams.mechanisms.positional.Elevator;
@@ -49,7 +50,7 @@ public class elevator extends SubsystemBase
 //          .withMechanismUpperLimit();
   private final SmartMotorControllerConfig motorConfig   = new SmartMotorControllerConfig(this)
       .withMechanismCircumference(Meters.of(Inches.of(0.25).in(Meters) * 22))
-      .withClosedLoopController(4, 0, 0, MetersPerSecond.of(1), MetersPerSecondPerSecond.of(1))
+      .withClosedLoopController(elevatorConstants.KP, elevatorConstants.KI, elevatorConstants.KD,elevatorConstants.maxSpeed, elevatorConstants.maxAccel)
       .withSoftLimit(Meters.of(0), Meters.of(Constants.elevatorConstants.maxHeight))
       
       .withGearing(gearing(gearbox(5, 4)))
@@ -62,7 +63,7 @@ public class elevator extends SubsystemBase
       .withMotorInverted(false)
 //      .withClosedLoopRampRate(Seconds.of(0.25))
 //      .withOpenLoopRampRate(Seconds.of(0.25))
-      .withFeedforward(new ElevatorFeedforward(0, 0, 0, 0))
+      .withFeedforward(new ElevatorFeedforward(elevatorConstants.KS, elevatorConstants.KG, elevatorConstants.KV, elevatorConstants.KA))
 
 
       .withControlMode(ControlMode.CLOSED_LOOP);
