@@ -210,8 +210,8 @@ public final class Constants
         .withKG(1.8)
     ;
     public static final double elevatorResetTolerance = 0.3;
-    public static final double elevatorIntakeEndOffset = 0.4;
-        public static final Translation3d fromRobotCenter = new Translation3d(-300.0584454, 0, 3.583565 +elevatorIntakeEndOffset);
+    public static final double elevatorIntakeEndOffset = 0;
+        public static final Translation3d fromRobotCenter = new Translation3d(-0.0584454, 0, 0.583565 +elevatorIntakeEndOffset);
 
 
     // set Motion Magic settings

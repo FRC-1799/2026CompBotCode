@@ -21,6 +21,7 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -71,8 +72,8 @@ public class elevator extends SubsystemBase
                                                                             motorConfig);
 
   private final MechanismPositionConfig m_robotToMechanism = new MechanismPositionConfig()
-      .withMaxRobotHeight(Meters.of(1.5))
-      .withMaxRobotLength(Meters.of(0.75))
+      .withMaxRobotHeight(Meters.of(0))
+      .withMaxRobotLength(Meters.of(0))
       
       .withRelativePosition(Constants.elevatorConstants.fromRobotCenter);
   
@@ -96,6 +97,7 @@ public class elevator extends SubsystemBase
   {
     m_elevator.updateTelemetry();
     motor.setPosition(setpoint);
+    System.out.println(m_elevator.getConfig().getMaximumHeight().get().in(Meters));
   }
 
   public void simulationPeriodic()
