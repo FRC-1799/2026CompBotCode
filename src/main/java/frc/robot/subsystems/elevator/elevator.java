@@ -22,6 +22,7 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -93,12 +94,20 @@ public class elevator extends SubsystemBase
 
   protected TalonFX offMotor = new TalonFX(Constants.elevatorConstants.altMotorID);
 
+  protected DigitalInput resetSwitch = new DigitalInput(Constants.elevatorConstants.resetSwitchID);
+
+
   public elevator(){
     offMotor.setControl(new Follower(Constants.elevatorConstants.mainMotorID, true));
   }
 
   public void periodic()
   {
+
+    SmartDashboard.putBoolean("reset switch", !resetSwitch.get());
+    if (!resetSwitch.get()){
+        m_elevator.setHeight(Meters.of(0));
+    }
     m_elevator.updateTelemetry();
     motor.setPosition(setpoint);
     SmartDashboard.putNumber("elevatorHeight", getHeight());
