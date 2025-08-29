@@ -89,7 +89,7 @@ public final class Constants
     public static final double distanceWithinPathplannerDontWork = 0.5;
 
     public static final double humanPlayerBeingBad = 0.5;
-    public static final Transform2d intakeCoralOffset = new Transform2d(-0.47, 0, new Rotation2d());
+    public static final Transform2d intakeCoralOffset = new Transform2d(0.47, 0, new Rotation2d());
     public static final int autoDriveCorrectCount = 3;
   }
 
@@ -164,8 +164,8 @@ public final class Constants
   /**constants for the elevator */
   public static class elevatorConstants{
     public static final double l4EncoderVal = 1.40;
-    public static final double l3EncoderVal = 1.02381;
-    public static final double l2EncoderVal = 0.6514528;
+    public static final double l3EncoderVal = 0.62381;
+    public static final double l2EncoderVal = 0.4514528;
 
     public static final double l1EncoderVal = 0.37;
     //public static final double encoderToMeters =69.1514; //1/141;
@@ -215,7 +215,7 @@ public final class Constants
     // in init function
 
     public static final double elevatorResetTolerance = 0.3;
-    public static final double elevatorIntakeEndOffset = 0;
+    public static final double elevatorIntakeEndOffset = 0.2;
         public static final Translation3d fromRobotCenter = new Translation3d(-0.0584454, 0, 0.583565 +elevatorIntakeEndOffset);
 
 

@@ -129,9 +129,9 @@ public class elevator extends SubsystemBase
     return m_elevator.getHeight().in(Meters);
   }
 
-  public double getHeightRender(){
-    return getHeight()+Constants.elevatorConstants.elevatorIntakeEndOffset;
-}
+//   public double getHeightRender(){
+//     return getHeight()+Constants.elevatorConstants.elevatorIntakeEndOffset;
+// }
 
   public void setSetpoint(double newSetpoint){
     setpoint = Meters.of(newSetpoint);
@@ -142,12 +142,12 @@ public class elevator extends SubsystemBase
   }
 
   public boolean isAtTop(){
-    return getHeight()==Constants.elevatorConstants.maxHeight;
+    return Math.abs(getHeight()-Constants.elevatorConstants.maxHeight)<elevatorConstants.tolerance;
   }
 
     /**@return the 3d translation from the bottom of the elevator to the current point. all measurements use the rotation point of the wrist for consistency*/
   public Translation3d getTranslation(){
-      return new Translation3d(getHeightRender()*Math.cos(Constants.elevatorConstants.angle.in(Radians)), 0, getHeightRender()*Math.sin(Constants.elevatorConstants.angle.in(Radians))).plus(Constants.elevatorConstants.fromRobotCenter);
+      return new Translation3d(getHeight()*Math.cos(Constants.elevatorConstants.angle.in(Radians)), 0, getHeight()*Math.sin(Constants.elevatorConstants.angle.in(Radians))).plus(Constants.elevatorConstants.fromRobotCenter);
   };
 
   public boolean isAtSetpoint(){

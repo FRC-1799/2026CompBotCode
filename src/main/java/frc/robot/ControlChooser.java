@@ -27,6 +27,7 @@ import frc.robot.Utils.utilFunctions;
 import frc.robot.commands.auto.IntakePieceCommand;
 import frc.robot.commands.auto.ScorePiece;
 import frc.robot.commands.auto.smallAutoDrive;
+import frc.robot.commands.sim.CreateCoral;
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
 import frc.robot.subsystems.autoManager;
@@ -127,12 +128,11 @@ public class ControlChooser {
        xbox1.b(loop).onTrue(new InstantCommand(()->generalManager.scoreL2()));
        xbox1.a(loop).onTrue(new InstantCommand(()->generalManager.scoreL1()));
        xbox1.leftBumper(loop).onTrue(new InstantCommand(()->generalManager.algaeConfig(false)));
-       xbox1.rightBumper(loop).onTrue(new InstantCommand(()->generalManager.algaeConfig(true)));
+       xbox1.rightBumper(loop).onTrue(new CreateCoral("leftLeft"));
 
        xbox1.rightTrigger(0.4,loop).onTrue(new InstantCommand(()->generalManager.intake()));
-       xbox1.rightStick(loop).onTrue(new InstantCommand(()->generalManager.outtake()));
-       xbox1.leftTrigger(0.4, loop).onTrue(new InstantCommand(()->generalManager.algaeRemove()));
-
+       //xbox1.rightStick(loop).onTrue(()));
+       xbox1.leftTrigger(0.4, loop).onTrue(new InstantCommand(()->generalManager.outtake()));
         return loop;
     }
 

@@ -173,6 +173,8 @@ public class generalManager{
      */
     public static void startState(generalState state){
         generalManager.state=state;
+        // System.out.println(state.state.getName());
+        // System.out.println("\n\n\n\n\n");
         CommandScheduler.getInstance().schedule(state.state);
     }
 
