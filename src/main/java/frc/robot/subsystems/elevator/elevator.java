@@ -90,6 +90,7 @@ public class elevator extends SubsystemBase
       .withMass(Pounds.of(16));
   
   private final Elevator m_elevator = new Elevator(m_config);
+  private final int useless = 0;
 
 
   protected TalonFX offMotor = new TalonFX(Constants.elevatorConstants.altMotorID);
