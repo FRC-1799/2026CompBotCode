@@ -186,7 +186,6 @@ public final class Constants
     public static final double tolerance = 0.05;
     public static final double speedForSim =0.02;
     public static final double compressedLen = 0.889;
-    public static final PIDConstants elevatorPID = new PIDConstants(1.7, 0, 0);
     //public static final PIDConstants elevatorPID = new PIDConstants(0.5, 0, 0);
 
     //public static final double g=0.11;
@@ -200,16 +199,16 @@ public final class Constants
     public static final int mainMotorID=2;
     public static final int altMotorID=1;
 
-    public static final double KP = 7.4;
+    public static final double KP = 10.4;
     public static final double KI = 0;
-    public static final double KD = 0.005;
+    public static final double KD = 0.05;
     public static final double KS = 0.25;
     public static final double KG = 1.8;
-    public static final double KV = 0.35;
-    public static final double KA = 0.15;
+    public static final double KV = 0.45;
+    public static final double KA = 0.09;
 
-    public static final LinearVelocity maxSpeed = MetersPerSecond.of(1);
-    public static final LinearAcceleration maxAccel = MetersPerSecondPerSecond.of(1);
+    public static final LinearVelocity maxSpeed = MetersPerSecond.of(8);
+    public static final LinearAcceleration maxAccel = MetersPerSecondPerSecond.of(4);
 
 
     // in init function

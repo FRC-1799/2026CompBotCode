@@ -77,7 +77,7 @@ public abstract class intakeIO extends SubsystemBase{
     public Translation3d getTranslation(){
         
         return new Translation3d(
-            -(Math.sin(Constants.elevatorConstants.angle.in(Radians))*Constants.intakeConstants.coralFromWristLen+Constants.intakeConstants.coralLength),
+            0,//-(Math.sin(Constants.elevatorConstants.angle.in(Radians))*Constants.intakeConstants.coralFromWristLen+Constants.intakeConstants.coralLength),
             0,
             0)//Math.cos(Constants.elevatorConstants.angle.in(Radians))*Constants.intakeConstants.coralFromWristLen)
             

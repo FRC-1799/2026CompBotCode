@@ -14,6 +14,7 @@ import static edu.wpi.first.units.Units.Volts;
 import static yams.mechanisms.SmartMechanism.gearbox;
 import static yams.mechanisms.SmartMechanism.gearing;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkLowLevel;
@@ -43,7 +44,7 @@ public class elevator extends SubsystemBase
 {
 
   protected Distance setpoint = Meters.of(0);
-
+  protected DigitalInput resetSwitch = new DigitalInput(Constants.elevatorConstants.resetSwitchID);
   private final TalonFX  elevatorMotor = new TalonFX(Constants.elevatorConstants.mainMotorID);
   //  private final SmartMotorControllerTelemetryConfig motorTelemetryConfig = new SmartMotorControllerTelemetryConfig()
 //          .withMechanismPosition()
@@ -53,7 +54,7 @@ public class elevator extends SubsystemBase
   private final SmartMotorControllerConfig motorConfig   = new SmartMotorControllerConfig(this)
       .withMechanismCircumference(Meters.of(Inches.of(0.25).in(Meters) * 22))
       .withClosedLoopController(elevatorConstants.KP, elevatorConstants.KI, elevatorConstants.KD,elevatorConstants.maxSpeed, elevatorConstants.maxAccel)
-      .withSoftLimit(Meters.of(0), Meters.of(Constants.elevatorConstants.maxHeight))
+      .withSoftLimit(Meters.of(-0.03), Meters.of(Constants.elevatorConstants.maxHeight))
       
       .withGearing(gearing(gearbox(5, 2)))
 //      .withExternalEncoder(armMotor.getAbsoluteEncoder())
@@ -82,7 +83,7 @@ public class elevator extends SubsystemBase
   
   private ElevatorConfig m_config = new ElevatorConfig(motor)
       .withStartingHeight(Meters.of(0))
-      .withHardLimits(Meters.of(0), Meters.of(Constants.elevatorConstants.maxHeight))
+      .withHardLimits(Meters.of(-0.03), Meters.of(Constants.elevatorConstants.maxHeight))
       .withTelemetry("Elevator", TelemetryVerbosity.HIGH)
       
       .withMechanismPositionConfig(m_robotToMechanism)
@@ -90,13 +91,9 @@ public class elevator extends SubsystemBase
       .withMass(Pounds.of(16));
   
   private final Elevator m_elevator = new Elevator(m_config);
-  private final int useless = 0;
 
 
   protected TalonFX offMotor = new TalonFX(Constants.elevatorConstants.altMotorID);
-
-  protected DigitalInput resetSwitch = new DigitalInput(Constants.elevatorConstants.resetSwitchID);
-
 
   public elevator(){
     offMotor.setControl(new Follower(Constants.elevatorConstants.mainMotorID, true));
@@ -104,14 +101,13 @@ public class elevator extends SubsystemBase
 
   public void periodic()
   {
-
-    SmartDashboard.putBoolean("reset switch", !resetSwitch.get());
-    if (!resetSwitch.get()){
-        m_elevator.setHeight(Meters.of(0));
-    }
     m_elevator.updateTelemetry();
     motor.setPosition(setpoint);
     SmartDashboard.putNumber("elevatorHeight", getHeight());
+    SmartDashboard.putBoolean("reset switch", !resetSwitch.get());
+    if (!resetSwitch.get()&&getHeight()!=0){
+      motor.setEncoderPosition(Meters.of(0));
+    }
   }
 
   public void simulationPeriodic()
@@ -122,6 +118,7 @@ public class elevator extends SubsystemBase
 
   public Command sysId()
   {
+    SignalLogger.start();
     return m_elevator.sysId(Volts.of(12), Volts.of(12).per(Second), Second.of(30));
   }
 
@@ -129,9 +126,9 @@ public class elevator extends SubsystemBase
     return m_elevator.getHeight().in(Meters);
   }
 
-//   public double getHeightRender(){
-//     return getHeight()+Constants.elevatorConstants.elevatorIntakeEndOffset;
-// }
+  public double getHeightRender(){
+    return getHeight()+Constants.elevatorConstants.elevatorIntakeEndOffset;
+}
 
   public void setSetpoint(double newSetpoint){
     setpoint = Meters.of(newSetpoint);
@@ -142,12 +139,12 @@ public class elevator extends SubsystemBase
   }
 
   public boolean isAtTop(){
-    return Math.abs(getHeight()-Constants.elevatorConstants.maxHeight)<elevatorConstants.tolerance;
+    return getHeight()==Constants.elevatorConstants.maxHeight;
   }
 
     /**@return the 3d translation from the bottom of the elevator to the current point. all measurements use the rotation point of the wrist for consistency*/
   public Translation3d getTranslation(){
-      return new Translation3d(getHeight()*Math.cos(Constants.elevatorConstants.angle.in(Radians)), 0, getHeight()*Math.sin(Constants.elevatorConstants.angle.in(Radians))).plus(Constants.elevatorConstants.fromRobotCenter);
+      return new Translation3d(getHeightRender()*Math.cos(Constants.elevatorConstants.angle.in(Radians)), 0, getHeightRender()*Math.sin(Constants.elevatorConstants.angle.in(Radians))).plus(Constants.elevatorConstants.fromRobotCenter);
   };
 
   public boolean isAtSetpoint(){
