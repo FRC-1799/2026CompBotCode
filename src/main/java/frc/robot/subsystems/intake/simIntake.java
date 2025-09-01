@@ -11,6 +11,7 @@ import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
 
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -108,17 +109,17 @@ public class simIntake extends intakeIO{
                     // Obtain robot position from drive simulation
                     SystemManager.getRealPoseMaple().getTranslation(),
                     // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
-                    new Translation2d(getTranslation().getX(), getTranslation().getY()),
+                    new Translation2d(-getTranslation().getX(), -getTranslation().getY()),
                     // Obtain robot speed from drive simulation
                     SystemManager.swerve.getFieldVelocity(),
                     // Obtain robot facing from drive simulation
-                    SystemManager.getRealPoseMaple().getRotation(),
+                    SystemManager.getRealPoseMaple().getRotation().plus(Rotation2d.fromDegrees(180)),
                     // The height at which the coral is ejected
                     Meters.of(SystemManager.getIntakePosit().getZ()),
                     // The initial speed of the coral
                     MetersPerSecond.of(2),
                     // The coral is ejected at a 35-degree slope
-                    Degrees.of(215)));
+                    Degrees.of(-35)));
             }
         }
     }

@@ -60,8 +60,8 @@ public class FieldPosits {
         public static final Pose2d resetBecausePathplannerIsDumb = new Pose2d(4.733, 1.133, new Rotation2d());
         
         public static final Translation2d L1 = new Translation2d();
-        public static final Translation2d L2 = new Translation2d();
-        public static final Translation2d L3 = new Translation2d(0.1533654, 0);
+        public static final Translation2d L2 = new Translation2d(0.1, 0);
+        public static final Translation2d L3 = new Translation2d(0.2833654, 0);
         public static final Translation2d L4 = new Translation2d(0.45, 0);
         public static final Pose2d[] scoringPosits = {A, B, C, D, E, F, G, H, I, J, K, L};
         public static final reefPole[] scoringPoles = {

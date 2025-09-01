@@ -49,28 +49,28 @@ public class simReefIndexer extends reefIndexerIO{
 
     @Override
     public boolean[][] getFullReefState() {
-        // int[][]base = arena.getBranches(DriverStation.Alliance.Blue);
-        // boolean[][]returnable = new boolean[12][4];
-        // int i = 0;
+        int[][]base = arena.getBranches(DriverStation.Alliance.Blue);
+        boolean[][]returnable = new boolean[12][4];
+        int i = 0;
         
-        // for(int[] branch : base){
-        //     int j = 0;
-        //     for(int item: branch){
-        //         returnable[i][j] = item!=0;
-        //         j++;
-        //     }
-        //     i++;
-        // }
-        // i=0;
-        // for (int[] pole: base){
-        //     SmartDashboard.putNumberArray(String.valueOf(i), new double[]{pole[0],pole[1],pole[2],pole[3]});
-        //     i++;
-        // }
+        for(int[] branch : base){
+            int j = 0;
+            for(int item: branch){
+                returnable[i][j] = item!=0;
+                j++;
+            }
+            i++;
+        }
+        i=0;
+        for (int[] pole: base){
+            SmartDashboard.putNumberArray(String.valueOf(i), new double[]{pole[0],pole[1],pole[2],pole[3]});
+            i++;
+        }
 
         
-        // //reefBranch.set(publishArr);
-        // return returnable;
-        return null;
+        //reefBranch.set(publishArr);
+        return returnable;
+        //return null;
     }
 
 

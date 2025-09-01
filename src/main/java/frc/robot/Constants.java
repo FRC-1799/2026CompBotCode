@@ -8,6 +8,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Pounds;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -22,6 +23,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.math.Matter;
 
@@ -164,12 +166,13 @@ public final class Constants
   /**constants for the elevator */
   public static class elevatorConstants{
     public static final double l4EncoderVal = 1.40;
-    public static final double l3EncoderVal = 0.62381;
-    public static final double l2EncoderVal = 0.4514528;
+    public static final double l3EncoderVal = 0.48381;
+    public static final double l2EncoderVal = 0.2514528;
 
     public static final double l1EncoderVal = 0.37;
     //public static final double encoderToMeters =69.1514; //1/141;
     public static final int resetSwitchID = 7;
+    public static final Mass elevatorWeight = Pounds.of(60);
 
 
     public static final double highAlgaePrep = 0.8;
@@ -219,12 +222,7 @@ public final class Constants
 
 
     // set Motion Magic settings
-    public static MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
-        .withMotionMagicAcceleration(160)// Target acceleration of 160 rps/s (0.5 seconds)
-        .withMotionMagicCruiseVelocity(80)// Target cruise velocity of 80 rps
-        .withMotionMagicJerk(1600)// Target jerk of 1600 rps/s/s (0.1 seconds)
-        .withMotionMagicExpo_kA(0.2)
-    ;
+
 
     
   }
