@@ -1,4 +1,4 @@
-package yams.mechanisms.config;
+package frc.robot.yams.yams.java.yams.mechanisms.config;
 
 import static edu.wpi.first.units.Units.Degrees;
 

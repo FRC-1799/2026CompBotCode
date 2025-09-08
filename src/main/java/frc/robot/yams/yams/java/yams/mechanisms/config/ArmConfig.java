@@ -1,4 +1,4 @@
-package yams.mechanisms.config;
+package frc.robot.yams.yams.java.yams.mechanisms.config;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
@@ -65,6 +65,9 @@ public class ArmConfig
    */
   private       MechanismPositionConfig      mechanismPositionConfig = new MechanismPositionConfig();
 
+  private boolean simOverride = false;
+
+
   /**
    * Arm Configuration class
    *
@@ -73,6 +76,12 @@ public class ArmConfig
   public ArmConfig(SmartMotorController motorController)
   {
     motor = motorController;
+  }
+
+
+  public ArmConfig withSimOverride(boolean simOverride){
+    this.simOverride = simOverride;
+    return this;
   }
 
   /**

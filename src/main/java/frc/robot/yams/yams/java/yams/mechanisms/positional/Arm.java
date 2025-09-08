@@ -76,7 +76,7 @@ public class Arm extends SmartPositionalMechanism
     }
     config.applyConfig();
 
-    if (RobotBase.isSimulation())
+    if (RobotBase.isSimulation()||config)
     {
       SmartMotorController motor = config.getMotor();
       if (config.getLength().isEmpty())

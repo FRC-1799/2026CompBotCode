@@ -1,4 +1,4 @@
 /**
  * Mechanism configuration classes.
  */
-package yams.mechanisms.config;
+package frc.robot.yams.yams.java.yams.mechanisms.config;

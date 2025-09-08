@@ -2,11 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package yams.mechanisms.config;
+package frc.robot.yams.yams.java.yams.mechanisms.config;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.Distance;
+
+import java.lang.StackWalker.Option;
 import java.util.Optional;
 import yams.mechanisms.positional.SmartPositionalMechanism;
 
@@ -37,17 +39,19 @@ public class MechanismPositionConfig
    */
   protected Plane                   plane            = Plane.XZ;
 
+
   /**
    * Set the position of the {@link SmartPositionalMechanism} relative to the robot.
    *
    * @param robotToMechanism {@link Pose3d} of the {@link SmartPositionalMechanism} relative to the robot.
    * @return The {@link SmartPositionalMechanism}, for easy chaining.
    */
-  public MechanismPositionConfig withRelativePosition(Translation3d robotToMechanism)
-  {
+  public MechanismPositionConfig withRelativePosition(Translation3d robotToMechanism){
     this.robotToMechanism = Optional.ofNullable(robotToMechanism);
     return this;
   }
+
+
 
   /**
    * Set the length of the robot for visualization purposes.

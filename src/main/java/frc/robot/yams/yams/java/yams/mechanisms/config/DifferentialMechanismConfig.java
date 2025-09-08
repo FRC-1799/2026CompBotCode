@@ -1,4 +1,4 @@
-package yams.mechanisms.config;
+package frc.robot.yams.yams.java.yams.mechanisms.config;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
