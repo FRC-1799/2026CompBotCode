@@ -62,6 +62,7 @@ public class SystemManager{
     /** Initializes the system manager along with all the systems on the robot */
     public static void SystemManagerInit(Robot robotIn){
         robot=robotIn;
+        SimulatedArena.ALLOW_CREATION_ON_REAL_ROBOT = Constants.simConfigs.robotCanBeSimOnReal;
 
         // creates the swerve drive. Due to the complexity of the swerve system, it handles simulation differently and does not need an if-else block
         swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),  "swerve"));
@@ -70,7 +71,6 @@ public class SystemManager{
         field = new Field2d();
         SmartDashboard.putData("Field", field);
 
-        SimulatedArena.ALLOW_CREATION_ON_REAL_ROBOT = Constants.simConfigs.robotCanBeSimOnReal;
 
         // Initializes all the systems
         // Each block should initialize one system as either real or imaginary based on the constants value 
