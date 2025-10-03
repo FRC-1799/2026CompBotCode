@@ -160,6 +160,7 @@ public class SystemManager{
         generalManager.periodic();
         autoManager.periodic();
         reefIndexer.periodic();
+        coralArray.periodic();
     }
 
     /** @return the current pose of the robot */

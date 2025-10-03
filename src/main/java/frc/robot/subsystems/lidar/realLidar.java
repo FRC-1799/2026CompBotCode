@@ -31,7 +31,7 @@ public class realLidar implements lidarInterface{
     public realLidar(){
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         lidarTable = inst.getTable("lidar");
-        hitboxes = inst.getStructArrayTopic("detectedHitboxes", Pose2d.struct).subscribe(null, PubSubOption.keepDuplicates(true));
+        hitboxes = inst.getStructArrayTopic("individualReadings", Pose2d.struct).subscribe(null, PubSubOption.keepDuplicates(true));
         nodeSideLen = inst.getFloatTopic("NodeWidth").subscribe(0, PubSubOption.keepDuplicates(true));
     }
 

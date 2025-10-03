@@ -4,7 +4,10 @@ import edu.wpi.first.networktables.BooleanArraySubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class coralGUI extends SubsystemBase {
     
@@ -15,21 +18,20 @@ public class coralGUI extends SubsystemBase {
     //NetworkTable coralF2; 
     //NetworkTable coralF3;
     //NetworkTable coralF4;
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("GridData");
+    NetworkTableInstance table = NetworkTableInstance.getDefault();
     boolean[] defaultVals={true, true, true, true, true, true, true, true, true, true, true, true};
     boolean[] defaultIntakeVals = {true, true, true};
-    BooleanArraySubscriber l1 = table.getBooleanArrayTopic("CoralF1").subscribe(defaultVals,  PubSubOption.keepDuplicates(true));
-    BooleanArraySubscriber l2 = table.getBooleanArrayTopic("CoralF2").subscribe(defaultVals,  PubSubOption.keepDuplicates(true));
-    BooleanArraySubscriber l3 = table.getBooleanArrayTopic("CoralF3").subscribe(defaultVals,  PubSubOption.keepDuplicates(true));
-    BooleanArraySubscriber l4 = table.getBooleanArrayTopic("CoralF4").subscribe(defaultVals,  PubSubOption.keepDuplicates(true));
-    BooleanArraySubscriber leftIntake = table.getBooleanArrayTopic("IntakeL").subscribe(defaultIntakeVals, PubSubOption.keepDuplicates(true));
-    BooleanArraySubscriber rightIntake = table.getBooleanArrayTopic("IntakeR").subscribe(defaultIntakeVals, PubSubOption.keepDuplicates(true));
+    BooleanArraySubscriber l1 = table.getBooleanArrayTopic("GUI/CoralL1").subscribe(defaultVals,  PubSubOption.keepDuplicates(true));
+    BooleanArraySubscriber l2 = table.getBooleanArrayTopic("GUI/CoralL2").subscribe(defaultVals,  PubSubOption.keepDuplicates(true));
+    BooleanArraySubscriber l3 = table.getBooleanArrayTopic("GUI/CoralL3").subscribe(defaultVals,  PubSubOption.keepDuplicates(true));
+    BooleanArraySubscriber l4 = table.getBooleanArrayTopic("GUI/CoralL4").subscribe(defaultVals,  PubSubOption.keepDuplicates(true));
+    BooleanArraySubscriber leftIntake = table.getBooleanArrayTopic("GUI/leftIntake").subscribe(defaultIntakeVals, PubSubOption.keepDuplicates(true));
+    BooleanArraySubscriber rightIntake = table.getBooleanArrayTopic("GUI/rightIntake").subscribe(defaultIntakeVals, PubSubOption.keepDuplicates(true));
 
-    NetworkTable testTable  =  NetworkTableInstance.getDefault().getTable("gridTest");
-    BooleanArrayPublisher l1Test = testTable.getBooleanArrayTopic("CoralF1").publish(  PubSubOption.keepDuplicates(true));
-    BooleanArrayPublisher l2Test = testTable.getBooleanArrayTopic("CoralF2").publish(  PubSubOption.keepDuplicates(true));
-    BooleanArrayPublisher l3Test = testTable.getBooleanArrayTopic("CoralF3").publish(  PubSubOption.keepDuplicates(true));
-    BooleanArrayPublisher l4Test = testTable.getBooleanArrayTopic("CoralF4").publish(  PubSubOption.keepDuplicates(true));
+    BooleanArrayPublisher l1Test = table.getBooleanArrayTopic("GUItest/ReefL1").publish( PubSubOption.keepDuplicates(true));
+    BooleanArrayPublisher l2Test = table.getBooleanArrayTopic("GUItest/ReefL2").publish(PubSubOption.keepDuplicates(true));
+    BooleanArrayPublisher l3Test = table.getBooleanArrayTopic("GUItest/ReefL3").publish(  PubSubOption.keepDuplicates(true));
+    BooleanArrayPublisher l4Test = table.getBooleanArrayTopic("GUItest/ReefL4").publish(  PubSubOption.keepDuplicates(true));
 
     public coralGUI() {
         // Initialize the network table instance
@@ -47,11 +49,13 @@ public class coralGUI extends SubsystemBase {
 
     @Override
     public void periodic(){
+        
         boolean[][] coralArray = getGUIArray();
         l1Test.set(coralArray[0]);
         l2Test.set(coralArray[1]);
         l3Test.set(coralArray[2]);
         l4Test.set(coralArray[3]);
+        
     }
 
     public boolean[][] getGUIArray(){
@@ -70,14 +74,14 @@ public class coralGUI extends SubsystemBase {
     }
 
     // Function to check if a specific floor and column contains a 1
-    public boolean checkCoralValue(int floor, int column) {
-        if (floor < 1 || floor > 4 || column < 1 || column > 12) {
+    public boolean checkCoralValue(int level, int column) {
+        if (level < 0 || level > 3 || column < 0 || column > 11) {
             throw new IllegalArgumentException("Floor must be between 1 and 4, Column must be between 1 and 12.");
         }
         // Convert floor to array index (floor 1 = index 0, floor 4 = index 3)
-        int floorIndex = 4 - floor;
+        
         // Check if the value is 1
-        return getGUIArray()[floorIndex][column - 1];
+        return getGUIArray()[level][column];
     }
     public boolean[] getIntakeList(){
         boolean[] leftIntakeVals = leftIntake.get();
