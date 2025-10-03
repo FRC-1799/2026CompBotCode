@@ -48,6 +48,8 @@ public class autoManager{
     protected static double length;
     //static int resetCount=0;
     public static int cycleCount=0;
+
+
     public static int score=3;
     protected static StructPublisher<Pose2d> bestPosePublisher = NetworkTableInstance.getDefault().getStructTopic("bestPose", Pose2d.struct).publish();
 
@@ -111,7 +113,7 @@ public class autoManager{
 
 
         if (hasControl){
-            if (currentRoutine==null){
+            if (currentRoutine==null || currentRoutine.getClass()==spin.class){
                 currentRoutine=getAutoAction();
                 currentRoutine.schedule();
             }
@@ -282,8 +284,9 @@ public class autoManager{
         resetMap(SystemManager.getSwervePose());
         Pose2d bestPose = null;
         double bestScore=100000;
-        int i = 0;
+        int i = -1;
         for (Pose2d point: FieldPosits.IntakePoints.coralSpawnPoints){
+            i++;
             if (!SystemManager.coralArray.getIntakeStationAvail(i)){
                 continue;
             }
@@ -291,7 +294,7 @@ public class autoManager{
                 bestPose=point;
                 bestScore=getMapPoint(point).score;
             }
-            i++;
+           
         }
         if (bestPose!=null){
             bestPosePublisher.set(bestPose);
