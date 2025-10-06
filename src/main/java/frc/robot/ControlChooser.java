@@ -128,8 +128,8 @@ public class ControlChooser {
        xbox1.b(loop).onTrue(new InstantCommand(()->generalManager.scoreL2()));
        xbox1.a(loop).onTrue(new InstantCommand(()->generalManager.scoreL1()));
        xbox1.leftBumper(loop).onTrue(new InstantCommand(()->generalManager.algaeConfig(false)));
-       xbox1.rightBumper(loop).onTrue(new CreateCoral("leftLeft"));
-
+       //xbox1.rightBumper(loop).onTrue(new CreateCoral("leftLeft"));
+        xbox1.rightBumper(loop).onTrue(new InstantCommand(()->generalManager.algaeRemove()));
        xbox1.rightTrigger(0.4,loop).onTrue(new InstantCommand(()->generalManager.intake()));
        //xbox1.rightStick(loop).onTrue(()));
        xbox1.leftTrigger(0.4, loop).onTrue(new InstantCommand(()->generalManager.outtake()));

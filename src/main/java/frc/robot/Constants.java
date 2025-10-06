@@ -116,16 +116,15 @@ public final class Constants
 
   /**constants to control wether or not a specific system should be simulated */
   public static class simConfigs{
-    public static final boolean driveShouldBeSim=true||!RobotBase.isReal();
-    public static final boolean intakeShouldBeSim=true||!RobotBase.isReal();
-    public static final boolean aprilTagShouldBeSim=true||!RobotBase.isReal();
-    public static final boolean wristShouldBeSim=true||!RobotBase.isReal();
-    public static final boolean elevatorShouldBeSim=true||!RobotBase.isReal();
+    public static final boolean driveShouldBeSim=false||!RobotBase.isReal();
+    public static final boolean intakeShouldBeSim=false||!RobotBase.isReal();
+    public static final boolean aprilTagShouldBeSim=false||!RobotBase.isReal();
+    public static final boolean elevatorShouldBeSim=false||!RobotBase.isReal();
 
-    public static final boolean reefIndexerShouldBeSim=true||!RobotBase.isReal();
+    public static final boolean reefIndexerShouldBeSim=false||!RobotBase.isReal();
     public static final boolean lidarShouldBeSim=false||!RobotBase.isReal();
     public static final boolean blinkinShouldBeSim=true||!RobotBase.isReal();
-    public static final boolean algaeRemoverShouldBeSim=true||!RobotBase.isReal();
+    public static final boolean algaeRemoverShouldBeSim=false||!RobotBase.isReal();
     public static final boolean robotCanBeSimOnReal=true;
 
     
@@ -177,7 +176,7 @@ public final class Constants
     public static final Mass elevatorWeight = Pounds.of(60);
 
 
-    public static final double highAlgaePrep = 0.8;
+    public static final double highAlgaePrep = 0.55;
     public static final double lowAlgaePrep = 0;
     // public static final double lowAlgaeAct = 0;
     // public static final double highAlgaeAct = 0;

@@ -86,6 +86,9 @@ public class SwerveSubsystem extends SubsystemBase
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     SwerveDriveTelemetry.isSimulation= Constants.simConfigs.driveShouldBeSim;
+
+
+
     try
     {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.driveConstants.maxSpeed);
@@ -95,6 +98,8 @@ public class SwerveSubsystem extends SubsystemBase
     {
       throw new RuntimeException(e);
     }
+
+
     swerveDrive.setHeadingCorrection(true); // Heading correction should only be used while controlling the robot via angle.
     swerveDrive.setCosineCompensator(false);//!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
     swerveDrive.setAngularVelocityCompensation(true,

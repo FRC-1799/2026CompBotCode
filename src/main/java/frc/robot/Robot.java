@@ -50,7 +50,7 @@ public class Robot extends TimedRobot{
     ControlChooser controlChooser;
     int heartBeat=0;
     private Timer disabledTimer;
-    StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault().getStructTopic("robotPose", Pose2d.struct).publish(PubSubOption.periodic(0.02));
+    StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault().getStructTopic("RobotPose", Pose2d.struct).publish(PubSubOption.periodic(0.02));
     SendableChooser<Command> autoChooser=new SendableChooser<>();
     SendableChooser<Pose2d> poseChooser=new SendableChooser<>();
 
@@ -136,6 +136,8 @@ public class Robot extends TimedRobot{
       CommandScheduler.getInstance().run();
       SystemManager.periodic();
       posePublisher.set(SystemManager.getSwervePose());
+      System.out.println(SystemManager.getSwervePose());
+
       heartBeat++;
       SmartDashboard.putNumber("heartbeat", heartBeat);  
 
@@ -259,7 +261,6 @@ public class Robot extends TimedRobot{
 
     algaePublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
     coralPublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
-    robotPublisher.set(SystemManager.getSwervePose());
     
     
     if (SystemManager.fakeBot!=null){

@@ -22,6 +22,14 @@ public class realIntake extends intakeIO{
 	}
 
 
+	public boolean getFrontBeamBreak(){
+		return frontBeambrake.get();
+	}
+
+	public boolean getBackBeamBreak(){
+		return !backBeambrake.get();
+	}
+
 	@Override
 	public boolean hasPiece() {
 		SmartDashboard.putBoolean("HasPieceChecked", true);
@@ -32,7 +40,7 @@ public class realIntake extends intakeIO{
 
 		//starting
 		if (pieceState==hasPieceState.starting){
-			if(!frontBeambrake.get()){
+			if(getFrontBeamBreak()){
 				pieceState=hasPieceState.full;
 			}
 			else{
@@ -42,7 +50,7 @@ public class realIntake extends intakeIO{
 
 		//empty
 		else if (pieceState==hasPieceState.empty){
-			if (!backBeambrake.get()){
+			if (!getBackBeamBreak()){
 				pieceState=hasPieceState.intaking;
 			}
 		}
@@ -51,8 +59,8 @@ public class realIntake extends intakeIO{
 		else if(pieceState==hasPieceState.intaking){
 
 
-			if (backBeambrake.get()){
-				if (!frontBeambrake.get()){
+			if (getBackBeamBreak()){
+				if (!getFrontBeamBreak()){
 					pieceState=hasPieceState.full;
 				}
 				else{
@@ -64,7 +72,7 @@ public class realIntake extends intakeIO{
 
 		//full
 		else if(pieceState==hasPieceState.full){
-			if(frontBeambrake.get()){
+			if(getFrontBeamBreak()){
 				pieceState=hasPieceState.empty;
 			}
 		}
@@ -93,13 +101,10 @@ public class realIntake extends intakeIO{
 		}
 		else if (state == intakeState.outtaking){
 		    //intakeTop.set(Constants.intakeConstants.outtakeSpeed); // Start OutTake Motor
-			if (SystemManager.elevator.isAtTop()){
-				intakeBottom.set(-Constants.intakeConstants.outtakeSpeed);
-			}
+
 			
-			else{
-				intakeBottom.set(Constants.intakeConstants.outtakeSpeed);
-			}
+			intakeBottom.set(Constants.intakeConstants.outtakeSpeed);
+			
 		}
 		else{
 			//intakeTop.set(0);
@@ -107,8 +112,8 @@ public class realIntake extends intakeIO{
 		}
 		SmartDashboard.putString("intakeState", state.name());
 		SmartDashboard.putString("hasPieceState", pieceState.name());
-		SmartDashboard.putBoolean("frontBeamBreak", frontBeambrake.get());
-		SmartDashboard.putBoolean("backBeamBreak", backBeambrake.get());
+		SmartDashboard.putBoolean("frontBeamBreak", getFrontBeamBreak());
+		SmartDashboard.putBoolean("backBeamBreak", getBackBeamBreak());
 	}
 	
 	@Override
