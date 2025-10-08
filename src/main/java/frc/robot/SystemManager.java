@@ -94,15 +94,16 @@ public class SystemManager{
 
 
         // Reef indexer
-        if (Constants.simConfigs.reefIndexerShouldBeSim){
-            reefIndexer = new simReefIndexer();
-        } else {
-            if (realVisTemp != null){
-                reefIndexer = realVisTemp;
-            } else {
-                reefIndexer = new realVision();
-            }
-        }
+        // if (Constants.simConfigs.reefIndexerShouldBeSim){
+        //     reefIndexer = new simReefIndexer();
+        // } else {
+        //     if (realVisTemp != null){
+        //         reefIndexer = realVisTemp;
+        //     } else {
+        //     }
+        // }
+        reefIndexer = new realVision();
+
 
         // //Lidar
         // if (Constants.simConfigs.lidarShouldBeSim){

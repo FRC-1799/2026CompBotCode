@@ -41,7 +41,7 @@ public class realVision extends reefIndexerIO implements aprilTagInterface{
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         NetworkTable visionTable = inst.getTable("Vision");
         NetworkTable coralPositionTable = visionTable.getSubTable("CoralPositions");
-        NetworkTable algaePositionTable = visionTable.getSubTable("AlgaePositions");
+        NetworkTable algaePositionTable =  inst.getTable("GUI");
 
         coralLevelSubscribers = new ArrayList<BooleanArraySubscriber>();
         algaeLevelSubscribers = new ArrayList<BooleanArraySubscriber>();
@@ -117,7 +117,16 @@ public class realVision extends reefIndexerIO implements aprilTagInterface{
 
     @Override
     public boolean[][] getFullReefState() {
-        boolean[][] reefArray = {coralLevelSubscribers.get(0).get(), coralLevelSubscribers.get(1).get(), coralLevelSubscribers.get(2).get(), coralLevelSubscribers.get(3).get()};
+        boolean[][] reefArray = new boolean[12][4];
+        for (int i=0;i<12;i++){
+            reefArray[i] = new boolean[]{
+                coralLevelSubscribers.get(0).get()[i],
+                coralLevelSubscribers.get(1).get()[i],
+                coralLevelSubscribers.get(2).get()[i],
+                coralLevelSubscribers.get(3).get()[i]
+            };
+        }
+        
         return reefArray;
 
     }
