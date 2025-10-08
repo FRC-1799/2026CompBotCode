@@ -7,6 +7,7 @@ import org.ironmaple.simulation.seasonspecific.reefscape2025.Arena2025Reefscape;
 //import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeReefSimulation;
 
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.networktables.BooleanArraySubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -24,6 +25,7 @@ public class simReefIndexer extends reefIndexerIO{
     Arena2025Reefscape arena = (Arena2025Reefscape) SimulatedArena.getInstance();
         StructArrayPublisher<Pose3d> algaePublisher = NetworkTableInstance.getDefault()
     .getStructArrayTopic("reefAlgae", Pose3d.struct).publish();
+
 
     public simReefIndexer(){
     }
@@ -84,8 +86,10 @@ public class simReefIndexer extends reefIndexerIO{
 
     @Override 
     public boolean[][] getAlgaePosits(){
-        
+
         return algae;
+        
+        //return algae;
     }
 
     @Override

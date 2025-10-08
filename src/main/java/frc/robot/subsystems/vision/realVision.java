@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class realVision extends reefIndexerIO implements aprilTagInterface{
     
-    public ArrayList<BooleanArraySubscriber> coralLevelSubscribers;
-    public ArrayList<BooleanArraySubscriber> algaeLevelSubscribers;
-    public ArrayList<BooleanArrayPublisher> algaeLevelPublishers;
+    public BooleanArraySubscriber[] coralLevelSubscribers;
+    public BooleanArraySubscriber[] algaeLevelSubscribers;
+    public BooleanArrayPublisher[] algaeLevelPublishers;
     public final StructSubscriber<Pose3d> robotFrontPoseSubscriber;
     public final StructSubscriber<Pose3d> robotBackPoseSubscriber;
     public final DoubleSubscriber robotFrontTimestampSubscriber;
@@ -41,28 +41,24 @@ public class realVision extends reefIndexerIO implements aprilTagInterface{
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         NetworkTable visionTable = inst.getTable("Vision");
         NetworkTable coralPositionTable = visionTable.getSubTable("CoralPositions");
-        NetworkTable algaePositionTable =  inst.getTable("GUI");
 
-        coralLevelSubscribers = new ArrayList<BooleanArraySubscriber>();
-        algaeLevelSubscribers = new ArrayList<BooleanArraySubscriber>();
+        coralLevelSubscribers = new BooleanArraySubscriber[]{
+            coralPositionTable.getBooleanArrayTopic("CoralL1").subscribe(reefDefaultList),
+            coralPositionTable.getBooleanArrayTopic("CoralL2").subscribe(reefDefaultList),
+            coralPositionTable.getBooleanArrayTopic("CoralL3").subscribe(reefDefaultList),
+            coralPositionTable.getBooleanArrayTopic("CoralL4").subscribe(reefDefaultList)
+        };
+        algaeLevelSubscribers = new BooleanArraySubscriber[]{
+                inst.getBooleanArrayTopic("GUI/AlgaeL1").subscribe(algaeDefaultList),
+                inst.getBooleanArrayTopic("GUI/AlgaeL2").subscribe(algaeDefaultList)
+        };
 
-        algaeLevelPublishers = new ArrayList<BooleanArrayPublisher>();
+        algaeLevelPublishers = new BooleanArrayPublisher[]{
+            inst.getBooleanArrayTopic("GUI/AlgaeL1").publish(),
+            inst.getBooleanArrayTopic("GUI/AlgaeL2").publish( )
+    };
 
-        // Loops through and add the coral subscriber to the list
-        for (int i = 1; i <= 4; i++) {
-            BooleanArrayTopic coralLevel = coralPositionTable.getBooleanArrayTopic("CoralL" + Integer.toString(i));
-            BooleanArraySubscriber reefSubscriber = coralLevel.subscribe(reefDefaultList, PubSubOption.keepDuplicates(true));
-            coralLevelSubscribers.add(reefSubscriber);
-        }
 
-        // Same thing as the coral one, except does this with publishers as well
-        for (int i = 1; i <= 2; i++) {
-            BooleanArrayTopic algaeLevel = algaePositionTable.getBooleanArrayTopic("Algae" + Integer.toString(i));
-            BooleanArrayPublisher algaePublisher = algaeLevel.publish(PubSubOption.keepDuplicates(true));
-            BooleanArraySubscriber algaeSubscriber = algaeLevel.subscribe(algaeDefaultList, PubSubOption.keepDuplicates(true));
-            algaeLevelPublishers.add(algaePublisher);
-            algaeLevelSubscribers.add(algaeSubscriber);
-        }
 
         // Gets the robot's position's subscriber
         StructTopic<Pose3d> robotFrontPoseTopic = visionTable.getStructTopic("FrontRobotPose", Pose3d.struct);
@@ -120,10 +116,10 @@ public class realVision extends reefIndexerIO implements aprilTagInterface{
         boolean[][] reefArray = new boolean[12][4];
         for (int i=0;i<12;i++){
             reefArray[i] = new boolean[]{
-                coralLevelSubscribers.get(0).get()[i],
-                coralLevelSubscribers.get(1).get()[i],
-                coralLevelSubscribers.get(2).get()[i],
-                coralLevelSubscribers.get(3).get()[i]
+                coralLevelSubscribers[0].get()[i],
+                coralLevelSubscribers[1].get()[i],
+                coralLevelSubscribers[2].get()[i],
+                coralLevelSubscribers[3].get()[i]
             };
         }
         
@@ -133,7 +129,18 @@ public class realVision extends reefIndexerIO implements aprilTagInterface{
 
     @Override
     public boolean[][] getAlgaePosits() {
-        boolean[][] algaeArray = {algaeLevelSubscribers.get(0).get(), algaeLevelSubscribers.get(1).get()};
+        
+        boolean[][] algaeArray = new boolean[6][2];
+        for (int i=0; i<6; i++){
+            algaeArray[i] = new boolean[]{algaeLevelSubscribers[0].get()[i], algaeLevelSubscribers[0].get()[i]};
+        }
+        for (int i=0;i<2; i++){
+            for (int j=0;j<6;j++){
+                System.out.print(algaeArray[j][i]+ " ");
+            }
+            System.out.println();
+        }
+        System.out.println("\n");
         return algaeArray;
     }
 
@@ -141,12 +148,20 @@ public class realVision extends reefIndexerIO implements aprilTagInterface{
 
     @Override
     public void freeAlgae(int row, int level) {
-        BooleanArrayPublisher freeAlgaePublisher = algaeLevelPublishers.get(level);
-        BooleanArraySubscriber freeAlgaeSubscriber = algaeLevelSubscribers.get(level);
+        BooleanArrayPublisher freeAlgaePublisher = algaeLevelPublishers[level];
+        BooleanArraySubscriber freeAlgaeSubscriber = algaeLevelSubscribers[level];
         boolean[] algaeRowValues = freeAlgaeSubscriber.get();
         
-        algaeRowValues[row] = true;
+        algaeRowValues[row] = false;
+
         freeAlgaePublisher.set(algaeRowValues);
+    
+        System.out.println(level);
+        for (int j=0;j<6;j++){
+            System.out.print(algaeRowValues[j]+ " ");
+        }
+        System.out.println("\n\n");
+    
 
     }
 
