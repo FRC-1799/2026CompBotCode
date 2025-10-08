@@ -88,7 +88,7 @@ public final class Constants
     public static final double heightOfMapMeters=8.9;
     public static final double bonusScore=1;
 
-    public static final double autoDriveScoreTolerance  = 0.5;
+    public static final double autoDriveScoreTolerance  = 0.01;
     public static final double autoDriveIntakeTolerance = 0.1;
     public static final double distanceWithinPathplannerDontWork = 0.5;
 
