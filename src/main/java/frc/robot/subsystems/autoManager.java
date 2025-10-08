@@ -304,9 +304,9 @@ public class autoManager{
 
     }
 
-    public static int getHighestLevelWithGuiIntegrated(int level){
-        boolean[] reefArr=SystemManager.reefIndexer.getFullReefState()[level];
-        boolean[] guiArr = utilFunctions.flipBoolArray(SystemManager.coralArray.getGUIArray())[level];
+    public static int getHighestLevelWithGuiIntegrated(int pole){
+        boolean[] reefArr=SystemManager.reefIndexer.getFullReefState()[pole];
+        boolean[] guiArr = utilFunctions.flipBoolArray(SystemManager.coralArray.getGUIArray())[pole];
         for (int i=3; i>=0;i--){
             if (!reefArr[i]&&guiArr[i]){
                 return i;

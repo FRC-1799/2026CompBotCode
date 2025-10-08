@@ -81,6 +81,7 @@ public class ScorePiece extends Command{
             }
         }
 
+        SmartDashboard.putBoolean("DriveIsFinished", driveIsFinished);
 
         //starts outtake if relevant
         if (mechIsFinished&&driveIsFinished){

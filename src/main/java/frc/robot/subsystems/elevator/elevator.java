@@ -11,9 +11,12 @@ import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Volts;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
@@ -21,6 +24,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -91,9 +95,12 @@ public class elevator extends SubsystemBase
       .withMass(elevatorConstants.elevatorWeight);
   
   private final Elevator m_elevator = new Elevator(m_config);
-
+  
 
   protected TalonFX offMotor = new TalonFX(Constants.elevatorConstants.altMotorID);
+  protected TalonFX mainMotor = new TalonFX(Constants.elevatorConstants.mainMotorID);
+
+  protected boolean lastEnableState = true;
 
   public elevator(){
     offMotor.setControl(new Follower(Constants.elevatorConstants.mainMotorID, true));
@@ -101,6 +108,11 @@ public class elevator extends SubsystemBase
 
   public void periodic()
   {
+
+    if (DriverStation.isEnabled()!=lastEnableState){
+      lastEnableState=DriverStation.isEnabled();
+      setBreakMode(DriverStation.isEnabled());
+    }
     m_elevator.updateTelemetry();
     motor.setPosition(setpoint);
     SmartDashboard.putNumber("elevatorHeight", getHeight());
@@ -126,6 +138,10 @@ public class elevator extends SubsystemBase
     return m_elevator.getHeight().in(Meters);
   }
 
+  public void setBreakMode(boolean breakMode){
+    offMotor.setNeutralMode(breakMode? NeutralModeValue.Brake: NeutralModeValue.Coast);
+    mainMotor.setNeutralMode(breakMode? NeutralModeValue.Brake: NeutralModeValue.Coast);
+  }
 
 
   public void setSetpoint(double newSetpoint){

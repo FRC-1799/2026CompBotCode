@@ -25,6 +25,8 @@ import frc.robot.subsystems.intake.intakeIO;
 import frc.robot.subsystems.intake.realIntake;
 import frc.robot.subsystems.intake.simIntake;
 import frc.robot.subsystems.lidar.lidarInterface;
+import frc.robot.subsystems.lidar.realLidar;
+import frc.robot.subsystems.lidar.simLidar;
 import frc.robot.subsystems.swervedrive.AIRobotInSimulation;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.realSimulatedDriveTrain;
@@ -93,23 +95,26 @@ public class SystemManager{
 
 
 
-        // Reef indexer
+        // //Reef indexer
         if (Constants.simConfigs.reefIndexerShouldBeSim){
             reefIndexer = new simReefIndexer();
         } else {
             if (realVisTemp != null){
                 reefIndexer = realVisTemp;
-            } else {
+            } 
+            else {
                 reefIndexer = new realVision();
+
             }
         }
+        
 
-        // //Lidar
-        // if (Constants.simConfigs.lidarShouldBeSim){
-        //     lidar = new simLidar();
-        // } else {
-        //     // Lidar initialization if not sim
-        // }
+        //Lidar
+        if (Constants.simConfigs.lidarShouldBeSim){
+            lidar = new simLidar();
+        } else {
+            lidar= new realLidar();
+        }
 
         // Blinkin
         // if(Constants.simConfigs.blinkinShouldBeSim){

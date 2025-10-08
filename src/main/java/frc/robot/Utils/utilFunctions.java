@@ -19,7 +19,7 @@ public class utilFunctions {
      * calculates the distance between two specified coordinate points
      * @param x1 the x coord of the first point
      * @param x2 the x coord of the second point
-     * @param y1 the y coord of the second point
+     * @param y1 the y coord of the first point
      * @param y2 the y coord of the second point
      * @return the distance between the two points
      */
