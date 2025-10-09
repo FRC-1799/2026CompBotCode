@@ -119,7 +119,7 @@ public class realVision extends reefIndexerIO implements aprilTagInterface{
                 coralLevelSubscribers[0].get()[i],
                 coralLevelSubscribers[1].get()[i],
                 coralLevelSubscribers[2].get()[i],
-                coralLevelSubscribers[3].get()[i]
+                false
             };
         }
         
