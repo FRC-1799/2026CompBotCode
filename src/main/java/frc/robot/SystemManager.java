@@ -1,5 +1,7 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Radians;
+
 import java.io.File;
 import org.ironmaple.simulation.SimulatedArena;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,20 +14,19 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
-import frc.robot.subsystems.wristElevatorControlManager;
 import frc.robot.subsystems.AlgaeRemover.algaeRemoverInterface;
 import frc.robot.subsystems.AlgaeRemover.realAlgaeRemover;
 import frc.robot.subsystems.AlgaeRemover.simAlgaeRemover;
 import frc.robot.subsystems.CoralGUI.compassGUI;
 import frc.robot.subsystems.CoralGUI.coralGUI;
 import frc.robot.subsystems.blinkin.blinkinInterface;
-import frc.robot.subsystems.elevator.elevatorIO;
-import frc.robot.subsystems.elevator.realElevator;
-import frc.robot.subsystems.elevator.simElevator;
+import frc.robot.subsystems.elevator.elevator;
 import frc.robot.subsystems.intake.intakeIO;
 import frc.robot.subsystems.intake.realIntake;
 import frc.robot.subsystems.intake.simIntake;
 import frc.robot.subsystems.lidar.lidarInterface;
+import frc.robot.subsystems.lidar.realLidar;
+import frc.robot.subsystems.lidar.simLidar;
 import frc.robot.subsystems.swervedrive.AIRobotInSimulation;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.realSimulatedDriveTrain;
@@ -34,9 +35,7 @@ import frc.robot.subsystems.vision.photonSim;
 import frc.robot.subsystems.vision.realVision;
 import frc.robot.subsystems.vision.reefIndexerIO;
 import frc.robot.subsystems.vision.simReefIndexer;
-import frc.robot.subsystems.wrist.realWrist;
-import frc.robot.subsystems.wrist.simWrist;
-import frc.robot.subsystems.wrist.wristIO;
+
 
 public class SystemManager{
     public static SwerveSubsystem swerve;
@@ -47,8 +46,7 @@ public class SystemManager{
     public static boolean hasNote = false;
     public static intakeIO intake;
     public static aprilTagInterface aprilTag;
-    public static wristIO wrist;
-    public static elevatorIO elevator;
+    public static elevator elevator;
     public static reefIndexerIO reefIndexer;
     public static lidarInterface lidar;
     public static realSimulatedDriveTrain simButRealTrain = null;
@@ -66,6 +64,7 @@ public class SystemManager{
     /** Initializes the system manager along with all the systems on the robot */
     public static void SystemManagerInit(Robot robotIn){
         robot=robotIn;
+        SimulatedArena.ALLOW_CREATION_ON_REAL_ROBOT = Constants.simConfigs.robotCanBeSimOnReal;
 
         // creates the swerve drive. Due to the complexity of the swerve system, it handles simulation differently and does not need an if-else block
         swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),  "swerve"));
@@ -74,17 +73,10 @@ public class SystemManager{
         field = new Field2d();
         SmartDashboard.putData("Field", field);
 
-        SimulatedArena.ALLOW_CREATION_ON_REAL_ROBOT = Constants.simConfigs.robotCanBeSimOnReal;
 
         // Initializes all the systems
         // Each block should initialize one system as either real or imaginary based on the constants value 
     
-            // Wrist
-            if (Constants.simConfigs.wristShouldBeSim){
-                wrist = new simWrist();
-            } else {
-                wrist = new realWrist();
-            }
 
 
 
@@ -97,31 +89,32 @@ public class SystemManager{
         }
 
         // Elevator
-        if (Constants.simConfigs.elevatorShouldBeSim){
-            elevator = new simElevator();
-        } else {
-            elevator = new realElevator();
-        }
+
+        elevator = new elevator();
+        
 
 
 
-        // Reef indexer
+        // //Reef indexer
         if (Constants.simConfigs.reefIndexerShouldBeSim){
             reefIndexer = new simReefIndexer();
         } else {
             if (realVisTemp != null){
                 reefIndexer = realVisTemp;
-            } else {
+            } 
+            else {
                 reefIndexer = new realVision();
+
             }
         }
+        
 
-        // //Lidar
-        // if (Constants.simConfigs.lidarShouldBeSim){
-        //     lidar = new simLidar();
-        // } else {
-        //     // Lidar initialization if not sim
-        // }
+        //Lidar
+        if (Constants.simConfigs.lidarShouldBeSim){
+            lidar = new simLidar();
+        } else {
+            lidar= new realLidar();
+        }
 
         // Blinkin
         // if(Constants.simConfigs.blinkinShouldBeSim){
@@ -158,7 +151,6 @@ public class SystemManager{
 
         //initializes and distributes the managers
 
-        wristElevatorControlManager.addSystems(wrist, elevator);
         generalManager.generalManagerInit();
         autoManager.autoManagerInit();
         
@@ -170,10 +162,10 @@ public class SystemManager{
 
     /** Calls periodic on all the systems that do not inherit subsystem base. This function should be called in robot periodic */
     public static void periodic(){
-        wristElevatorControlManager.periodic();
         generalManager.periodic();
         autoManager.periodic();
         reefIndexer.periodic();
+        coralArray.periodic();
     }
 
     /** @return the current pose of the robot */
@@ -191,6 +183,6 @@ public class SystemManager{
 
     /** Returns the pose3 of a coral in the intake */
     public static Pose3d getIntakePosit(){
-        return new Pose3d(getSwervePose()).plus(new Transform3d(intake.getTranslation(), new Rotation3d(0, SystemManager.wrist.getCurrentLocationR2D().getRadians() + Constants.elevatorConstants.angle.getRadians() + Math.PI / 2, Math.PI)));
+        return new Pose3d(getSwervePose()).plus(new Transform3d(intake.getTranslation(), new Rotation3d(0, Constants.elevatorConstants.angle.in(Radians) + Math.PI / 2, Math.PI)));
     }
 }

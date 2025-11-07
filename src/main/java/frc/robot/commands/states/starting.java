@@ -16,7 +16,6 @@ public class starting extends Command{
     /**initializes the command */
     @Override
     public void initialize(){
-        SystemManager.wrist.setSetpoint(Constants.wristConstants.intakePosit);
         SystemManager.elevator.setSetpoint(Constants.elevatorConstants.intakePosit);
         SystemManager.intake.stop();
     }
@@ -33,6 +32,6 @@ public class starting extends Command{
     /**returns true once the bot has reached the starting config */
     @Override 
     public boolean isFinished(){
-        return SystemManager.wrist.isAtSetpoint()&&SystemManager.elevator.isAtSetpoint();
+        return SystemManager.elevator.isAtSetpoint();
     }
 }

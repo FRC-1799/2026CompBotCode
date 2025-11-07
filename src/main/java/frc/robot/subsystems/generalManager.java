@@ -58,7 +58,6 @@ public class generalManager{
     /**initializes the general manager. Should be called before any other general manager actions are taken*/
     public static void generalManagerInit(){
       start();
-      subsystems.add(SystemManager.wrist);
       subsystems.add(SystemManager.intake);
       subsystems.add(SystemManager.elevator);
       subsystems.add(SystemManager.algaeRemover);
@@ -88,16 +87,16 @@ public class generalManager{
      */
     public static void scoreAt(int level){
         switch (level) {
-            case 1:
+            case 0:
                 scoreL1();
                 break;
-            case 2:
+            case 1:
                 scoreL2();
                 break;
-            case 3:
+            case 2:
                 scoreL3();
                 break;
-            case 4:
+            case 3:
                 scoreL4();
                 break;
             default:
@@ -174,6 +173,8 @@ public class generalManager{
      */
     public static void startState(generalState state){
         generalManager.state=state;
+        // System.out.println(state.state.getName());
+        // System.out.println("\n\n\n\n\n");
         CommandScheduler.getInstance().schedule(state.state);
     }
 

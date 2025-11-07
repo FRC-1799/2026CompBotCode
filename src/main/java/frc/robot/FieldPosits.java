@@ -60,9 +60,9 @@ public class FieldPosits {
         public static final Pose2d resetBecausePathplannerIsDumb = new Pose2d(4.733, 1.133, new Rotation2d());
         
         public static final Translation2d L1 = new Translation2d();
-        public static final Translation2d L2 = new Translation2d();
-        public static final Translation2d L3 = new Translation2d(-0.0533654, 0);
-        public static final Translation2d L4 = new Translation2d(-0.3, 0);
+        public static final Translation2d L2 = new Translation2d(0.1, 0);
+        public static final Translation2d L3 = new Translation2d(0.2833654, 0);
+        public static final Translation2d L4 = new Translation2d(0.45, 0);
         public static final Pose2d[] scoringPosits = {A, B, C, D, E, F, G, H, I, J, K, L};
         public static final reefPole[] scoringPoles = {
             reefPole.A,
@@ -253,21 +253,7 @@ public class FieldPosits {
             }
         }
 
-        /**returns the wrist value needed for this level in the form of a rotation 2d */
-        public Rotation2d getWristVal(){
-            switch (this){
-                case L1:
-                    return Constants.wristConstants.l1EncoderVal;
-                case L2:
-                    return Constants.wristConstants.l2EncoderVal;
-                case L3:
-                    return Constants.wristConstants.l3EncoderVal;
-                case L4:
-                    return Constants.wristConstants.l4EncoderVal;
-                default:
-                    throw new Error("This case is impossible to reach because all enum options are handled but needs to exist so java can be sure the function will always return a value.If you are seeing this as a user something has gone DEEPLY DEEPLY WRONG, maybe burn your code in mount doom");
-            }
-        }
+
 
         /**returns the elevator value needed for this level */
         public double getElevatorValue(){
@@ -362,9 +348,6 @@ public class FieldPosits {
 
 
 
-            public Rotation2d getWristValue(){
-                return Constants.wristConstants.algaePosit;
-            }
 
             public Pose2d getPose(){
                 if (side==-1){

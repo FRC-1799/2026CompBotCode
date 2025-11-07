@@ -45,6 +45,7 @@ public class ScorePiece extends Command{
         //starts auto drive
         driveCommand=SystemManager.swerve.driveToPose(posit.getScorePose());
         driveCommand.schedule();
+        System.out.println(posit.level.getAsInt());
 
         //gets the mech command and sets the proper mech callback
         mechCommand=generalManager.getStateCommand();
@@ -80,6 +81,7 @@ public class ScorePiece extends Command{
             }
         }
 
+        SmartDashboard.putBoolean("DriveIsFinished", driveIsFinished);
 
         //starts outtake if relevant
         if (mechIsFinished&&driveIsFinished){

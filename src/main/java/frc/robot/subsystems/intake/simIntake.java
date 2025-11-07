@@ -11,6 +11,7 @@ import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
 
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -34,10 +35,10 @@ public class simIntake extends intakeIO{
 
     public simIntake(){
         if (RobotBase.isReal()){
-            intakeSim= IntakeSimulation.InTheFrameIntake("Coral", SystemManager.simButRealTrain, Meters.of(0.7), IntakeSimulation.IntakeSide.BACK, 1);
+            intakeSim= IntakeSimulation.InTheFrameIntake("Coral", SystemManager.simButRealTrain, Meters.of(0.7), IntakeSimulation.IntakeSide.FRONT, 1);
         }
         else{
-            intakeSim= IntakeSimulation.InTheFrameIntake("Coral", SystemManager.swerve.getMapleSimDrive().get(), Meters.of(0.7), IntakeSimulation.IntakeSide.BACK, 1);
+            intakeSim= IntakeSimulation.InTheFrameIntake("Coral", SystemManager.swerve.getMapleSimDrive().get(), Meters.of(0.7), IntakeSimulation.IntakeSide.FRONT, 1);
         }
         intakeSim.addGamePieceToIntake();
     }
@@ -84,7 +85,7 @@ public class simIntake extends intakeIO{
     public void outtakeInternal(){
         if (hasPiece()){
             intakeSim.obtainGamePieceFromIntake();
-            if (SystemManager.elevator.atLegalNonControlState()){
+            if (SystemManager.elevator.isAtTop()){
                 SimulatedArena.getInstance()
                 .addGamePieceProjectile(new ReefscapeCoralOnFly(
                     // Obtain robot position from drive simulation
@@ -108,11 +109,11 @@ public class simIntake extends intakeIO{
                     // Obtain robot position from drive simulation
                     SystemManager.getRealPoseMaple().getTranslation(),
                     // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
-                    new Translation2d(getTranslation().getX(), getTranslation().getY()),
+                    new Translation2d(-getTranslation().getX(), -getTranslation().getY()),
                     // Obtain robot speed from drive simulation
                     SystemManager.swerve.getFieldVelocity(),
                     // Obtain robot facing from drive simulation
-                    SystemManager.getRealPoseMaple().getRotation(),
+                    SystemManager.getRealPoseMaple().getRotation().plus(Rotation2d.fromDegrees(180)),
                     // The height at which the coral is ejected
                     Meters.of(SystemManager.getIntakePosit().getZ()),
                     // The initial speed of the coral

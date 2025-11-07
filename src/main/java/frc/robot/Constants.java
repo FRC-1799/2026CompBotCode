@@ -5,6 +5,11 @@
 package frc.robot;
 
 
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Pounds;
+
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.pathplanner.lib.config.PIDConstants;
@@ -15,6 +20,10 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.LinearAcceleration;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.math.Matter;
 
@@ -71,18 +80,20 @@ public final class Constants
     public static final PIDConstants anglePID       = new PIDConstants(5, 0, 0);
 
 
+    
+
     public static final double collisionSpeed = 0;
 
     public static final double widthOfMapMeters=8;
     public static final double heightOfMapMeters=8.9;
     public static final double bonusScore=1;
 
-    public static final double autoDriveScoreTolerance  = 0.5;
+    public static final double autoDriveScoreTolerance  = 0.01;
     public static final double autoDriveIntakeTolerance = 0.1;
     public static final double distanceWithinPathplannerDontWork = 0.5;
 
     public static final double humanPlayerBeingBad = 0.5;
-    public static final Transform2d intakeCoralOffset = new Transform2d(-0.47, 0, new Rotation2d());
+    public static final Transform2d intakeCoralOffset = new Transform2d(0.47, 0, new Rotation2d());
     public static final int autoDriveCorrectCount = 3;
   }
 
@@ -108,11 +119,10 @@ public final class Constants
     public static final boolean driveShouldBeSim=false||!RobotBase.isReal();
     public static final boolean intakeShouldBeSim=false||!RobotBase.isReal();
     public static final boolean aprilTagShouldBeSim=false||!RobotBase.isReal();
-    public static final boolean wristShouldBeSim=false||!RobotBase.isReal();
     public static final boolean elevatorShouldBeSim=false||!RobotBase.isReal();
 
     public static final boolean reefIndexerShouldBeSim=false||!RobotBase.isReal();
-    public static final boolean lidarShouldBeSim=true||!RobotBase.isReal();
+    public static final boolean lidarShouldBeSim=false||!RobotBase.isReal();
     public static final boolean blinkinShouldBeSim=true||!RobotBase.isReal();
     public static final boolean algaeRemoverShouldBeSim=false||!RobotBase.isReal();
     public static final boolean robotCanBeSimOnReal=true;
@@ -134,7 +144,7 @@ public final class Constants
     public static final double intakeLength=0.245745;
     public static final int topIntake = 10;
     public static final int bottomIntake = 7;
-    public static final double coralFromWristLen = 0.0715772;
+    public static final double coralFromWristLen = 0.1715772;
     public static final double coralLength = 0.3;
     public static final double coralWidth = 0.11;
 
@@ -156,16 +166,17 @@ public final class Constants
 
   /**constants for the elevator */
   public static class elevatorConstants{
-    public static final double l4EncoderVal = 1.42;
-    public static final double l3EncoderVal = 1.02381;
-    public static final double l2EncoderVal = 0.6514528;
+    public static final double l4EncoderVal = 1.40;
+    public static final double l3EncoderVal = 0.48381;
+    public static final double l2EncoderVal = 0.2514528;
 
     public static final double l1EncoderVal = 0.37;
-    public static final double encoderToMeters =69.1514; //1/141;
+    //public static final double encoderToMeters =69.1514; //1/141;
     public static final int resetSwitchID = 7;
+    public static final Mass elevatorWeight = Pounds.of(60);
 
 
-    public static final double highAlgaePrep = 0.8;
+    public static final double highAlgaePrep = 0.55;
     public static final double lowAlgaePrep = 0;
     // public static final double lowAlgaeAct = 0;
     // public static final double highAlgaeAct = 0;
@@ -173,14 +184,12 @@ public final class Constants
 
 
     public static final double maxHeight = l4EncoderVal;
-    public static final Rotation2d angle = Rotation2d.fromDegrees(70);
-    public static final Translation3d fromRobotCenter = new Translation3d(0.0584454, 0, 0.583565 );
+    public static final Angle angle = Degrees.of(110);
     public static final double intakePosit = 0;
     public static final double startingPosit = 0;
     public static final double tolerance = 0.05;
     public static final double speedForSim =0.02;
     public static final double compressedLen = 0.889;
-    public static final PIDConstants elevatorPID = new PIDConstants(1.7, 0, 0);
     //public static final PIDConstants elevatorPID = new PIDConstants(0.5, 0, 0);
 
     //public static final double g=0.11;
@@ -194,58 +203,56 @@ public final class Constants
     public static final int mainMotorID=2;
     public static final int altMotorID=1;
 
+    public static final double KP = 10.4;
+    public static final double KI = 0;
+    public static final double KD = 0.05;
+    public static final double KS = 0.25;
+    public static final double KG = 1.8;
+    public static final double KV = 0.45;
+    public static final double KA = 0.09;
+
+    public static final LinearVelocity maxSpeed = MetersPerSecond.of(8);
+    public static final LinearAcceleration maxAccel = MetersPerSecondPerSecond.of(4);
+
 
     // in init function
 
-    // set slot 0 gains
-    public static final Slot0Configs slot0Configs = new Slot0Configs()
-        .withKS(0.25) // Add 0.25 V output to overcome static friction
-        .withKV(0.35) // A velocity target of 1 rps results in 0.12 V output
-        .withKA(0.15) // An acceleration of 1 rps/s requires 0.01 V output
-        .withKP(7.4) // A position error of 2.5 rotations results in 12 V output
-        .withKI(0) // no output for integrated error
-        .withKD(0.005) // A velocity error of 1 rps results in 0.1 V output
-        .withKG(1.8)
-    ;
     public static final double elevatorResetTolerance = 0.3;
-    
+    public static final double elevatorIntakeEndOffset = 0.2;
+        public static final Translation3d fromRobotCenter = new Translation3d(-0.0584454, 0, 0.583565 +elevatorIntakeEndOffset);
+
 
     // set Motion Magic settings
-    public static MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
-        .withMotionMagicAcceleration(160)// Target acceleration of 160 rps/s (0.5 seconds)
-        .withMotionMagicCruiseVelocity(80)// Target cruise velocity of 80 rps
-        .withMotionMagicJerk(1600)// Target jerk of 1600 rps/s/s (0.1 seconds)
-        .withMotionMagicExpo_kA(0.2)
-    ;
+
 
     
   }
 
   /**constants for the wrist */
-  public static class wristConstants{
-    public static final Rotation2d l4EncoderVal = Rotation2d.fromDegrees(210);
-    public static final Rotation2d l3EncoderVal = Rotation2d.fromDegrees(0);
-    public static final Rotation2d l2EncoderVal = Rotation2d.fromDegrees(0);
-    public static final Rotation2d l1EncoderVal = Rotation2d.fromDegrees(0);
-    public static final Rotation2d restingPosit = Rotation2d.fromDegrees(0);
-    public static final Rotation2d intakePosit = Rotation2d.fromDegrees(0);
-    public static final Rotation2d algaePosit = Rotation2d.fromDegrees(0);
+  // public static class wristConstants{
+  //   public static final Rotation2d l4EncoderVal = Rotation2d.fromDegrees(210);
+  //   public static final Rotation2d l3EncoderVal = Rotation2d.fromDegrees(0);
+  //   public static final Rotation2d l2EncoderVal = Rotation2d.fromDegrees(0);
+  //   public static final Rotation2d l1EncoderVal = Rotation2d.fromDegrees(0);
+  //   public static final Rotation2d restingPosit = Rotation2d.fromDegrees(0);
+  //   public static final Rotation2d intakePosit = Rotation2d.fromDegrees(0);
+  //   public static final Rotation2d algaePosit = Rotation2d.fromDegrees(0);
 
-    public static final Rotation2d minDegrees = new Rotation2d();
-    public static final Rotation2d maxDegrees = new Rotation2d();
+  //   public static final Rotation2d minDegrees = new Rotation2d();
+  //   public static final Rotation2d maxDegrees = new Rotation2d();
     
-    public static final double tolerance = 3;
-    public static final double speedForSim=5;
-    public static final int CANCoderID=3;
-    public static final int throughBoreID = Constants.intakeConstants.topIntake;
-    public static final double CANCoderOffset=0;//5.4;
-    public static final int motorID=8;
-    public static final double fConstant=0.01;
-    public static final PIDConstants wristPID = new PIDConstants(0.0015, 0, 0.);
-    public static final double maxVel = 0;
-    public static final double maxAccel = 0;
+  //   public static final double tolerance = 3;
+  //   public static final double speedForSim=5;
+  //   public static final int CANCoderID=3;
+  //   public static final int throughBoreID = Constants.intakeConstants.topIntake;
+  //   public static final double CANCoderOffset=0;//5.4;
+  //   public static final int motorID=8;
+  //   public static final double fConstant=0.01;
+  //   public static final PIDConstants wristPID = new PIDConstants(0.0015, 0, 0.);
+  //   public static final double maxVel = 0;
+  //   public static final double maxAccel = 0;
   
-  }
+  // }
 
   //constants used for the simulated camera
   public static class cameraConstants{

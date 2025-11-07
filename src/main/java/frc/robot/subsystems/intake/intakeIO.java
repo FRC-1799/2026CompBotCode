@@ -1,5 +1,7 @@
 package frc.robot.subsystems.intake;
 
+import static edu.wpi.first.units.Units.Radians;
+
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -7,6 +9,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
+import frc.robot.Constants.elevatorConstants;
 
 public abstract class intakeIO extends SubsystemBase{
 
@@ -73,11 +76,11 @@ public abstract class intakeIO extends SubsystemBase{
     /**gets a translation that represents the change from the 0,0 of the intake the point a coral would be */
     public Translation3d getTranslation(){
         
-        Rotation2d rotation = SystemManager.wrist.getCurrentLocationR2D();
         return new Translation3d(
-            Math.sin(-rotation.getRadians()+Math.toRadians(20))*Constants.intakeConstants.coralFromWristLen+Constants.intakeConstants.coralLength/2,
+            -(Math.sin(Constants.elevatorConstants.angle.in(Radians))*Constants.intakeConstants.coralFromWristLen+Constants.intakeConstants.coralLength),
             0,
-            Math.cos(-rotation.getRadians()+Math.toRadians(20))*Constants.intakeConstants.coralFromWristLen)
+            0)//Math.cos(Constants.elevatorConstants.angle.in(Radians))*Constants.intakeConstants.coralFromWristLen)
+            
             
             .plus(SystemManager.elevator.getTranslation());    
     }
