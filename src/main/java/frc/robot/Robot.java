@@ -25,9 +25,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.FieldPosits.reefLevel;
 import frc.robot.FieldPosits.reefPole;
-import frc.robot.Utils.scoringPosit;
-import frc.robot.commands.auto.IntakePieceCommand;
-import frc.robot.commands.auto.ScorePiece;
+
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
 
@@ -69,25 +67,6 @@ public class Robot extends TimedRobot{
         }
 
 
-        autoChooser.addOption("middle2", new ScorePiece(new scoringPosit(reefLevel.L2, reefPole.G)));
-        autoChooser.addOption("middle1", new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.G)));
-
-        autoChooser.addOption("left", new SequentialCommandGroup(
-          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.I)),
-          new IntakePieceCommand(FieldPosits.IntakePoints.leftLeft),
-          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.K)),
-          new IntakePieceCommand(FieldPosits.IntakePoints.leftLeft),
-          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.L)),
-          new IntakePieceCommand(FieldPosits.IntakePoints.leftLeft)
-        ));
-        autoChooser.addOption("right", new SequentialCommandGroup(
-          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.F)),
-          new IntakePieceCommand(FieldPosits.IntakePoints.rightRight),
-          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.C)),
-          new IntakePieceCommand(FieldPosits.IntakePoints.rightRight),
-          new ScorePiece(new scoringPosit(reefLevel.L1, reefPole.D)),
-          new IntakePieceCommand(FieldPosits.IntakePoints.rightRight)
-        ));
 
         
         SmartDashboard.putData("auto chooser", autoChooser);
@@ -151,8 +130,7 @@ public class Robot extends TimedRobot{
       disabledTimer.reset();
       disabledTimer.start();
       generalManager.resting();
-      SystemManager.elevator.setSetpoint(0);
-      SystemManager.intake.reset();
+
     }
 
     @Override
@@ -225,17 +203,6 @@ public class Robot extends TimedRobot{
 
 
 
-    StructArrayPublisher<Pose3d> algaePublisher = NetworkTableInstance.getDefault()
-    .getStructArrayTopic("algae", Pose3d.struct).publish();
-
-    StructPublisher<Pose2d> opponentPublisher = NetworkTableInstance.getDefault().getStructTopic("René DesCoded", Pose2d.struct).publish();
-
-  StructArrayPublisher<Pose3d> coralPublisher = NetworkTableInstance.getDefault()
-    .getStructArrayTopic("coral ", Pose3d.struct).publish();
-
-  StructPublisher<Pose2d> robotPublisher = NetworkTableInstance.getDefault().getStructTopic("robot", Pose2d.struct).publish();
-
-
 
     /**
      * This function is called once when the robot is first started up.
@@ -259,13 +226,6 @@ public class Robot extends TimedRobot{
   public void simulationPeriodic() {
     SimulatedArena.getInstance().simulationPeriodic();
 
-    algaePublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
-    coralPublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
-    
-    
-    if (SystemManager.fakeBot!=null){
-      opponentPublisher.set(SystemManager.fakeBot.driveSimulation.getActualPoseInSimulationWorld());
-    }
   }
 
 }
