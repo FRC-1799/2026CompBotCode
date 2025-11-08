@@ -36,10 +36,8 @@ public class autoManager{
     public static LocalAStar map = new LocalAStar();
 
     //static int resetCount=0;
-    public static int cycleCount=0;
 
 
-    public static int score=0;
 
 
 
@@ -52,8 +50,6 @@ public class autoManager{
 
     /**handles the periodic tasks of the auto manager. should be called every cycle */
     public static void periodic(){
-        SmartDashboard.putNumber("Cycle count", cycleCount);
-        SmartDashboard.putNumber("Score", score);
 
 
         if (currentRoutine!=null){

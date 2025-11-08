@@ -40,7 +40,7 @@ public class SystemManager{
     public static realVision realVisTemp = null;
     public static Robot robot;
 
-
+    protected static int score = 0;
     
     // Add a Coral Array object for tracking
 
@@ -125,6 +125,9 @@ public class SystemManager{
 
     /** Calls periodic on all the systems that do not inherit subsystem base. This function should be called in robot periodic */
     public static void periodic(){
+        SmartDashboard.putNumber("Score", score);
+
+
         generalManager.periodic();
         autoManager.periodic();
         reefIndexer.periodic();
@@ -142,5 +145,19 @@ public class SystemManager{
         }
         return swerve.getMapleSimPose();
     }
+
+    public static void addScore(int toAdd){
+        score+=toAdd;
+    }
+
+    public static void setScore(int toSet){
+        score=toSet;
+    }
+
+    public static int getScore(){
+        return score;
+    }
+
+
 
 }
