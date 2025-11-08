@@ -2,7 +2,6 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.SystemManager;
-import frc.robot.Utils.warningManager;
 import frc.robot.subsystems.generalManager;
 
 public class resting extends Command{
@@ -14,16 +13,12 @@ public class resting extends Command{
 
     @Override
     public void initialize(){
-        SystemManager.intake.stop();
     }
 
     /**called ever rio cycle while the command is scheduled*/
     @Override
     public void execute(){
-        if (generalManager.getStateCommand()!=this){
-            warningManager.throwAlert(warningManager.generalRoutineCalledManually);
-            cancel();
-        }
+
     }
 
     /**

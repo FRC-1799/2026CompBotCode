@@ -14,16 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
-import frc.robot.subsystems.AlgaeRemover.algaeRemoverInterface;
-import frc.robot.subsystems.AlgaeRemover.realAlgaeRemover;
-import frc.robot.subsystems.AlgaeRemover.simAlgaeRemover;
-import frc.robot.subsystems.CoralGUI.compassGUI;
-import frc.robot.subsystems.CoralGUI.coralGUI;
-import frc.robot.subsystems.blinkin.blinkinInterface;
-import frc.robot.subsystems.elevator.elevator;
-import frc.robot.subsystems.intake.intakeIO;
-import frc.robot.subsystems.intake.realIntake;
-import frc.robot.subsystems.intake.simIntake;
+
 import frc.robot.subsystems.lidar.lidarInterface;
 import frc.robot.subsystems.lidar.realLidar;
 import frc.robot.subsystems.lidar.simLidar;
@@ -40,26 +31,18 @@ import frc.robot.subsystems.vision.simReefIndexer;
 public class SystemManager{
     public static SwerveSubsystem swerve;
 
-    public static Field2d field;
     public static SimulatedArena simField;
     public static AIRobotInSimulation fakeBot;
-    public static boolean hasNote = false;
-    public static intakeIO intake;
     public static aprilTagInterface aprilTag;
-    public static elevator elevator;
     public static reefIndexerIO reefIndexer;
     public static lidarInterface lidar;
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
-    public static blinkinInterface blinkin;
-    public static compassGUI compass;
     public static Robot robot;
 
-    public static algaeRemoverInterface algaeRemover;
 
     
     // Add a Coral Array object for tracking
-    public static coralGUI coralArray;
 
     /** Initializes the system manager along with all the systems on the robot */
     public static void SystemManagerInit(Robot robotIn){
@@ -70,8 +53,6 @@ public class SystemManager{
         swerve = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),  "swerve"));
         swerve.resetOdometry(Constants.driveConstants.startingPosit);
         
-        field = new Field2d();
-        SmartDashboard.putData("Field", field);
 
 
         // Initializes all the systems
@@ -90,7 +71,6 @@ public class SystemManager{
 
         // Elevator
 
-        elevator = new elevator();
         
 
 
@@ -131,23 +111,8 @@ public class SystemManager{
         }
         
 
-        if (Constants.simConfigs.algaeRemoverShouldBeSim){
-            algaeRemover= new simAlgaeRemover();
-        }
-        else{
-            algaeRemover = new realAlgaeRemover();
-        }
 
-        // Intake
-        if (Constants.simConfigs.intakeShouldBeSim){
-            if (RobotBase.isReal()){
-                simButRealTrain = new realSimulatedDriveTrain();
-            }
-            intake = new simIntake();
-        } else {
-            intake = new realIntake();
-        }
-        
+
 
         //initializes and distributes the managers
 
@@ -155,9 +120,7 @@ public class SystemManager{
         autoManager.autoManagerInit();
         
 
-        // Initialize Coral Array
-        coralArray = new coralGUI();
-        compass = new compassGUI();
+
     }
 
     /** Calls periodic on all the systems that do not inherit subsystem base. This function should be called in robot periodic */
@@ -165,7 +128,6 @@ public class SystemManager{
         generalManager.periodic();
         autoManager.periodic();
         reefIndexer.periodic();
-        coralArray.periodic();
     }
 
     /** @return the current pose of the robot */
@@ -181,8 +143,4 @@ public class SystemManager{
         return swerve.getMapleSimPose();
     }
 
-    /** Returns the pose3 of a coral in the intake */
-    public static Pose3d getIntakePosit(){
-        return new Pose3d(getSwervePose()).plus(new Transform3d(intake.getTranslation(), new Rotation3d(0, Constants.elevatorConstants.angle.in(Radians) + Math.PI / 2, Math.PI)));
-    }
 }
