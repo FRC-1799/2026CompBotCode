@@ -6,9 +6,8 @@ jobs:
     permissions:
       contents: read
     env:
-      releaseVersion: ${{ inputs.releaseVersion }}
-      releaseName: ${{ github.event.release.name }}
-      workingDirectory: ${{github.workspace}}/vendordep
+
+      workingDirectory: ${{github.workspace}}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
