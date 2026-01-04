@@ -108,7 +108,7 @@ public final class Constants
   }
 
   public static class chirp{
-      public static final String enableSongName = null;
+      public static final String enableSongName = "Fireball";
       public static final boolean shouldUseEnableSong = false&&enableSongName!=null;
       public static final int enableTrackCount=0;
 
@@ -116,7 +116,7 @@ public final class Constants
       public static final boolean shouldUseDisableSong = false&&disableSongName!=null;
       public static final int disableTrackCount=0;
 
-      public static final String whileEnabledSongName = null;
+      public static final String whileEnabledSongName = "PortalRadio";
       public static final boolean shouldUseWhileEnabledSong = true&&whileEnabledSongName!=null;
       public static final int whileEnabledTrackCount=4;
 
