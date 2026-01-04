@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.ChirpSubsystem;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
 
@@ -39,6 +40,7 @@ public class SystemManager{
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
     public static Robot robot;
+    public static ChirpSubsystem audioPlayer;
 
     protected static int score = 0;
     
@@ -118,6 +120,8 @@ public class SystemManager{
 
         generalManager.generalManagerInit();
         autoManager.autoManagerInit();
+
+        audioPlayer = new ChirpSubsystem();
         
 
 

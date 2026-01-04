@@ -130,6 +130,7 @@ public class Robot extends TimedRobot{
       disabledTimer.reset();
       disabledTimer.start();
       generalManager.resting();
+      SystemManager.audioPlayer.disable();
 
     }
 
@@ -149,6 +150,7 @@ public class Robot extends TimedRobot{
     {
 
       autoChooser.getSelected().schedule();
+      SystemManager.audioPlayer.enable();
     }
 
     /**
@@ -163,10 +165,11 @@ public class Robot extends TimedRobot{
     public void teleopInit()
     {
      
-
+      
       controlChooser.restart();
       autoManager.takeControl();
-      
+      SystemManager.audioPlayer.enable();
+
 
     }
 

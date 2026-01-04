@@ -107,6 +107,22 @@ public final class Constants
     public static final int[] supportedPOV={0,90,180,270};
   }
 
+  public static class chirp{
+      public static final String enableSongName = null;
+      public static final boolean shouldUseEnableSong = false&&enableSongName!=null;
+      public static final int enableTrackCount=0;
+
+      public static final String disableSongName = null;
+      public static final boolean shouldUseDisableSong = false&&disableSongName!=null;
+      public static final int disableTrackCount=0;
+
+      public static final String whileEnabledSongName = null;
+      public static final boolean shouldUseWhileEnabledSong = true&&whileEnabledSongName!=null;
+      public static final int whileEnabledTrackCount=4;
+
+      public static final String path = "/home/deploy/chirp/";
+  }
+
   /**Constants used for sim */
   public static class sim{
     public static double targetTolerance =0.2;

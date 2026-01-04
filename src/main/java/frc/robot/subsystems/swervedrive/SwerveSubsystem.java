@@ -6,8 +6,12 @@ package frc.robot.subsystems.swervedrive;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.swerve.SwerveModule;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.ModuleConfig;
@@ -30,6 +34,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -155,6 +160,26 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void simulationPeriodic(){
    
+  }
+  /**
+   * @return A list of all the TalonFX motors (Krackens) used in the swerve drive
+   */
+  public TalonFX[] getMotors(){
+    List<TalonFX> motors = new LinkedList<TalonFX>();
+    for (swervelib.SwerveModule module: swerveDrive.getModules()){
+        try{
+          motors.add((TalonFX) module.getAngleMotor().getMotor() );
+        } 
+        catch (Exception error) {
+        }
+        try{
+          motors.add((TalonFX) module.getDriveMotor().getMotor() );
+        } 
+        catch (Exception error) {
+        }
+
+    }
+    return (TalonFX[]) motors.toArray();
   }
 
   /**
