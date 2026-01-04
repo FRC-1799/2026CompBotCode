@@ -164,9 +164,10 @@ public class ChirpSubsystem extends SubsystemBase {
         // figure out how to put multiple tracks into one .chrp file :(
         for (int track = 0; track < trackCount; track++) {
             Orchestra orchestra = new Orchestra();
-
+            boolean loadSucceeded=true;
             String path = chirp.path + name + "_" + track + ".chrp";
             if (!orchestra.loadMusic(path).isOK()) {
+                loadSucceeded=false;
                 System.err.printf(
                     "Failed to load song '%s', track %d. Make sure the file '%s' exists.%n",
                     path,
@@ -174,6 +175,18 @@ public class ChirpSubsystem extends SubsystemBase {
                     path
                 );
             }
+            if (trackCount==1 && !loadSucceeded){
+                path = chirp.path + name + ".chrp";
+
+                if (!orchestra.loadMusic(path).isOK()) {
+                    System.err.printf(
+                        "Failed to load song '%s' with no track value. Make sure the file '%s' exists.%n",
+                        path,
+                        path
+                    );
+                }
+            }
+
 
             for (int i = track; i < motors.length; i += trackCount) {
                 TalonFX motor = motors[i];
@@ -182,6 +195,8 @@ public class ChirpSubsystem extends SubsystemBase {
 
             orchestras[track] = orchestra;
         }
+
+
         songs.put(type, new song(name, type, orchestras));
 
         
