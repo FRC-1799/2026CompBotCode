@@ -1,4 +1,4 @@
-name: BuildTest
+name: build
 on: [push, pull_request]
 jobs:
   build:
@@ -6,7 +6,8 @@ jobs:
     permissions:
       contents: read
     env:
-
+      releaseVersion: ${{ inputs.releaseVersion }}
+      releaseName: ${{ github.event.release.name }}
       workingDirectory: ${{github.workspace}}
     steps:
       - uses: actions/checkout@v4
@@ -19,10 +20,9 @@ jobs:
       - name: Install roboRio toolchain
         run: ./gradlew installRoboRioToolchain
         working-directory: ${{ env.workingDirectory }}
-      - name: Build robot
+      - name: Build
         run: ./gradlew build
         working-directory: ${{ env.workingDirectory }}
-      # Might be worth making a unit test to make sure the code can live through startup
       # - name: Unit tests
       #   run: ./gradlew test
       #   working-directory: ${{ env.workingDirectory }}
