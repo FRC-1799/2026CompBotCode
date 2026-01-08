@@ -166,7 +166,10 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public TalonFX[] getMotors(){
     List<TalonFX> motors = new LinkedList<TalonFX>();
+
     for (swervelib.SwerveModule module: swerveDrive.getModules()){
+        System.out.println(module.getAngleMotor().getMotor() instanceof TalonFX);
+        System.out.println(module.getAngleMotor().getClass());
         try{
           motors.add((TalonFX) module.getAngleMotor().getMotor() );
         } 
@@ -179,7 +182,12 @@ public class SwerveSubsystem extends SubsystemBase
         }
 
     }
-    return (TalonFX[]) motors.toArray();
+    TalonFX[] returnMotors = new TalonFX[motors.size()];
+    for (int i=0; i<motors.size(); i++){
+      returnMotors[i]=motors.get(i);
+    }
+    
+    return returnMotors;
   }
 
   /**
@@ -510,9 +518,9 @@ public class SwerveSubsystem extends SubsystemBase
     SmartDashboard.putBoolean("saw back camera", SystemManager.aprilTag.getBackPose()!=null);
     SmartDashboard.putNumber("received front camera timestamp", SystemManager.aprilTag.getFrontTimestamp());
     SystemManager.aprilTag.getBackTimestamp();
-    if (SystemManager.lidar!=null){
-      Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObstacles(), swerveDrive.getPose().getTranslation());
-    }
+    // if (SystemManager.lidar!=null){
+    //   Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObstacles(), swerveDrive.getPose().getTranslation());
+    // }
 
     SmartDashboard.putNumber("swerve timestamp", Timer.getFPGATimestamp());
     SmartDashboard.putNumber("swerve timestamp w offset", Timer.getFPGATimestamp()+ NetworkTableInstance.getDefault().getServerTimeOffset().getAsLong());

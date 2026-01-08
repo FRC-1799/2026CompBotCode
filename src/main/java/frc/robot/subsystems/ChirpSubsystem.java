@@ -105,6 +105,7 @@ public class ChirpSubsystem extends SubsystemBase {
         if (chirp.shouldUseEnableSong){
             play(SongType.onEnable);
         }
+        stop();
     }
 
     public void disable(){
@@ -117,10 +118,11 @@ public class ChirpSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-        if (!isPlaying() && chirp.shouldUseEnableSong && DriverStation.isEnabled()){
+        
+
+        if (!isPlaying() && chirp.shouldUseWhileEnabledSong && DriverStation.isEnabled()){
             play(SongType.whileEnabled);
         }
-
         if (isPlaying()!=somethingWasPlaying){
             if (isPlaying()) songString.set("Currently playing " + this.current.name + " as the " + this.current.type.toString());
             else songString.set("Currently playing nothing");
@@ -175,6 +177,7 @@ public class ChirpSubsystem extends SubsystemBase {
                     path
                 );
             }
+
             if (trackCount==1 && !loadSucceeded){
                 path = chirp.path + name + ".chrp";
 
@@ -192,6 +195,7 @@ public class ChirpSubsystem extends SubsystemBase {
                 TalonFX motor = motors[i];
                 if (motor != null) orchestra.addInstrument(motor, 0);
             }
+
 
             orchestras[track] = orchestra;
         }
@@ -226,9 +230,10 @@ public class ChirpSubsystem extends SubsystemBase {
 
 
 
-    private boolean stop() {
-        if (!(current!=null&&current.isPlaying())) return false;
-
+    public boolean stop() {
+        //if (!(current!=null&&current.isPlaying())) return false;
+        if (current==null) return false;
+        System.out.println("stop atempted");
 
         return current.stop();
     }
