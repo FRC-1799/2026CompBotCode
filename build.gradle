@@ -23,6 +23,7 @@ repositories {
 
     }
     mavenLocal()
+    mavenCentral()
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -158,7 +159,7 @@ sourceSets {
     }
     test {
         java {
-            srcDir 'test'
+            srcDir 'src/tests'
         }
     }
 }
