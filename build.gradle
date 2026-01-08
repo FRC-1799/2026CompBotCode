@@ -128,8 +128,8 @@ if (project.hasProperty('onlylinuxathena') || project.hasProperty('onlylinuxarm3
     test.enabled = false
 }
 // Simulation configuration (e.g. environment variables).
-wpi.sim.addGui().defaultEnabled = true
-wpi.sim.addDriverstation()
+// wpi.sim.addGui().defaultEnabled = true
+// wpi.sim.addDriverstation()
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
 // in order to make them all available at runtime. Also adding the manifest so WPILib
@@ -172,4 +172,4 @@ sourceSets {
 //     testLogging {
 //         events "passed"
 //     }
-}
+//}
