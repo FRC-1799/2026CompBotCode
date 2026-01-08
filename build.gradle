@@ -91,11 +91,6 @@ dependencies {
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
 
- 
-
-
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
     testImplementation platform("org.junit:junit-bom:5.11.4")
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.junit.jupiter:junit-jupiter-params"
@@ -106,7 +101,7 @@ dependencies {
 
 
 }
-
+// Set up java tests
 test {
     useJUnitPlatform()
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
@@ -116,11 +111,15 @@ test {
     }
 }
 
+wpi.sim.addGui().defaultEnabled = true
+wpi.sim.addDriverstation()
+wpi.java.configureTestTasks(test)
 
 tasks.test {
     // Disable test when running 'build' task, but enable when running 'test' task directly
     enabled = !gradle.startParameter.taskNames.contains('build')
 }
+
 
 
 
@@ -165,12 +164,12 @@ sourceSets {
 }
 
 
-tasks.named('test', Test) {
-    useJUnitPlatform()
+// tasks.named('test', Test) {
+//     useJUnitPlatform()
 
-    maxHeapSize = '1G'
+//     maxHeapSize = '1G'
 
-    testLogging {
-        events "passed"
-    }
+//     testLogging {
+//         events "passed"
+//     }
 }
