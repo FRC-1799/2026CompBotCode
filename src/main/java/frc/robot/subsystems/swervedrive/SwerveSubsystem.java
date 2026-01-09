@@ -487,6 +487,7 @@ public class SwerveSubsystem extends SubsystemBase
     SmartDashboard.putNumber("received front camera timestamp", SystemManager.aprilTag.getFrontTimestamp());
     SystemManager.aprilTag.getBackTimestamp();
     if (SystemManager.lidar!=null){
+      Pathfinding.ensureInitialized();
       Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObstacles(), swerveDrive.getPose().getTranslation());
     }
 
