@@ -1,6 +1,7 @@
 package frc.helpers;
 
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.wpilibj.DriverStation.MatchType;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.simulation.SimHooks;
@@ -24,18 +25,30 @@ public final class MockHardwareExtension {
 
 	public static void enable(){
 		DriverStationSim.setEnabled(true);
+		DriverStationSim.notifyNewData();
+
 	}
 
 	public static void setAuto(){
 		DriverStationSim.setAutonomous(true);
+		DriverStationSim.notifyNewData();
+
 	}
 	
 	public static void setTeliop(){
 		DriverStationSim.setAutonomous(false);
+		DriverStationSim.notifyNewData();
+
 	}
 
 	public static void disable(){
 		DriverStationSim.setEnabled(false);
+		DriverStationSim.notifyNewData();
+
+	}
+
+	public static boolean isAuto(){
+		return DriverStationSim.getAutonomous();
 	}
 
 	private static void initializeHardware() {
@@ -43,8 +56,13 @@ public final class MockHardwareExtension {
 		DriverStationSim.setDsAttached(true);
 		DriverStationSim.setAutonomous(false);
     DriverStationSim.setTest(false);
-    DriverStationSim.setEnabled(true);
+    DriverStationSim.setEnabled(false);
     DriverStationSim.notifyNewData();
     SimHooks.stepTiming(0.0); // Wait for Notifiers
+
+	DriverStationSim.setMatchNumber(16);
+	DriverStationSim.setEventName("CMPTX");
+	DriverStationSim.setMatchType(MatchType.Elimination);
+
 	}
 }

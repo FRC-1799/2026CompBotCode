@@ -68,7 +68,6 @@ public class Robot extends TimedRobot{
         }
 
 
-
         
         SmartDashboard.putData("auto chooser", autoChooser);
 
@@ -77,6 +76,8 @@ public class Robot extends TimedRobot{
         poseChooser.addOption("left", FieldPosits.startingPoints.leftStart);
         poseChooser.onChange(SystemManager.swerve::resetOdometry);
         SmartDashboard.putData("Starting chooser", poseChooser);
+
+
 
     }
 
@@ -151,6 +152,7 @@ public class Robot extends TimedRobot{
     {
 
       autoChooser.getSelected().schedule();
+
     }
 
     /**
@@ -169,6 +171,7 @@ public class Robot extends TimedRobot{
       controlChooser.restart();
       autoManager.takeControl();
       
+      throw(new Error("lol failure"));
 
     }
 

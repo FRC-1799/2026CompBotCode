@@ -51,12 +51,15 @@ public class test {
 
 		robotThread.start();
 		heartBeatSubscriber = NetworkTableInstance.getDefault().getIntegerTopic("/SmartDashboard/heartbeat").subscribe(0);
-
+		
+		
+		heartBeat=heartBeatSubscriber.get();
 		Thread.sleep((long)Seconds.of(9).in(Milliseconds));
+		assertTrue(heartBeatSubscriber.get()>heartBeat);
+
 
 		heartBeat=heartBeatSubscriber.get();
 		Thread.sleep((long)Seconds.of(1).in(Milliseconds));
-
 		assertTrue(heartBeatSubscriber.get()>heartBeat);
 		
 	}
@@ -66,20 +69,21 @@ public class test {
 	@Order(2)
 	public void enableCheck() throws InterruptedException {
 
-			
-		    assumeTrue(robotThread.isAlive());
+		
+		assumeTrue(robotThread.isAlive());
 
-            MockHardwareExtension.setTeliop();
-			MockHardwareExtension.enable();
+		MockHardwareExtension.setTeliop();
+		MockHardwareExtension.enable();
 
-            Thread.sleep((long)Seconds.of(30).in(Milliseconds));
-            MockHardwareExtension.disable();
-			
+		heartBeat=heartBeatSubscriber.get();
+		Thread.sleep((long)Seconds.of(29).in(Milliseconds));
+		assertTrue(heartBeatSubscriber.get()>heartBeat);
 
-			heartBeat=heartBeatSubscriber.get();
-			Thread.sleep((long)Seconds.of(1).in(Milliseconds));
-	
-			assertTrue(heartBeatSubscriber.get()>heartBeat);
+
+		MockHardwareExtension.disable();
+		heartBeat=heartBeatSubscriber.get();
+		Thread.sleep((long)Seconds.of(1).in(Milliseconds));
+		assertTrue(heartBeatSubscriber.get()>heartBeat);
 
 	}
 
@@ -91,19 +95,18 @@ public class test {
 	
 	public void autoCheck() throws InterruptedException {
 		// Reset the subsystem to make sure all mock values are reset
-		System.out.println(robotThread.isAlive());
 		assumeTrue(robotThread.isAlive());
 
 		MockHardwareExtension.setAuto();
 		MockHardwareExtension.enable();
 
-		Thread.sleep((long)Seconds.of(30).in(Milliseconds));
+		heartBeat=heartBeatSubscriber.get();
+		Thread.sleep((long)Seconds.of(29).in(Milliseconds));
+		assertTrue(heartBeatSubscriber.get()>heartBeat);
+		
 		MockHardwareExtension.disable();
-
-
 		heartBeat=heartBeatSubscriber.get();
 		Thread.sleep((long)Seconds.of(1).in(Milliseconds));
-
 		assertTrue(heartBeatSubscriber.get()>heartBeat);
 	}
 
@@ -112,8 +115,8 @@ public class test {
 	// This is called after tests, and makes sure that nothing is left open and
 	// everything is ready for the next test class
 	@AfterAll
-	public static void after() {
-		TestWithScheduler.schedulerDestroy();
+	public void after() {
 		MockHardwareExtension.afterAll();
+		robotThread.stop();
 	}
 }
