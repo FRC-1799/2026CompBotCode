@@ -25,8 +25,10 @@ import frc.robot.Robot;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+
 public class test {
-    
+
+
 	Thread robotThread;
 	IntegerSubscriber heartBeatSubscriber;
 	long heartBeat=0;
@@ -44,6 +46,8 @@ public class test {
 
 	}
 
+	
+
 	@Test
 	@Timeout(120)
 	@Order(1)
@@ -52,6 +56,8 @@ public class test {
 		robotThread.start();
 		heartBeatSubscriber = NetworkTableInstance.getDefault().getIntegerTopic("/SmartDashboard/heartbeat").subscribe(0);
 		
+		Thread errorThread = new Thread(()->{throw new Error();});
+		errorThread.start();
 		
 		heartBeat=heartBeatSubscriber.get();
 		Thread.sleep((long)Seconds.of(9).in(Milliseconds));
@@ -67,22 +73,43 @@ public class test {
 	@Test
 	@Timeout(120)
 	@Order(2)
-	public void enableCheck() throws InterruptedException {
+	public void enableCheck() {
+		//assumeTrue(robotThread.isAlive());
 
-		
-		assumeTrue(robotThread.isAlive());
 
 		MockHardwareExtension.setTeliop();
 		MockHardwareExtension.enable();
 
+		System.out.println("hiiiii");
+
 		heartBeat=heartBeatSubscriber.get();
-		Thread.sleep((long)Seconds.of(29).in(Milliseconds));
+		System.out.println("hiiiii:3");
+		try{
+			Thread.sleep((long)Seconds.of(0.1).in(Milliseconds));
+		}
+		catch (InterruptedException e) {
+			System.out.println("Interrupt");
+		}
+		System.out.println("hiiiii:3:3");
+		// for (int i=0;i<10000;i++){System.out.println(heartBeat);}
+
+	
+
+		
 		assertTrue(heartBeatSubscriber.get()>heartBeat);
+
 
 
 		MockHardwareExtension.disable();
 		heartBeat=heartBeatSubscriber.get();
-		Thread.sleep((long)Seconds.of(1).in(Milliseconds));
+		try {
+			Thread.sleep((long)Seconds.of(1).in(Milliseconds));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 		assertTrue(heartBeatSubscriber.get()>heartBeat);
 
 	}
