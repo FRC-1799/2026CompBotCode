@@ -15,6 +15,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.Timeout;
 
+import edu.wpi.first.networktables.IntegerSubscriber;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.helpers.MockHardwareExtension;
 import frc.helpers.TestWithScheduler;
@@ -26,8 +28,8 @@ import frc.robot.Robot;
 public class test {
     
 	Thread robotThread;
-
-	
+	IntegerSubscriber heartBeatSubscriber;
+	long heartBeat=0;
 
 
 	@BeforeAll
@@ -38,6 +40,7 @@ public class test {
 
 		robotThread = new Thread(()->RobotBase.startRobot(Robot::new));
 		robotThread.setDaemon(true);
+		
 
 	}
 
@@ -47,11 +50,14 @@ public class test {
 	public void bootTest() throws InterruptedException{
 
 		robotThread.start();
+		heartBeatSubscriber = NetworkTableInstance.getDefault().getIntegerTopic("/SmartDashboard/heartbeat").subscribe(0);
 
+		Thread.sleep((long)Seconds.of(9).in(Milliseconds));
 
-		Thread.sleep((long)Seconds.of(10).in(Milliseconds));
-		System.out.println(robotThread.isAlive());
-		assertTrue(robotThread.isAlive());
+		heartBeat=heartBeatSubscriber.get();
+		Thread.sleep((long)Seconds.of(1).in(Milliseconds));
+
+		assertTrue(heartBeatSubscriber.get()>heartBeat);
 		
 	}
 
@@ -68,7 +74,12 @@ public class test {
 
             Thread.sleep((long)Seconds.of(30).in(Milliseconds));
             MockHardwareExtension.disable();
-			assertTrue(robotThread.isAlive());
+			
+
+			heartBeat=heartBeatSubscriber.get();
+			Thread.sleep((long)Seconds.of(1).in(Milliseconds));
+	
+			assertTrue(heartBeatSubscriber.get()>heartBeat);
 
 	}
 
@@ -88,7 +99,12 @@ public class test {
 
 		Thread.sleep((long)Seconds.of(30).in(Milliseconds));
 		MockHardwareExtension.disable();
-		assertTrue(robotThread.isAlive());
+
+
+		heartBeat=heartBeatSubscriber.get();
+		Thread.sleep((long)Seconds.of(1).in(Milliseconds));
+
+		assertTrue(heartBeatSubscriber.get()>heartBeat);
 	}
 
 
