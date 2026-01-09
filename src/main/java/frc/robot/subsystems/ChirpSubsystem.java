@@ -1,22 +1,18 @@
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
 
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.SystemManager;
-import frc.robot.Constants.chirp;;
+import frc.robot.Constants.chirp;
+import frc.robot.SystemManager;;
 
 /** Orchestra™ */
 public class ChirpSubsystem extends SubsystemBase {
@@ -77,6 +73,11 @@ public class ChirpSubsystem extends SubsystemBase {
     protected song current=null;
 
     protected StringPublisher songString = NetworkTableInstance.getDefault().getStringTopic("audio/song").publish();
+    protected DoubleArraySubscriber desiredChassisStatesSubscriber = NetworkTableInstance.getDefault().
+        getDoubleArrayTopic("/SmartDashboard/swerve/desiredStates").subscribe(new double[]{0,0,0,0,0,0,0,0});
+    
+    protected DoubleArraySubscriber realChassisStatesSubscriber = NetworkTableInstance.getDefault().
+        getDoubleArrayTopic("/SmartDashboard/swerve/measuredStates").subscribe(new double[]{0,0,0,0,0,0,0,0});
     
     protected boolean somethingWasPlaying=false;
 
@@ -118,9 +119,13 @@ public class ChirpSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-        
 
-        if (!isPlaying() && chirp.shouldUseWhileEnabledSong && DriverStation.isEnabled()){
+        SmartDashboard.putBoolean("swerveIsRunning", swerveIsMoving());
+        
+        if (isPlaying() && swerveIsMoving()){
+            stop();
+        }
+        else if (!isPlaying() && chirp.shouldUseWhileEnabledSong && DriverStation.isEnabled()){
             play(SongType.whileEnabled);
         }
         if (isPlaying()!=somethingWasPlaying){
@@ -134,6 +139,18 @@ public class ChirpSubsystem extends SubsystemBase {
 
     public boolean isPlaying(){
         return current!=null&&current.isPlaying();
+    }
+
+    public boolean swerveIsMoving(){
+        double[] desiredStates = desiredChassisStatesSubscriber.get();
+        double[] realStates = realChassisStatesSubscriber.get();
+        for (int i=0; i<8;i+=2){
+            if (Math.abs(desiredStates[i+1])>0.02 || Math.abs(realStates[i]-desiredStates[i])>1) return true;
+        }
+
+        return false;
+
+
     }
 
 

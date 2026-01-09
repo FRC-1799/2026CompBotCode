@@ -524,7 +524,6 @@ public class SwerveSubsystem extends SubsystemBase
       Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObstacles(), swerveDrive.getPose().getTranslation());
     }
 
-
     SmartDashboard.putNumber("swerve timestamp", Timer.getFPGATimestamp());
     SmartDashboard.putNumber("swerve timestamp w offset", Timer.getFPGATimestamp()+ NetworkTableInstance.getDefault().getServerTimeOffset().getAsLong());
     

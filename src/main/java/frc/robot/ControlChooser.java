@@ -118,8 +118,8 @@ public class ControlChooser {
             if(utilFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
            ,SystemManager.swerve, loop);
 
-        xbox1.rightBumper().onTrue(new InstantCommand(()->System.out.println(SystemManager.audioPlayer.stop())));
-        xbox1.leftBumper().onTrue(new PrintCommand("hiiiii"));
+        xbox1.rightBumper(loop).onTrue(new InstantCommand(()->System.out.println(SystemManager.audioPlayer.stop())));
+        xbox1.leftBumper(loop).onTrue(new PrintCommand("hiiiii"));
 
         return loop;
     }
