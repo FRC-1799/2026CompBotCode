@@ -2,9 +2,11 @@ package frc;
 
 import static edu.wpi.first.units.Units.Seconds;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.helpers.MockHardwareExtension;
@@ -24,7 +26,13 @@ public class test {
 
 	// This test makes sure that the example command calls the .subsystemMethod of
 	// example subsystem
+	// Source - https://stackoverflow.com/q
+// Posted by cmeiklejohn, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-01-08, License - CC BY-SA 4.0
+
 	@Test
+	@Timeout(120)
+
 	public void enableCheck() throws InterruptedException {
 		// Reset the subsystem to make sure all mock values are reset
 
