@@ -85,7 +85,7 @@ public class test {
 		heartBeat=heartBeatSubscriber.get();
 		System.out.println("hiiiii:3");
 		try{
-			Thread.sleep((long)Seconds.of(0.1).in(Milliseconds));
+			Thread.sleep((long)Seconds.of(29).in(Milliseconds));
 		}
 		catch (InterruptedException e) {
 			System.out.println("Interrupt");
