@@ -16,7 +16,7 @@ import edu.wpi.first.networktables.StructTopic;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-public class realVision extends reefIndexerIO implements aprilTagInterface{
+public class realVision implements aprilTagInterface{
     
     public BooleanArraySubscriber[] coralLevelSubscribers;
     public BooleanArraySubscriber[] algaeLevelSubscribers;
@@ -111,62 +111,4 @@ public class realVision extends reefIndexerIO implements aprilTagInterface{
         return robotBackPose;
     }
 
-    @Override
-    public boolean[][] getFullReefState() {
-        boolean[][] reefArray = new boolean[12][4];
-        for (int i=0;i<12;i++){
-            reefArray[i] = new boolean[]{
-                coralLevelSubscribers[0].get()[i],
-                coralLevelSubscribers[1].get()[i],
-                coralLevelSubscribers[2].get()[i],
-                false
-            };
-        }
-        
-        return reefArray;
-
-    }
-
-    @Override
-    public boolean[][] getAlgaePosits() {
-        
-        boolean[][] algaeArray = new boolean[6][2];
-        for (int i=0; i<6; i++){
-            algaeArray[i] = new boolean[]{algaeLevelSubscribers[0].get()[i], algaeLevelSubscribers[0].get()[i]};
-        }
-        for (int i=0;i<2; i++){
-            for (int j=0;j<6;j++){
-                System.out.print(algaeArray[j][i]+ " ");
-            }
-            System.out.println();
-        }
-        System.out.println("\n");
-        return algaeArray;
-    }
-
-
-
-    @Override
-    public void freeAlgae(int row, int level) {
-        BooleanArrayPublisher freeAlgaePublisher = algaeLevelPublishers[level];
-        BooleanArraySubscriber freeAlgaeSubscriber = algaeLevelSubscribers[level];
-        boolean[] algaeRowValues = freeAlgaeSubscriber.get();
-        
-        algaeRowValues[row] = false;
-
-        freeAlgaePublisher.set(algaeRowValues);
-    
-        System.out.println(level);
-        for (int j=0;j<6;j++){
-            System.out.print(algaeRowValues[j]+ " ");
-        }
-        System.out.println("\n\n");
-    
-
-    }
-
-    @Override
-    public void resetSIMONLY() {
-        throw new UnsupportedOperationException("Unimplemented method 'resetSIMONLY'");
-    }
 }

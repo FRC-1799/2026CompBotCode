@@ -52,7 +52,7 @@ public class Robot extends TimedRobot{
     SendableChooser<Command> autoChooser=new SendableChooser<>();
     SendableChooser<Pose2d> poseChooser=new SendableChooser<>();
 
-
+    StructArrayPublisher<Pose3d> fuelPublisher = NetworkTableInstance.getDefault().getStructArrayTopic("Fuel", Pose3d.struct).publish();
     
 
 
@@ -115,7 +115,7 @@ public class Robot extends TimedRobot{
       CommandScheduler.getInstance().run();
       SystemManager.periodic();
       posePublisher.set(SystemManager.getSwervePose());
-      System.out.println(SystemManager.getSwervePose());
+      //SimulatedArena.overrideInstance(new 2026RebuiltArena);
 
       heartBeat++;
       SmartDashboard.putNumber("heartbeat", heartBeat);  
@@ -225,6 +225,9 @@ public class Robot extends TimedRobot{
   @Override
   public void simulationPeriodic() {
     SimulatedArena.getInstance().simulationPeriodic();
+
+    
+    fuelPublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Fuel"));
 
   }
 

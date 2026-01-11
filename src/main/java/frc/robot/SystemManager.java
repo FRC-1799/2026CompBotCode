@@ -24,8 +24,6 @@ import frc.robot.subsystems.swervedrive.realSimulatedDriveTrain;
 import frc.robot.subsystems.vision.aprilTagInterface;
 import frc.robot.subsystems.vision.photonSim;
 import frc.robot.subsystems.vision.realVision;
-import frc.robot.subsystems.vision.reefIndexerIO;
-import frc.robot.subsystems.vision.simReefIndexer;
 
 
 public class SystemManager{
@@ -34,7 +32,6 @@ public class SystemManager{
     public static SimulatedArena simField;
     public static AIRobotInSimulation fakeBot;
     public static aprilTagInterface aprilTag;
-    public static reefIndexerIO reefIndexer;
     public static lidarInterface lidar;
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
@@ -75,18 +72,7 @@ public class SystemManager{
 
 
 
-        // //Reef indexer
-        if (Constants.simConfigs.reefIndexerShouldBeSim){
-            reefIndexer = new simReefIndexer();
-        } else {
-            if (realVisTemp != null){
-                reefIndexer = realVisTemp;
-            } 
-            else {
-                reefIndexer = new realVision();
-
-            }
-        }
+        
         
 
         //Lidar
@@ -130,7 +116,6 @@ public class SystemManager{
 
         generalManager.periodic();
         autoManager.periodic();
-        reefIndexer.periodic();
     }
 
     /** @return the current pose of the robot */
