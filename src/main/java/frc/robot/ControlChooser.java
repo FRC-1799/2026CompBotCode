@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
+import org.ironmaple.simulation.SimulatedArena;
+import org.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -116,7 +118,15 @@ public class ControlChooser {
         setDefaultCommand(new AbsoluteFieldDrive(SystemManager.swerve, ()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->{
             if(utilFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
            ,SystemManager.swerve, loop);
-       
+            
+        xbox1.rightTrigger(0.4,loop).onTrue(new InstantCommand(SystemManager.intake::start)).onFalse(new InstantCommand(SystemManager.intake::stop));
+        xbox1.leftTrigger(0.4,loop).onTrue(new InstantCommand(SystemManager.shooter::startShooting)).onFalse(new InstantCommand(SystemManager.shooter::stop));
+
+        
+        xbox1.a(loop).onTrue(new InstantCommand(()->((Arena2026Rebuilt)SimulatedArena.getInstance()).outpostDump(false)));
+        xbox1.b(loop).onTrue(new InstantCommand(()->((Arena2026Rebuilt)SimulatedArena.getInstance()).outpostThrowForGoal(false)));
+
+
 
         return loop;
     }

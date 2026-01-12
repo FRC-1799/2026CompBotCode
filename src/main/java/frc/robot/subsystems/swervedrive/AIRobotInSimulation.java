@@ -83,9 +83,9 @@ public class AIRobotInSimulation implements Subsystem {
     public static void startOpponentRobotSimulations() {
         try {
             instances[0] = new AIRobotInSimulation(
-                    PathPlannerPath.fromPathFile("opponent robot cycle path 0"),
+                    PathPlannerPath.fromPathFile("Opponent robot cycle path 0"),
                     Commands.none(),
-                    PathPlannerPath.fromPathFile("opponent robot cycle path 0 backwards"),
+                    PathPlannerPath.fromPathFile("Opponent robot cycle path 0 backwards"),
                     Commands.none(),
                     ROBOT_QUEENING_POSITIONS[0],
                     1);

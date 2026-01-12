@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
-
+import frc.robot.subsystems.Intake.simIntake;
+import frc.robot.subsystems.Shooter.simShooter;
 import frc.robot.subsystems.lidar.lidarInterface;
 import frc.robot.subsystems.lidar.realLidar;
 import frc.robot.subsystems.lidar.simLidar;
@@ -35,6 +36,8 @@ public class SystemManager{
     public static lidarInterface lidar;
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
+    public static simIntake intake;
+    public static simShooter shooter;
     public static Robot robot;
 
     protected static int score = 0;
@@ -96,7 +99,8 @@ public class SystemManager{
             // Overrides the default simulation
         }
         
-
+        intake = new simIntake();
+        shooter = new simShooter();
 
 
 
