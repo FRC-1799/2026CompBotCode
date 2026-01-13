@@ -16,8 +16,8 @@ public class AimAtPoint extends Command {
 
     @Override
     public void periodic(){
-        Pose2d robotPose = 
-        Rotation2d goal = Rotation2d.from
+        Pose2d robotPose = SystemManager.getPose();
+        Rotation2d goal = new Rotation2d(Math.atan2(robotPose.getX()-toAimAt.getX(), robotPose.getY()-toAimAt.getY()));
         SystemManager.swerve.drive(0, new Rotation2d(), gaol);
     }
 }
