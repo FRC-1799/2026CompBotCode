@@ -115,11 +115,6 @@ public class test {
 
 	}
 
-	/**Test that always fails for testing use */
-	@Test
-	public void failure(){
-		assumeTrue(false);
-	}
 
 
 	/**<h2>Cleans up and stops the robot thread </h2> */
