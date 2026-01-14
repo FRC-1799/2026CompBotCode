@@ -5,9 +5,6 @@ import java.util.HashSet;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-import org.ironmaple.simulation.SimulatedArena;
-import org.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -32,6 +29,8 @@ import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
 
 public class ControlChooser {
 

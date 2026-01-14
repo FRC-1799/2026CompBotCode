@@ -31,11 +31,11 @@ import frc.robot.subsystems.generalManager;
 
 import java.io.File;
 import java.io.IOException;
-import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import swervelib.parser.SwerveParser;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -54,7 +54,6 @@ public class Robot extends TimedRobot{
 
     StructArrayPublisher<Pose3d> fuelPublisher = NetworkTableInstance.getDefault().getStructArrayTopic("Fuel", Pose3d.struct).publish();
     
-
 
     public Robot(){
       instance = this;

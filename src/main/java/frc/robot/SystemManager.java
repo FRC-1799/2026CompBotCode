@@ -3,7 +3,6 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Radians;
 
 import java.io.File;
-import org.ironmaple.simulation.SimulatedArena;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -25,6 +24,7 @@ import frc.robot.subsystems.swervedrive.realSimulatedDriveTrain;
 import frc.robot.subsystems.vision.aprilTagInterface;
 import frc.robot.subsystems.vision.photonSim;
 import frc.robot.subsystems.vision.realVision;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 
 
 public class SystemManager{
