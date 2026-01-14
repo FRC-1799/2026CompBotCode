@@ -165,7 +165,7 @@ test {
 
     afterTest { descriptor, result ->
         if (result.resultType == TestResult.ResultType.SKIPPED) {
-            throw new GradleException("Do not ignore test cases")
+            throw new Exception("$descriptor Skipped, This is likely a result of a failure in the test and so the build has been marked failing.")
         }
     }
     testLogging {

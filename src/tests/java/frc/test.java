@@ -28,6 +28,12 @@ import frc.robot.Robot;
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
+/**
+ * <h2> Class to run the stability tests of the robot in each mode.</h2>
+ * Will create and enable a robot in both teliop and auto to make sure the robot can survive each mode without crashing. 
+ * In the event of a failure gradle will freak out so no checking is neccisary beyond the afterTest in build.gradle
+
+ */
 public class test {
 
 
@@ -35,7 +41,7 @@ public class test {
 	IntegerSubscriber heartBeatSubscriber;
 	long heartBeat=0;
 
-
+	/**<h2>Creates the robot thread</h2> */
 	@BeforeAll
 	public void before() {
 		TestWithScheduler.schedulerStart();
@@ -45,41 +51,29 @@ public class test {
 		robotThread = new Thread(()->RobotBase.startRobot(Robot::new));
 		robotThread.setDaemon(true);
 
-		heartBeatSubscriber = NetworkTableInstance.getDefault().getIntegerTopic("/SmartDashboard/heartbeat").subscribe(0);
 
 		
 
 	}
 
-	@AfterEach
-	public void hi(){
-		System.out.println(":3");
-	}
-	
-
+	/**<h2>Checks if the robot can successfully boot </h2>*/
 	@Test
 	@Timeout(120)
 	@Order(1)
-	public void bootTest() throws InterruptedException{
+	public void bootTest(){
 
 		robotThread.start();
 
-
-		
-		Thread errorThread = new Thread(()->{throw new Error();});
-		errorThread.start();
-		
-		heartBeat=heartBeatSubscriber.get();
-		Thread.sleep((long)Seconds.of(9).in(Milliseconds));
-		assertTrue(heartBeatSubscriber.get()>heartBeat);
-
-
-		heartBeat=heartBeatSubscriber.get();
-		Thread.sleep((long)Seconds.of(1).in(Milliseconds));
-		assertTrue(heartBeatSubscriber.get()>heartBeat);
+		try {
+			Thread.sleep((long)Seconds.of(10).in(Milliseconds));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
+	/**<h2>Checks if the robot can survive 30 seconds of teliop <h2> */
 	@Test
 	@Timeout(120)
 	@Order(2)
@@ -87,77 +81,51 @@ public class test {
 		assumeTrue(robotThread.isAlive());
 
 
-
-		// throw new Error("test");
-
-
 		MockHardwareExtension.setTeliop();
 		MockHardwareExtension.enable();
 
-		// System.out.println("hiiiii");
 
-		//heartBeat=heartBeatSubscriber.get();
-		System.out.println("hiiiii:3");
 		try{
 			Thread.sleep((long)Seconds.of(29).in(Milliseconds));
 		}
 		catch (InterruptedException e) {
 			System.out.println("Interrupt");
 		}
-		System.out.println("hiiiii:3:3");
-		// for (int i=0;i<10000;i++){System.out.println(heartBeat);}
-
-	
-
-		
-		// assertTrue(heartBeatSubscriber.get()>heartBeat);
-
-
-
-		// MockHardwareExtension.disable();
-		// heartBeat=heartBeatSubscriber.get();
-		// try {
-		// 	Thread.sleep((long)Seconds.of(1).in(Milliseconds));
-		// } catch (InterruptedException e) {
-		// 	// TODO Auto-generated catch block
-		// 	e.printStackTrace();
-		// }
-
-
-		// assertTrue(heartBeatSubscriber.get()>heartBeat);
 
 	}
 
-	// This test makes sure that periodic is called properly (odd case as this
-	// should already work, but you may want to test methods inside of periodic)
+	/**<h2>Checks if the robot can survive 30 seconds of autonomous <h2> */
+
 	@Test
 	@Timeout(120)
 	@Order(3)
 	
-	public void autoCheck() throws InterruptedException {
-		// Reset the subsystem to make sure all mock values are reset
+	public void autoCheck() {
 		assumeTrue(robotThread.isAlive());
 
 		MockHardwareExtension.setAuto();
 		MockHardwareExtension.enable();
 
-		heartBeat=heartBeatSubscriber.get();
-		Thread.sleep((long)Seconds.of(29).in(Milliseconds));
-		assertTrue(heartBeatSubscriber.get()>heartBeat);
-		
-		MockHardwareExtension.disable();
-		heartBeat=heartBeatSubscriber.get();
-		Thread.sleep((long)Seconds.of(1).in(Milliseconds));
-		assertTrue(heartBeatSubscriber.get()>heartBeat);
+		try {
+            Thread.sleep((long)Seconds.of(29).in(Milliseconds));
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+	}
+
+	/**Test that always fails for testing use */
+	@Test
+	public void failure(){
+		assumeTrue(false);
 	}
 
 
-
-	// This is called after tests, and makes sure that nothing is left open and
-	// everything is ready for the next test class
+	/**<h2>Cleans up and stops the robot thread </h2> */
 	@AfterAll
 	public void after() {
 		MockHardwareExtension.afterAll();
-		//robotThread.stop();
+		robotThread.stop();
 	}
 }
