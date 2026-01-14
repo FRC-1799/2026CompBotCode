@@ -1,7 +1,10 @@
 package frc.robot.Utils;
 
+import static edu.wpi.first.units.Units.Meters;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Distance;
 
 public class utilFunctions {
 
@@ -40,5 +43,9 @@ public class utilFunctions {
 
     public static Rotation2d getAngleBetweenTwoPoints(Pose2d firstPoint, Pose2d secondPoint){
         return new Rotation2d(Math.atan2(firstPoint.getY()-secondPoint.getY(), firstPoint.getX()-secondPoint.getX())).rotateBy(Rotation2d.fromDegrees(180));
+    }
+
+    public static Distance getDistanceBetweenTwoPoints(Pose2d firstPoint, Pose2d secondPoint){
+        return Meters.of(pythagorean(firstPoint.getX(), secondPoint.getX(), firstPoint.getY(), secondPoint.getY()));
     }
 }
