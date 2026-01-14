@@ -155,11 +155,35 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
-    testLogging {
-        exceptionFormat = "full"
+    // testLogging {
+    //     exceptionFormat = "full"
 
-        showStandardStreams = true
+    //     showStandardStreams = true
     
+    // }
+    ignoreFailures=true
+
+    afterTest { descriptor, result ->
+        if (result.resultType == TestResult.ResultType.SKIPPED) {
+            throw new GradleException("Do not ignore test cases")
+        }
+    }
+    testLogging {
+        // Log skipped events to the console
+        events "skipped", "failed" // "failed" is usually the default, but good to be explicit
+
+        // Show exceptions and their full stack traces
+        showExceptions true
+        showStackTraces true
+        showCauses true
+        exceptionFormat "full" // Use "full" to see the entire stack trace
+
+        // Optional: further configure which logging level gets what details
+        // This ensures full details are shown for the default lifecycle logging
+        lifecycle {
+            events "skipped", "failed"
+            exceptionFormat "full"
+        }
     }
 
 

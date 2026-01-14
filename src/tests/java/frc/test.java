@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.Timeout;
+import org.opentest4j.TestAbortedException;
 
 import edu.wpi.first.networktables.IntegerSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -49,6 +51,10 @@ public class test {
 
 	}
 
+	@AfterEach
+	public void hi(){
+		System.out.println(":3");
+	}
 	
 
 	@Test
@@ -78,10 +84,12 @@ public class test {
 	@Timeout(120)
 	@Order(2)
 	public void enableCheck() {
-		//assumeTrue(robotThread.isAlive());
+		assumeTrue(robotThread.isAlive());
 
-		// before();
-		// robotThread.start();
+		before();
+		robotThread.start();
+
+		// throw new Error("test");
 
 
 		MockHardwareExtension.setTeliop();
@@ -98,7 +106,7 @@ public class test {
 			System.out.println("Interrupt");
 		}
 		System.out.println("hiiiii:3:3");
-		// // for (int i=0;i<10000;i++){System.out.println(heartBeat);}
+		// for (int i=0;i<10000;i++){System.out.println(heartBeat);}
 
 	
 
@@ -151,6 +159,6 @@ public class test {
 	@AfterAll
 	public void after() {
 		MockHardwareExtension.afterAll();
-		robotThread.stop();
+		//robotThread.stop();
 	}
 }
