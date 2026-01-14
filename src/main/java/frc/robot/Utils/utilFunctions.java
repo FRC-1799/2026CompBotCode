@@ -1,6 +1,7 @@
 package frc.robot.Utils;
 
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 public class utilFunctions {
 
@@ -35,5 +36,9 @@ public class utilFunctions {
             }
         }
         return returnArr;
+    }
+
+    public static Rotation2d getAngleBetweenTwoPoints(Pose2d firstPoint, Pose2d secondPoint){
+        return new Rotation2d(Math.atan2(firstPoint.getY()-secondPoint.getY(), firstPoint.getX()-secondPoint.getX())).rotateBy(Rotation2d.fromDegrees(180));
     }
 }

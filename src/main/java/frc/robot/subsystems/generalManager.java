@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import frc.robot.SystemManager;
-import frc.robot.FieldPosits.reefLevel;
-import frc.robot.FieldPosits.reefLevel.algaeRemovalEnum;
 import frc.robot.commands.states.*;
 
 import edu.wpi.first.util.function.BooleanConsumer;

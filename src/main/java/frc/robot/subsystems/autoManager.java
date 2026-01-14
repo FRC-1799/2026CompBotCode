@@ -1,29 +1,11 @@
 package frc.robot.subsystems;
 
-import java.io.FileReader;
-import java.io.IOException;
-
-import java.util.LinkedList;
-import java.util.List;
 import java.util.function.BooleanSupplier;
 
-import com.pathplanner.lib.pathfinding.LocalADStar;
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.FieldPosits;
-import frc.robot.SystemManager;
-import frc.robot.FieldPosits.reefLevel;
-import frc.robot.FieldPosits.reefPole;
-import frc.robot.FieldPosits.reefLevel.algaeRemovalEnum;
 import frc.robot.Utils.LocalAStar;
-import frc.robot.Utils.utilFunctions;
-
 import frc.robot.commands.auto.spin;
 
 

@@ -23,9 +23,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.FieldPosits.reefLevel;
-import frc.robot.FieldPosits.reefPole;
-
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.generalManager;
 
@@ -70,10 +67,7 @@ public class Robot extends TimedRobot{
         
         SmartDashboard.putData("auto chooser", autoChooser);
 
-        poseChooser.setDefaultOption("middle", FieldPosits.startingPoints.midStart);
-        poseChooser.addOption("right", FieldPosits.startingPoints.rightStart);
-        poseChooser.addOption("left", FieldPosits.startingPoints.leftStart);
-        poseChooser.onChange(SystemManager.swerve::resetOdometry);
+    
         SmartDashboard.putData("Starting chooser", poseChooser);
 
     }
