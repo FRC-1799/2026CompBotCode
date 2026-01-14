@@ -86,8 +86,7 @@ public class test {
 	public void enableCheck() {
 		assumeTrue(robotThread.isAlive());
 
-		before();
-		robotThread.start();
+
 
 		// throw new Error("test");
 

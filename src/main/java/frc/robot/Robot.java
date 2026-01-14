@@ -171,7 +171,7 @@ public class Robot extends TimedRobot{
       controlChooser.restart();
       autoManager.takeControl();
       
-      throw(new Error("lol failure"));
+      //throw(new Error("lol failure"));
 
     }
 
