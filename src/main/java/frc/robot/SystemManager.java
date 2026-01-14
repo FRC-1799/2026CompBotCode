@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.autoManager;
-import frc.robot.subsystems.generalManager;
+import frc.robot.subsystems.GeneralManager;
 import frc.robot.subsystems.Intake.simIntake;
 import frc.robot.subsystems.Shooter.simShooter;
 import frc.robot.subsystems.lidar.lidarInterface;
@@ -106,7 +106,7 @@ public class SystemManager{
 
         //initializes and distributes the managers
 
-        generalManager.generalManagerInit();
+        GeneralManager.generalManagerInit();
         autoManager.autoManagerInit();
         
 
@@ -118,7 +118,7 @@ public class SystemManager{
         SmartDashboard.putNumber("Score", score);
 
 
-        generalManager.periodic();
+        GeneralManager.periodic();
         autoManager.periodic();
     }
 

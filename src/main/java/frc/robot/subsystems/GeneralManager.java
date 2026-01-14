@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class generalManager{
+public class GeneralManager{
 
     /**enum to represent all the available states */
     public enum generalState{
@@ -114,7 +114,7 @@ public class generalManager{
 
     /**<h2>Changes the current state to the intaking state</h2>*/
     public static void intaking(){
-        startState(generalState.shooting);
+        startState(generalState.intaking);
     }
 
     /**
@@ -127,7 +127,7 @@ public class generalManager{
 
     /**<h2>Changes the current state to the passing state</h2>*/
     public static void passing(){
-        startState(generalState.shooting);
+        startState(generalState.passing);
     }
 
     /**
@@ -145,7 +145,11 @@ public class generalManager{
      * @param state the state to start
      */
     public static void startState(generalState state){
-        generalManager.state=state;
+        if (GeneralManager.state!= null){
+            CommandScheduler.getInstance().cancel(GeneralManager.state.state);
+        }
+        GeneralManager.state=state;
+    
         // System.out.println(state.state.getName());
         // System.out.println("\n\n\n\n\n");
         CommandScheduler.getInstance().schedule(state.state);

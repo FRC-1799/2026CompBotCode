@@ -11,7 +11,7 @@ import frc.robot.FieldPosits;
 import frc.robot.SystemManager;
 import frc.robot.Constants.shooterConstants;
 import frc.robot.Utils.utilFunctions;
-import frc.robot.subsystems.generalManager;
+import frc.robot.subsystems.GeneralManager;
 
 public class shooting extends Command{
     public Pose3d goal; 
@@ -19,8 +19,9 @@ public class shooting extends Command{
     boolean isShooting;
 
     public shooting(){
-        goal = DriverStation.getAlliance().get() == Alliance.Blue? FieldPosits.blueHubPose3d : FieldPosits.redHubPose3d;
-        addRequirements(generalManager.subsystems);
+        goal = FieldPosits.hubPose3d ;
+        addRequirements(GeneralManager.subsystems);
+        addRequirements(SystemManager.swerve);
     }
 
     @Override 
@@ -35,14 +36,19 @@ public class shooting extends Command{
 
         if (Math.abs(
                 SystemManager.getSwervePose().getRotation().getDegrees() -
-                goal.getRotation().getMeasureZ().in(Degrees))
+                utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), goal.toPose2d()).getDegrees())
             <shooterConstants.shootingTolerance.in(Degrees)){
             SystemManager.shooter.startShooting();
         }
         else{
             SystemManager.shooter.stop();
         }
+        System.out.println("hiiiii");
+    }
 
-
+    @Override
+    public void end(boolean wasCanceled){
+        SystemManager.shooter.stop();
+        GeneralManager.endCallback(wasCanceled);
     }
 }

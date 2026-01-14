@@ -40,7 +40,7 @@ public class simShooter extends SubsystemBase{
     public shooterState state = shooterState.resting;
 
 
-    protected Pose3d currentGoal=FieldPosits.blueHubPose3d;
+    protected Pose3d currentGoal=FieldPosits.hubPose3d;
     public StructPublisher<Rotation2d> rotationGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("shooter/RotationGoal", Rotation2d.struct).publish();
 
         

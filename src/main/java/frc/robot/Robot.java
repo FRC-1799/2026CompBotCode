@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.autoManager;
-import frc.robot.subsystems.generalManager;
+import frc.robot.subsystems.GeneralManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +33,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import swervelib.parser.SwerveParser;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -84,6 +85,8 @@ public class Robot extends TimedRobot{
       // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
       // immediately when disabled, but then also let it be pushed more 
       disabledTimer = new Timer();
+      ((Arena2026Rebuilt)SimulatedArena.getInstance()).setEfficiencyMode(false);
+      SimulatedArena.getInstance().resetFieldForAuto();
       FollowPathCommand.warmupCommand().schedule();
       this.controlChooser=new ControlChooser();
       DriverStation.silenceJoystickConnectionWarning(true);
@@ -113,6 +116,8 @@ public class Robot extends TimedRobot{
       heartBeat++;
       SmartDashboard.putNumber("heartbeat", heartBeat);  
 
+      //System.out.println(CommandScheduler.getInstance().requiring(SystemManager.swerve));
+
     }
 
     /**
@@ -122,7 +127,7 @@ public class Robot extends TimedRobot{
     public void disabledInit(){
       disabledTimer.reset();
       disabledTimer.start();
-      generalManager.resting();
+      GeneralManager.resting();
 
     }
 
