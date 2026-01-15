@@ -25,8 +25,12 @@ public class FieldPosits {
 
     public static final Pose2d hubPose2d = hubPose3d.toPose2d();
 
-    public static final Pose2d bottomCorner = new Pose2d(0,0, new Rotation2d());
-    public static final Pose2d topCorner = new Pose2d(0, 8.069326, new Rotation2d());
+    public static final Pose2d bottomAllianceDSCorner = new Pose2d(0,0, new Rotation2d());
+    public static final Pose2d topAllianceDSCorner = new Pose2d(0, 8.0, new Rotation2d());
+    public static final Pose2d topAllianceMidCorner = new Pose2d(4, 8, new Rotation2d());
+    public static final Pose2d bottomAllianceMidCorner = new Pose2d(4, 0, new Rotation2d());
+    public static final Translation2d bottomScorePoseAuto = new Translation2d(4, 0.5);
+    public static final Translation2d topScorePoseAuto = new Translation2d(4, 7.5);
 
 
     

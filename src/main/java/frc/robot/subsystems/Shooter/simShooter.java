@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
@@ -42,7 +43,7 @@ public class simShooter extends SubsystemBase{
 
     protected Pose3d currentGoal=FieldPosits.hubPose3d;
     public StructPublisher<Rotation2d> rotationGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("shooter/RotationGoal", Rotation2d.struct).publish();
-
+    public BooleanPublisher isShootingPublisher = NetworkTableInstance.getDefault().getBooleanTopic("shooter/isShooting").publish();
         
     public static final double g = 9.8; 
     
@@ -61,6 +62,7 @@ public class simShooter extends SubsystemBase{
                 MetersPerSecond.of(8),
                 currentGoal.getMeasureZ().minus(shooterConstants.shooterHeight)
             )));
+            isShootingPublisher.set(state==shooterState.shooting);
         }
     
     
