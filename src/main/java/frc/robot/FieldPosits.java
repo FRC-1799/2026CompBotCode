@@ -12,8 +12,12 @@ public class FieldPosits {
     public static final Translation3d blueHubTrans = new Translation3d(4.5974, 4.034536, 1.5748);
     public static final Translation3d redHubTrans= new Translation3d(11.938, 4.034536, 1.5748);
 
-    public static final Pose2d blueHubPose = new Pose2d(blueHubTrans.toTranslation2d(), new Rotation2d());
-    public static final Pose2d redHubPose = new Pose2d(redHubTrans.toTranslation2d(), new Rotation2d());
+
+    public static final Pose3d blueHubPose3d = new Pose3d(blueHubTrans, new Rotation3d());
+    public static final Pose3d redHubPose3d = new Pose3d(redHubTrans, new Rotation3d());
+
+    public static final Pose2d blueHubPose2d = blueHubPose3d.toPose2d();
+    public static final Pose2d redHubPose2d = redHubPose3d.toPose2d();
 
     
 }

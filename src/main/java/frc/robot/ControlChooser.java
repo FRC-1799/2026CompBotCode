@@ -111,7 +111,7 @@ public class ControlChooser {
             
         xbox1.rightTrigger(0.4,loop).onTrue(new InstantCommand(SystemManager.intake::start)).onFalse(new InstantCommand(SystemManager.intake::stop));
         xbox1.leftTrigger(0.4,loop).onTrue(new InstantCommand(SystemManager.shooter::startShooting)).onFalse(new InstantCommand(SystemManager.shooter::stop));
-        xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.blueHubPose));
+        xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.blueHubPose2d));
         
         xbox1.a(loop).onTrue(new InstantCommand(()->((Arena2026Rebuilt)SimulatedArena.getInstance()).outpostDump(false)));
         xbox1.b(loop).onTrue(new InstantCommand(()->((Arena2026Rebuilt)SimulatedArena.getInstance()).outpostThrowForGoal(false)));

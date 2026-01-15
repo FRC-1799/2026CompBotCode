@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.Radian;
 import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -16,6 +17,8 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.FieldPosits;
@@ -32,14 +35,16 @@ public class simShooter extends SubsystemBase{
         shooting
     }
         
-        protected double cooldown=0;
-    
-        public shooterState state = shooterState.resting;
+    protected double cooldown=0;
 
-    
-        protected Pose2d currentGoal=FieldPosits.blueHubPose;
-        public StructPublisher<Rotation2d> rotationGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("shooter/RotationGoal", Rotation2d.struct).publish();
+    public shooterState state = shooterState.resting;
 
+
+    protected Pose3d currentGoal=FieldPosits.blueHubPose3d;
+    public StructPublisher<Rotation2d> rotationGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("shooter/RotationGoal", Rotation2d.struct).publish();
+
+        
+    public static final double g = 9.8; 
     
         @Override
         public void periodic(){
@@ -51,7 +56,11 @@ public class simShooter extends SubsystemBase{
                 }
             }
 
-            rotationGoalPublisher.set(new Rotation2d(getShotAngle(utilFunctions.getDistanceBetweenTwoPoints(SystemManager.getSwervePose(), currentGoal), MetersPerSecond.of(8))));
+            rotationGoalPublisher.set(new Rotation2d( getShotAngle(utilFunctions.getDistanceBetweenTwoPoints(
+                SystemManager.getSwervePose(), currentGoal.toPose2d()),
+                MetersPerSecond.of(8),
+                currentGoal.getMeasureZ().minus(shooterConstants.shooterHeight)
+            )));
         }
     
     
@@ -71,11 +80,15 @@ public class simShooter extends SubsystemBase{
                 // Obtain robot facing from drive simulation
                 SystemManager.getRealPoseMaple().getRotation(),
                 // The height at which the fuel is ejected
-                Inch.of(21),
+                shooterConstants.shooterHeight,
             // The initial speed of the fuel
             MetersPerSecond.of(8),
             // The coral is ejected at a 35-degree slope
-            getShotAngle(utilFunctions.getDistanceBetweenTwoPoints(SystemManager.getSwervePose(), currentGoal), MetersPerSecond.of(8))));
+            getShotAngle(utilFunctions.getDistanceBetweenTwoPoints(
+                SystemManager.getSwervePose(), currentGoal.toPose2d()),
+                MetersPerSecond.of(8),
+                currentGoal.getMeasureZ().minus(shooterConstants.shooterHeight)
+            )));
             
 
         }
@@ -90,8 +103,24 @@ public class simShooter extends SubsystemBase{
     }
     
 
-    public Angle getShotAngle(Distance range, LinearVelocity fireSpeed){
-        return Radians.of(Math.asin(range.in(Meters)*shooterConstants.g/Math.pow(fireSpeed.in(MetersPerSecond), 2))/2);
+    public Angle getShotAngle(Distance range, LinearVelocity fireSpeed, Distance heightDif){
+        if (!RobotBase.isReal()){
+            //Stolen from https://en.wikipedia.org/wiki/Projectile_motion#Angle_%CE%B8_required_to_hit_coordinate_(x,_y)
+
+            double v = fireSpeed.in(MetersPerSecond);
+            double x = range.in(Meters);
+            double y = heightDif.in(Meters);
+            return Radians.of(
+                Math.atan2(
+                    Math.pow(v, 2)+ 
+                    Math.sqrt(
+                        Math.pow(v, 4)-
+                        g*(g*x*x+2*y*v*v)
+                    ),
+                g*x));
+        }
+
+        else throw new Error("This is yet to be implemented");
     }
 
 }
