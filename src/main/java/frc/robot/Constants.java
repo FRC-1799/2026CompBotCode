@@ -136,6 +136,7 @@ public final class Constants
   public static class shooterConstants{
 
     public static final Distance shooterHeight = Inches.of(21);
+    public static final Angle shootingTolerance = Degrees.of(2);
     //public static final simMap = InterpolatingDoubleTreeMap
 
 

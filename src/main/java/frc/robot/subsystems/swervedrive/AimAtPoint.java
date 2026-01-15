@@ -22,6 +22,6 @@ public class AimAtPoint extends Command {
     @Override
     public void execute(){
         rotationGoalPublisher.set(utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), toAimAt));
-        SystemManager.swerve.drive(0, new Rotation2d(), utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), toAimAt));
+
     }
 }

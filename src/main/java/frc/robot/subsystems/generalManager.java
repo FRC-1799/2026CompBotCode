@@ -11,13 +11,18 @@ import edu.wpi.first.util.function.BooleanConsumer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class generalManager{
 
     /**enum to represent all the available states */
     public enum generalState{
-        resting(new resting());
+        resting(new resting()),
+        shooting(new shooting()),
+        spitting(new spitting()),
+        intaking(new intaking()),
+        passing(new passing());
 
         Command state;
 
@@ -45,6 +50,8 @@ public class generalManager{
     /**initializes the general manager. Should be called before any other general manager actions are taken*/
     public static void generalManagerInit(){
       resting();
+      subsystems.add(SystemManager.intake);
+      subsystems.add(SystemManager.shooter);
 
     }
 
@@ -66,9 +73,69 @@ public class generalManager{
 
 
 
-    /**changes the current state to the resting state */
+    /**<h2>Changes the current state to the resting state</h2>*/
     public static void resting(){
         startState(generalState.resting);
+    }
+
+    /**
+     * <h2>Creates a command that will start the resting state when called</h2>
+     * @return A command too start resting state
+     */
+    public static InstantCommand startResting(){
+        return new InstantCommand(()->{resting();});
+    }
+
+    /**<h2>Changes the current state to the shooting state</h2>*/
+    public static void shooting(){
+        startState(generalState.shooting);
+    }
+
+    /**
+     * <h2>Creates a command that will start the shooting state when called</h2>
+     * @return A command too start resting state
+     */
+    public static InstantCommand startShooting(){
+                return new InstantCommand(()->{shooting();});
+    }
+
+    /**<h2>Changes the current state to the spitting state</h2>*/
+    public static void spitting(){
+        startState(generalState.spitting);
+    }
+
+    /**
+     * <h2>Creates a command that will start the spitting state when called</h2>
+     * @return A command too start resting state
+     */
+    public static InstantCommand startSpitting(){
+                return new InstantCommand(()->{spitting();});
+    }
+
+    /**<h2>Changes the current state to the intaking state</h2>*/
+    public static void intaking(){
+        startState(generalState.shooting);
+    }
+
+    /**
+     * <h2>Creates a command that will start the intaking state when called</h2>
+     * @return A command too start resting state
+     */
+    public static InstantCommand startIntaking(){
+                return new InstantCommand(()->{intaking();});
+    }
+
+    /**<h2>Changes the current state to the passing state</h2>*/
+    public static void passing(){
+        startState(generalState.shooting);
+    }
+
+    /**
+     * <h2>Creates a command that will start the passing state when called</h2>
+     * @return A command too start resting state
+     */
+    public static InstantCommand startPassing(){
+                return new InstantCommand(()->{passing();});
     }
 
 
@@ -97,6 +164,8 @@ public class generalManager{
     public static generalState getState(){
         return state;
     }
+
+
 
     /**
      * to be called whenever a state command finishes

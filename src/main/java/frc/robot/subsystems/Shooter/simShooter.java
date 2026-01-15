@@ -123,4 +123,12 @@ public class simShooter extends SubsystemBase{
         else throw new Error("This is yet to be implemented");
     }
 
+    public void setGoal(Pose3d goal){
+        currentGoal=goal;
+    }
+
+    public Pose3d getGoal(){
+        return currentGoal;
+    }
+
 }
