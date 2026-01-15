@@ -38,9 +38,7 @@ public class shooting extends Command{
             goal = new Pose2d(swervePose.getTranslation(), utilFunctions.getAngleBetweenTwoPoints(swervePose, FieldPosits.hubPose2d));
         }
         else{
-            Translation2d goalTrans = utilFunctions.getDistanceBetweenTwoPoints(SystemManager.getSwervePose(), new Pose2d(FieldPosits.bottomScorePoseAuto, new Rotation2d())).in(Meters)<
-            utilFunctions.getDistanceBetweenTwoPoints(SystemManager.getSwervePose(), new Pose2d(FieldPosits.topScorePoseAuto, new Rotation2d())).in(Meters) ? 
-            FieldPosits.bottomScorePoseAuto : FieldPosits.topScorePoseAuto;
+            Translation2d goalTrans = swervePose.nearest(FieldPosits.scoringPoses).getTranslation();
             goal = new Pose2d(goalTrans, utilFunctions.getAngleBetweenTwoPoints(new Pose2d(goalTrans, new Rotation2d()), FieldPosits.hubPose2d));
         }
 

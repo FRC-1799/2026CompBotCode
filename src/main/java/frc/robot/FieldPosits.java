@@ -1,5 +1,9 @@
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -27,10 +31,15 @@ public class FieldPosits {
 
     public static final Pose2d bottomAllianceDSCorner = new Pose2d(0,0, new Rotation2d());
     public static final Pose2d topAllianceDSCorner = new Pose2d(0, 8.0, new Rotation2d());
+    public static final Collection<Pose2d> passingPoses = List.of(bottomAllianceDSCorner, topAllianceDSCorner);
+
+
     public static final Pose2d topAllianceMidCorner = new Pose2d(4, 8, new Rotation2d());
     public static final Pose2d bottomAllianceMidCorner = new Pose2d(4, 0, new Rotation2d());
-    public static final Translation2d bottomScorePoseAuto = new Translation2d(4, 0.5);
-    public static final Translation2d topScorePoseAuto = new Translation2d(4, 7.5);
+
+    public static final Pose2d bottomScorePoseAuto = new Pose2d(4, 0.5, new Rotation2d());
+    public static final Pose2d topScorePoseAuto = new Pose2d(4, 7.5, new Rotation2d());
+    public static final Collection<Pose2d> scoringPoses= List.of(bottomScorePoseAuto, topScorePoseAuto);
 
 
     

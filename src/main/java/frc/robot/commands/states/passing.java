@@ -27,10 +27,8 @@ public class passing  extends Command{
     @Override 
     public void initialize(){
         isShooting=false;
-        goal = 
-            utilFunctions.getDistanceBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.bottomAllianceDSCorner).in(Meters)<
-            utilFunctions.getDistanceBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.topAllianceDSCorner).in(Meters) ? 
-            new Pose3d(FieldPosits.bottomAllianceDSCorner) : new Pose3d(FieldPosits.topAllianceDSCorner);
+        goal = new Pose3d(SystemManager.getSwervePose().nearest(FieldPosits.passingPoses));
+
 
         SystemManager.shooter.setGoal(goal);
 
