@@ -21,7 +21,6 @@ import edu.wpi.first.networktables.IntegerSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.helpers.MockHardwareExtension;
-import frc.helpers.TestWithScheduler;
 import frc.robot.Robot;
 
 
@@ -44,8 +43,8 @@ public class test {
 	/**<h2>Creates the robot thread</h2> */
 	@BeforeAll
 	public void before() {
-		TestWithScheduler.schedulerStart();
-		TestWithScheduler.schedulerClear();
+		// TestWithScheduler.schedulerStart();
+		// TestWithScheduler.schedulerClear();
 		MockHardwareExtension.beforeAll();
 
 		robotThread = new Thread(()->RobotBase.startRobot(Robot::new));
@@ -86,7 +85,7 @@ public class test {
 
 
 		try{
-			Thread.sleep((long)Seconds.of(29).in(Milliseconds));
+			Thread.sleep((long)Seconds.of(30).in(Milliseconds));
 		}
 		catch (InterruptedException e) {
 			System.out.println("Interrupt");
@@ -107,7 +106,7 @@ public class test {
 		MockHardwareExtension.enable();
 
 		try {
-            Thread.sleep((long)Seconds.of(29).in(Milliseconds));
+            Thread.sleep((long)Seconds.of(30).in(Milliseconds));
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
