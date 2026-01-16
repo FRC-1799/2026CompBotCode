@@ -85,7 +85,7 @@ public class simShooter extends SubsystemBase{
                 shooterConstants.shooterHeight,
             // The initial speed of the fuel
             MetersPerSecond.of(8),
-            // The coral is ejected at a 35-degree slope
+            // The fuel is ejected at a 35-degree slope
             getShotAngle(utilFunctions.getDistanceBetweenTwoPoints(
                 SystemManager.getSwervePose(), currentGoal.toPose2d()),
                 MetersPerSecond.of(8),
