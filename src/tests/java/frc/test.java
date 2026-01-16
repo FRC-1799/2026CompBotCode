@@ -30,7 +30,7 @@ import frc.robot.Robot;
 /**
  * <h2> Class to run the stability tests of the robot in each mode.</h2>
  * Will create and enable a robot in both teliop and auto to make sure the robot can survive each mode without crashing. 
- * In the event of a failure gradle will freak out so no checking is neccisary beyond the afterTest in build.gradle
+ * In the event of a failure, gradle will freak out so no checking is necessary beyond the afterTest in build.gradle
 
  */
 public class test {
