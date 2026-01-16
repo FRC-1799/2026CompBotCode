@@ -29,7 +29,6 @@ public class simIntake extends SubsystemBase{
 
     }
     
-    StructPublisher<Pose3d> heldCoralPublisher = NetworkTableInstance.getDefault().getStructTopic("heldCoral", Pose3d.struct).publish();
     intakeState state = intakeState.resting;
 
    
