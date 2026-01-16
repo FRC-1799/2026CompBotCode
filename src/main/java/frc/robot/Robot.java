@@ -38,6 +38,7 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import swervelib.parser.SwerveParser;
 
 /**
+ * This is 1799's Custom version of the Robot class and not a general one
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
  * described in the TimedRobot documentation. If you change the name of this class or the package after creating this
  * project, you must also update the build.gradle file in the project.
@@ -67,7 +68,6 @@ public class Robot extends TimedRobot{
         }
 
 
-
         
         SmartDashboard.putData("auto chooser", autoChooser);
 
@@ -76,6 +76,8 @@ public class Robot extends TimedRobot{
         poseChooser.addOption("left", FieldPosits.startingPoints.leftStart);
         poseChooser.onChange(SystemManager.swerve::resetOdometry);
         SmartDashboard.putData("Starting chooser", poseChooser);
+
+
 
     }
 
@@ -113,9 +115,10 @@ public class Robot extends TimedRobot{
       // and running subsystem periodic() methods.  This must be called from the robot's periodic
       // block in order for anything in the Command-based framework to work.
       CommandScheduler.getInstance().run();
+
       SystemManager.periodic();
       posePublisher.set(SystemManager.getSwervePose());
-      System.out.println(SystemManager.getSwervePose());
+      //System.out.println(SystemManager.getSwervePose());
 
       heartBeat++;
       SmartDashboard.putNumber("heartbeat", heartBeat);  
@@ -149,6 +152,7 @@ public class Robot extends TimedRobot{
     {
 
       autoChooser.getSelected().schedule();
+
     }
 
     /**
@@ -167,6 +171,7 @@ public class Robot extends TimedRobot{
       controlChooser.restart();
       autoManager.takeControl();
       
+      //throw(new Error("lol failure"));
 
     }
 
