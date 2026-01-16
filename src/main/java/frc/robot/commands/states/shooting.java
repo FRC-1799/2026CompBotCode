@@ -26,6 +26,7 @@ public class shooting extends Command{
 
     public shooting(){
         addRequirements(GeneralManager.subsystems);
+        addRequirements(SystemManager.swerve);
     }
 
     @Override 
