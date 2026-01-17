@@ -50,6 +50,8 @@ public class Robot extends TimedRobot{
     StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault().getStructTopic("RobotPose", Pose2d.struct).publish(PubSubOption.periodic(0.02));
     SendableChooser<Command> autoChooser=new SendableChooser<>();
     SendableChooser<Pose2d> poseChooser=new SendableChooser<>();
+    int swaps = 0;
+    boolean blueIsActive;
 
     StructArrayPublisher<Pose3d> fuelPublisher = NetworkTableInstance.getDefault().getStructArrayTopic("Fuel", Pose3d.struct).publish();
     
@@ -87,8 +89,8 @@ public class Robot extends TimedRobot{
       // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
       // immediately when disabled, but then also let it be pushed more 
       disabledTimer = new Timer();
-      ((Arena2026Rebuilt)SimulatedArena.getInstance()).setEfficiencyMode(false);
-      SimulatedArena.getInstance().resetFieldForAuto();
+      // ((Arena2026Rebuilt)SimulatedArena.getInstance()).setEfficiencyMode(false);
+      // SimulatedArena.getInstance().resetFieldForAuto();
       FollowPathCommand.warmupCommand().schedule();
       this.controlChooser=new ControlChooser();
       DriverStation.silenceJoystickConnectionWarning(true);
@@ -149,7 +151,7 @@ public class Robot extends TimedRobot{
     public void autonomousInit()
     {
 
-      autoChooser.getSelected().schedule();
+      //autoChooser.getSelected().schedule();
 
     }
 
@@ -168,6 +170,12 @@ public class Robot extends TimedRobot{
 
       controlChooser.restart();
       autoManager.takeControl();
+      if (!RobotBase.isReal()){
+        blueIsActive=((Arena2026Rebuilt)SimulatedArena.getInstance()).isActive(true);
+        System.out.println(":3");
+        swaps=0;
+
+      }
       
       //throw(new Error("lol failure"));
 
@@ -228,6 +236,14 @@ public class Robot extends TimedRobot{
   @Override
   public void simulationPeriodic() {
     SimulatedArena.getInstance().simulationPeriodic();
+    if (blueIsActive!=((Arena2026Rebuilt)SimulatedArena.getInstance()).isActive(true)){
+      swaps++;
+      blueIsActive= !blueIsActive;
+      SmartDashboard.putNumber("swaps", swaps);
+      if (swaps==4){
+        ((Arena2026Rebuilt)SimulatedArena.getInstance()).setShouldRunClock(false);
+      }
+    }
 
     
     fuelPublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Fuel"));

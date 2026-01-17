@@ -84,7 +84,7 @@ public final class Constants
     public static final PIDConstants anglePID       = new PIDConstants(5, 0, 0);
 
 
-
+    public static final LinearVelocity intakeHandoffSpeed = MetersPerSecond.of(3);
 
     public static final double autoDriveScoreTolerance  = 0.5;
     public static final double autoDriveIntakeTolerance = 0.1;

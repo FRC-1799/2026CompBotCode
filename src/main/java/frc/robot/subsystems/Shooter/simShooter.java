@@ -7,6 +7,7 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radian;
 import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -20,6 +21,8 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.FieldPosits;
@@ -37,6 +40,7 @@ public class simShooter extends SubsystemBase{
     }
         
     protected double cooldown=0;
+    protected double matchTime = DriverStation.getMatchTime();
 
     public shooterState state = shooterState.resting;
 
@@ -49,11 +53,12 @@ public class simShooter extends SubsystemBase{
     
         @Override
         public void periodic(){
-            cooldown--;
+            cooldown-=Timer.getFPGATimestamp()-matchTime;
+            matchTime=Timer.getFPGATimestamp();
             if (state==shooterState.shooting){
                 if (cooldown<=0){
                     shootInternal();
-                    cooldown=10;
+                    cooldown=0.2;
                 }
             }
 
@@ -63,6 +68,7 @@ public class simShooter extends SubsystemBase{
                 currentGoal.getMeasureZ().minus(shooterConstants.shooterHeight)
             )));
             isShootingPublisher.set(state==shooterState.shooting);
+
         }
     
     

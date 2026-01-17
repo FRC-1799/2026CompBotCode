@@ -33,12 +33,15 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
 
 
 import frc.robot.SystemManager;
+import frc.robot.Utils.utilFunctions;
+import frc.robot.commands.auto.smallAutoDrive;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -55,6 +58,9 @@ import swervelib.parser.SwerveParser;
 import swervelib.simulation.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+
+import static edu.wpi.first.units.Units.Meters;
+
 
 public class SwerveSubsystem extends SubsystemBase
 {
@@ -228,10 +234,15 @@ public class SwerveSubsystem extends SubsystemBase
    * @return PathFinding command
    */
   public Command driveToPose(Pose2d pose){
-    return AutoBuilder.pathfindToPose(
-        pose,
-        constraints
-                                     );
+    System.out.println(utilFunctions.getDistanceBetweenTwoPoints(getPose(), pose).in(Meters)>Constants.AutonConstants.distanceWithinPathplannerDontWork);
+    return new ConditionalCommand(
+        AutoBuilder.pathfindToPose(
+          pose,
+          constraints
+        ),
+        new smallAutoDrive(pose),
+      ()->{return utilFunctions.getDistanceBetweenTwoPoints(getPose(), pose).in(Meters)>Constants.AutonConstants.distanceWithinPathplannerDontWork;});
+
   }
 
 

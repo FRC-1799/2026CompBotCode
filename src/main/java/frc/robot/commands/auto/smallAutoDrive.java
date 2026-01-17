@@ -65,7 +65,11 @@ public class smallAutoDrive extends Command{
      */
     @Override
     public boolean isFinished(){
-        return pid.atSetpoint()&& SystemManager.swerve.getRobotVelocity().vxMetersPerSecond<0.01&& SystemManager.swerve.getRobotVelocity().vyMetersPerSecond<0.01;
+        return 
+            pid.atSetpoint()&&
+            SystemManager.swerve.getRobotVelocity().vxMetersPerSecond<0.01&&
+            SystemManager.swerve.getRobotVelocity().vyMetersPerSecond<0.01&&
+            Math.abs(pose.getRotation().getDegrees()-SystemManager.getSwervePose().getRotation().getDegrees())<Constants.AutonConstants.angleTolerance;
         // if (pid.atSetpoint()){
         //     correctCount++;
             
