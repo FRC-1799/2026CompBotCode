@@ -50,7 +50,6 @@ public class photonSim extends SubsystemBase implements aprilTagInterface{
         visionSim.addCamera(cameraSim, Constants.cameraConstants.frontAprilTagCameraTrans);
 
 
-        SmartDashboard.putData(visionSim.getDebugField());
 
         //cameraSim.enableDrawWireframe(true);
 

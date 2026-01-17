@@ -2,13 +2,13 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.SystemManager;
-import frc.robot.subsystems.generalManager;
+import frc.robot.subsystems.GeneralManager;
 
 public class resting extends Command{
 
     /**creates a command that does nothing but hold the space a state would so that other commands can not sneak into the mechanisms */
     public resting(){
-        addRequirements(generalManager.subsystems);
+        addRequirements(GeneralManager.subsystems);
     }
 
     @Override
@@ -27,6 +27,7 @@ public class resting extends Command{
     */
     @Override
     public void end(boolean wasInterrupted){
-        generalManager.endCallback(wasInterrupted);
+        SystemManager.shooter.stop();
+        GeneralManager.endCallback(wasInterrupted);
     }
 }
