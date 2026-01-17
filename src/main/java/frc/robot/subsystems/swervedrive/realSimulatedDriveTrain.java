@@ -1,10 +1,9 @@
 package frc.robot.subsystems.swervedrive;
 
 
-import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
-import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
-
 import frc.robot.SystemManager;
+import swervelib.simulation.ironmaple.simulation.drivesims.SwerveDriveSimulation;
+import swervelib.simulation.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 
 
 /**class to create a simulated drive train that mirrors the yagsl drivetrain. 
