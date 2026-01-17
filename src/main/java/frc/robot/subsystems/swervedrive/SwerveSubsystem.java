@@ -234,7 +234,6 @@ public class SwerveSubsystem extends SubsystemBase
    * @return PathFinding command
    */
   public Command driveToPose(Pose2d pose){
-    System.out.println(utilFunctions.getDistanceBetweenTwoPoints(getPose(), pose).in(Meters)>Constants.AutonConstants.distanceWithinPathplannerDontWork);
     return new ConditionalCommand(
         AutoBuilder.pathfindToPose(
           pose,

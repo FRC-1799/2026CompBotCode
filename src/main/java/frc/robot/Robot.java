@@ -172,7 +172,6 @@ public class Robot extends TimedRobot{
       autoManager.takeControl();
       if (!RobotBase.isReal()){
         blueIsActive=((Arena2026Rebuilt)SimulatedArena.getInstance()).isActive(true);
-        System.out.println(":3");
         swaps=0;
 
       }
