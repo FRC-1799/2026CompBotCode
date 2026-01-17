@@ -33,7 +33,7 @@ public class SystemManager{
     public static SimulatedArena simField;
     public static AIRobotInSimulation fakeBot;
     public static aprilTagInterface aprilTag;
-    public static lidarInterface lidar;
+
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
     public static simIntake intake;
@@ -78,12 +78,6 @@ public class SystemManager{
         
         
 
-        //Lidar
-        if (Constants.simConfigs.lidarShouldBeSim){
-            lidar = new simLidar();
-        } else {
-            lidar= new realLidar();
-        }
 
         // Blinkin
         // if(Constants.simConfigs.blinkinShouldBeSim){

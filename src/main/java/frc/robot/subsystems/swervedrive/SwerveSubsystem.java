@@ -486,10 +486,10 @@ public class SwerveSubsystem extends SubsystemBase
     SmartDashboard.putBoolean("saw back camera", SystemManager.aprilTag.getBackPose()!=null);
     SmartDashboard.putNumber("received front camera timestamp", SystemManager.aprilTag.getFrontTimestamp());
     SystemManager.aprilTag.getBackTimestamp();
-    if (SystemManager.lidar!=null){
-      Pathfinding.ensureInitialized();
-      Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObstacles(), swerveDrive.getPose().getTranslation());
-    }
+    // if (SystemManager.lidar!=null){
+    //   Pathfinding.ensureInitialized();
+    //   Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObstacles(), swerveDrive.getPose().getTranslation());
+    // }
 
     SmartDashboard.putNumber("swerve timestamp", Timer.getFPGATimestamp());
     SmartDashboard.putNumber("swerve timestamp w offset", Timer.getFPGATimestamp()+ NetworkTableInstance.getDefault().getServerTimeOffset().getAsLong());
