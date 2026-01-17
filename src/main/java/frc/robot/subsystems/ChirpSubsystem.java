@@ -145,6 +145,7 @@ public class ChirpSubsystem extends SubsystemBase {
         double[] desiredStates = desiredChassisStatesSubscriber.get();
         double[] realStates = realChassisStatesSubscriber.get();
         for (int i=0; i<8;i+=2){
+            System.out.println(realStates[i]-desiredStates[i]);
             if (Math.abs(desiredStates[i+1])>0.02 || Math.abs(realStates[i]-desiredStates[i])>1) return true;
         }
 

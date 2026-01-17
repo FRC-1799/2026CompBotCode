@@ -75,7 +75,9 @@ public class SystemManager{
 
         
 
-
+        if (RobotBase.isReal()){
+                simButRealTrain = new realSimulatedDriveTrain();
+        }
 
         
         

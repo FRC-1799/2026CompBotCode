@@ -106,7 +106,7 @@ public class simShooter extends SubsystemBase{
     
 
     public Angle getShotAngle(Distance range, LinearVelocity fireSpeed, Distance heightDif){
-        if (!RobotBase.isReal()){
+        if (true){
             //Stolen from https://en.wikipedia.org/wiki/Projectile_motion#Angle_%CE%B8_required_to_hit_coordinate_(x,_y)
 
             double v = fireSpeed.in(MetersPerSecond);

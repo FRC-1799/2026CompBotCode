@@ -114,7 +114,7 @@ public final class Constants
       public static final int disableTrackCount=0;
 
       public static final String whileEnabledSongName = "PortalRadio";
-      public static final boolean shouldUseWhileEnabledSong = false&&whileEnabledSongName!=null;
+      public static final boolean shouldUseWhileEnabledSong = true&&whileEnabledSongName!=null;
       public static final int whileEnabledTrackCount=4;
 
       public static final String path = "/home/lvuser/deploy/chirp/";
