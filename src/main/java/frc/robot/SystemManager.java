@@ -3,7 +3,6 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Radians;
 
 import java.io.File;
-import org.ironmaple.simulation.SimulatedArena;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -14,8 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ChirpSubsystem;
 import frc.robot.subsystems.autoManager;
-import frc.robot.subsystems.generalManager;
-
+import frc.robot.subsystems.GeneralManager;
+import frc.robot.subsystems.Intake.simIntake;
+import frc.robot.subsystems.Shooter.simShooter;
 import frc.robot.subsystems.lidar.lidarInterface;
 import frc.robot.subsystems.lidar.realLidar;
 import frc.robot.subsystems.lidar.simLidar;
@@ -25,8 +25,7 @@ import frc.robot.subsystems.swervedrive.realSimulatedDriveTrain;
 import frc.robot.subsystems.vision.aprilTagInterface;
 import frc.robot.subsystems.vision.photonSim;
 import frc.robot.subsystems.vision.realVision;
-import frc.robot.subsystems.vision.reefIndexerIO;
-import frc.robot.subsystems.vision.simReefIndexer;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 
 
 public class SystemManager{
@@ -35,10 +34,11 @@ public class SystemManager{
     public static SimulatedArena simField;
     public static AIRobotInSimulation fakeBot;
     public static aprilTagInterface aprilTag;
-    public static reefIndexerIO reefIndexer;
-    public static lidarInterface lidar;
+
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
+    public static simIntake intake;
+    public static simShooter shooter;
     public static Robot robot;
     public static ChirpSubsystem audioPlayer;
 
@@ -77,26 +77,9 @@ public class SystemManager{
 
 
 
-        // //Reef indexer
-        if (Constants.simConfigs.reefIndexerShouldBeSim){
-            reefIndexer = new simReefIndexer();
-        } else {
-            if (realVisTemp != null){
-                reefIndexer = realVisTemp;
-            } 
-            else {
-                reefIndexer = new realVision();
-
-            }
-        }
+        
         
 
-        //Lidar
-        if (Constants.simConfigs.lidarShouldBeSim){
-            lidar = new simLidar();
-        } else {
-            lidar= new realLidar();
-        }
 
         // Blinkin
         // if(Constants.simConfigs.blinkinShouldBeSim){
@@ -112,13 +95,14 @@ public class SystemManager{
             // Overrides the default simulation
         }
         
-
+        intake = new simIntake();
+        shooter = new simShooter();
 
 
 
         //initializes and distributes the managers
 
-        generalManager.generalManagerInit();
+        GeneralManager.generalManagerInit();
         autoManager.autoManagerInit();
 
         audioPlayer = new ChirpSubsystem();
@@ -132,9 +116,8 @@ public class SystemManager{
         SmartDashboard.putNumber("Score", score);
 
 
-        generalManager.periodic();
+        GeneralManager.periodic();
         autoManager.periodic();
-        reefIndexer.periodic();
     }
 
     /** @return the current pose of the robot */

@@ -23,21 +23,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.FieldPosits.reefLevel;
-import frc.robot.FieldPosits.reefPole;
-
 import frc.robot.subsystems.autoManager;
-import frc.robot.subsystems.generalManager;
+import frc.robot.subsystems.GeneralManager;
 
 import java.io.File;
 import java.io.IOException;
-import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import swervelib.parser.SwerveParser;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
 
 /**
+ * This is 1799's Custom version of the Robot class and not a general one
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
  * described in the TimedRobot documentation. If you change the name of this class or the package after creating this
  * project, you must also update the build.gradle file in the project.
@@ -52,9 +51,8 @@ public class Robot extends TimedRobot{
     SendableChooser<Command> autoChooser=new SendableChooser<>();
     SendableChooser<Pose2d> poseChooser=new SendableChooser<>();
 
-
+    StructArrayPublisher<Pose3d> fuelPublisher = NetworkTableInstance.getDefault().getStructArrayTopic("Fuel", Pose3d.struct).publish();
     
-
 
     public Robot(){
       instance = this;
@@ -67,15 +65,13 @@ public class Robot extends TimedRobot{
         }
 
 
-
         
         SmartDashboard.putData("auto chooser", autoChooser);
 
-        poseChooser.setDefaultOption("middle", FieldPosits.startingPoints.midStart);
-        poseChooser.addOption("right", FieldPosits.startingPoints.rightStart);
-        poseChooser.addOption("left", FieldPosits.startingPoints.leftStart);
-        poseChooser.onChange(SystemManager.swerve::resetOdometry);
+    
         SmartDashboard.putData("Starting chooser", poseChooser);
+
+
 
     }
 
@@ -91,6 +87,8 @@ public class Robot extends TimedRobot{
       // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
       // immediately when disabled, but then also let it be pushed more 
       disabledTimer = new Timer();
+      ((Arena2026Rebuilt)SimulatedArena.getInstance()).setEfficiencyMode(false);
+      SimulatedArena.getInstance().resetFieldForAuto();
       FollowPathCommand.warmupCommand().schedule();
       this.controlChooser=new ControlChooser();
       DriverStation.silenceJoystickConnectionWarning(true);
@@ -113,12 +111,15 @@ public class Robot extends TimedRobot{
       // and running subsystem periodic() methods.  This must be called from the robot's periodic
       // block in order for anything in the Command-based framework to work.
       CommandScheduler.getInstance().run();
+
       SystemManager.periodic();
       posePublisher.set(SystemManager.getSwervePose());
-      //System.out.println(SystemManager.getSwervePose());
+
 
       heartBeat++;
       SmartDashboard.putNumber("heartbeat", heartBeat);  
+
+      //System.out.println(CommandScheduler.getInstance().requiring(SystemManager.swerve));
 
     }
 
@@ -129,8 +130,8 @@ public class Robot extends TimedRobot{
     public void disabledInit(){
       disabledTimer.reset();
       disabledTimer.start();
-      generalManager.resting();
       SystemManager.audioPlayer.disable();
+      GeneralManager.resting();
 
     }
 
@@ -151,6 +152,7 @@ public class Robot extends TimedRobot{
 
       autoChooser.getSelected().schedule();
       SystemManager.audioPlayer.enable();
+
     }
 
     /**
@@ -170,6 +172,8 @@ public class Robot extends TimedRobot{
       autoManager.takeControl();
       SystemManager.audioPlayer.enable();
 
+      
+      //throw(new Error("lol failure"));
 
     }
 
@@ -228,6 +232,9 @@ public class Robot extends TimedRobot{
   @Override
   public void simulationPeriodic() {
     SimulatedArena.getInstance().simulationPeriodic();
+
+    
+    fuelPublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Fuel"));
 
   }
 

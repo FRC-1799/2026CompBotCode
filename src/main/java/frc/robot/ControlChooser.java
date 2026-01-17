@@ -1,36 +1,28 @@
 package frc.robot;
 
 
-import java.util.HashSet;
-import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.FieldPosits.reefLevel;
-import frc.robot.FieldPosits.reefPole;
 import frc.robot.Utils.BetterTrigger;
 import frc.robot.Utils.utilFunctions;
-
-import frc.robot.commands.auto.smallAutoDrive;
 
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
 import frc.robot.subsystems.autoManager;
-import frc.robot.subsystems.generalManager;
+import frc.robot.subsystems.GeneralManager;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
 
 public class ControlChooser {
 
@@ -120,6 +112,16 @@ public class ControlChooser {
 
         xbox1.rightBumper(loop).onTrue(new InstantCommand(()->System.out.println(SystemManager.audioPlayer.stop())));
         xbox1.leftBumper(loop).onTrue(new PrintCommand("hiiiii"));
+            
+        xbox1.rightTrigger(0.4,loop).onTrue(GeneralManager.startIntaking()).onFalse(GeneralManager.startResting());
+        xbox1.leftTrigger(0.4,loop).onTrue(GeneralManager.startShooting()).onFalse(GeneralManager.startResting());
+
+        //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
+        
+        xbox1.a(loop).onTrue(GeneralManager.startPassing());
+        xbox1.b(loop).onTrue(new InstantCommand(()->((Arena2026Rebuilt)SimulatedArena.getInstance()).outpostThrowForGoal(false)));
+
+
 
         return loop;
     }

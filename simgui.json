@@ -151,6 +151,17 @@
             "open": false
           }
         },
+        "MapleSim": {
+          "MatchData": {
+            "Breakdown": {
+              "Red Alliance": {
+                "open": true
+              },
+              "open": true
+            }
+          },
+          "open": true
+        },
         "bot chara map": {
           "double[]##v_/SmartDashboard/bot chara map/Robot": {
             "open": false
@@ -166,9 +177,6 @@
       "Subscribers": {
         "open": true
       }
-    },
-    "Clients": {
-      "open": true
     },
     "Connections": {
       "open": true

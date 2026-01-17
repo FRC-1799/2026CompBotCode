@@ -3,7 +3,7 @@ The robot code for 1799 in the first robotics 2025 game Reefscape.
 
 To Get the robot running in simulation
 1)Download WIPlIB VSCode at https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-2/wpilib-setup.html  
-2)Clone the 2025 github repo from https://github.com/FRC-1799/2025CompBotCode  
+2)Clone the 2026 github repo from https://github.com/FRC-1799/2026CompBotCode  
 3)Open the GitHub repo in WPILIB VSCode  
 4)Swap branches to localization  
 5)Click the three dots in the top right and select simulate robot code(you must be on wifi to do this)  
