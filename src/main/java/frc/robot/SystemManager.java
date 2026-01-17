@@ -35,7 +35,6 @@ public class SystemManager{
     public static AIRobotInSimulation fakeBot;
     public static aprilTagInterface aprilTag;
     public static reefIndexerIO reefIndexer;
-    public static lidarInterface lidar;
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
     public static Robot robot;
@@ -89,12 +88,6 @@ public class SystemManager{
         }
         
 
-        //Lidar
-        if (Constants.simConfigs.lidarShouldBeSim){
-            lidar = new simLidar();
-        } else {
-            lidar= new realLidar();
-        }
 
         // Blinkin
         // if(Constants.simConfigs.blinkinShouldBeSim){
