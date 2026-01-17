@@ -33,7 +33,6 @@ public class SystemManager{
     public static SimulatedArena simField;
     public static AIRobotInSimulation fakeBot;
     public static aprilTagInterface aprilTag;
-    public static reefIndexerIO reefIndexer;
 
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
