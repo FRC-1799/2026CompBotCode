@@ -26,7 +26,7 @@ public class shooting extends Command{
 
     public shooting(){
         addRequirements(GeneralManager.subsystems);
-        addRequirements(SystemManager.swerve);
+        //addRequirements(SystemManager.swerve);
     }
 
     @Override 
@@ -67,6 +67,7 @@ public class shooting extends Command{
     @Override
     public void end(boolean wasCanceled){
         SystemManager.shooter.stop();
+        driveCommand.cancel();
         GeneralManager.endCallback(wasCanceled);
     }
 }

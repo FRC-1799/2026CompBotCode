@@ -169,6 +169,11 @@ public class GeneralManager{
         return state;
     }
 
+    public static void cancelSpesificState(generalState state){
+        if (GeneralManager.state==state){
+            resting();
+        }
+    }
 
 
     /**
