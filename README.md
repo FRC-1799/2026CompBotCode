@@ -1,4 +1,6 @@
-The robot code for 1799 in the first robotics 2025 game Reefscape.
+The robot code for 1799 in the first robotics 2026 game Rebuilt.
+
+For more information on configuring the simulation see Sim setup.md.
 
 
 To Get the robot running in simulation
