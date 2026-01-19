@@ -52,7 +52,6 @@ public class ControlChooser {
         chooser.addOption("testControl", getTestControl());
         chooser.addOption("rock control", getRockControl());
         chooser.addOption("runAutoControl", runAutoDrive());
-        chooser.addOption("lameControl", lameControl());
 
         
         
