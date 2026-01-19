@@ -59,17 +59,17 @@
               },
               "controllerUUID": "uo76fu29bzs5eneqxzd5jb4euqsdlcnc",
               "renderer": {
-                "cameraIndex": -1,
+                "cameraIndex": -4,
                 "orbitFov": 50,
                 "cameraPosition": [
-                  -14.937591620347186,
-                  13.050850843148377,
-                  -0.5093037356066339
+                  -9.683390031424643,
+                  1.5747999999999993,
+                  -3.6028109126929944
                 ],
                 "cameraTarget": [
-                  -2.934698680146761,
-                  1.1195616623055449,
-                  -0.3193904785539864
+                  0,
+                  0.5,
+                  0
                 ]
               },
               "controlsHeight": 200
