@@ -24,6 +24,9 @@ public final class Main
    */
   public static void main(String... args)
   {
+      // TODO make next line show code version and  short commit SHA 
+      System.out.println("**** Version: 67 ****");
+
     RobotBase.startRobot(Robot::new);
   }
 }

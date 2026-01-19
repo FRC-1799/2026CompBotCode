@@ -128,7 +128,8 @@ public class simShooter extends SubsystemBase{
                 g*x));
         }
 
-        else throw new Error("This is yet to be implemented");
+        
+        return Radians.of(0);
     }
 
     public void setGoal(Pose3d goal){
