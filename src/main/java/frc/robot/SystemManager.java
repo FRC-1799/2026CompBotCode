@@ -92,6 +92,9 @@ public class SystemManager{
             fakeBot = AIRobotInSimulation.getRobotAtIndex(0);
             // Overrides the default simulation
         }
+        else{
+            simButRealTrain = new realSimulatedDriveTrain();
+        }
         
         intake = new simIntake();
         shooter = new simShooter();
