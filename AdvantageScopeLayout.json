@@ -1,0 +1,84 @@
+{
+  "hubs": [
+    {
+      "x": 2560,
+      "y": 246,
+      "width": 1920,
+      "height": 961,
+      "state": {
+        "sidebar": {
+          "width": 457,
+          "expanded": [
+            "/SmartDashboard/MapleSim/MatchData",
+            "/SmartDashboard/MapleSim/MatchData/Breakdown",
+            "/SmartDashboard/MapleSim/MatchData/Breakdown/blue Alliance",
+            "/SmartDashboard/MapleSim/MatchData/Breakdown/Red Alliance",
+            "/shooter",
+            "/shooter/RotationGoal",
+            "/SmartDashboard",
+            "/SmartDashboard/MapleSim",
+            "/PathPlanner"
+          ]
+        },
+        "tabs": {
+          "selected": 1,
+          "tabs": [
+            {
+              "type": 0,
+              "title": "",
+              "controller": null,
+              "controllerUUID": "niknncilamtfo0q79pzqovt20o7h2uu8",
+              "renderer": "",
+              "controlsHeight": 0
+            },
+            {
+              "type": 3,
+              "title": "3D Field",
+              "controller": {
+                "sources": [
+                  {
+                    "type": "robot",
+                    "logKey": "NT:RobotPose",
+                    "logType": "Pose2d",
+                    "visible": true,
+                    "options": {
+                      "model": "Crab Bot"
+                    }
+                  },
+                  {
+                    "type": "gamePiece",
+                    "logKey": "NT:Fuel",
+                    "logType": "Pose3d[]",
+                    "visible": true,
+                    "options": {
+                      "variant": "Fuel"
+                    }
+                  }
+                ],
+                "game": "FRC:2026 Field"
+              },
+              "controllerUUID": "uo76fu29bzs5eneqxzd5jb4euqsdlcnc",
+              "renderer": {
+                "cameraIndex": -1,
+                "orbitFov": 50,
+                "cameraPosition": [
+                  -14.937591620347186,
+                  13.050850843148377,
+                  -0.5093037356066339
+                ],
+                "cameraTarget": [
+                  -2.934698680146761,
+                  1.1195616623055449,
+                  -0.3193904785539864
+                ]
+              },
+              "controlsHeight": 200
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "satellites": [],
+  "version": "26.0.0"
+}
