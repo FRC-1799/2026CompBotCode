@@ -119,7 +119,6 @@ public class ControlChooser {
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
         xbox1.a(loop).onTrue(GeneralManager.startPassing()).onFalse(GeneralManager.startResting());
-        xbox1.b(loop).onTrue(new InstantCommand(()->((Arena2026Rebuilt)SimulatedArena.getInstance()).outpostThrowForGoal(false)));
 
 
 
@@ -162,13 +161,6 @@ public class ControlChooser {
         return loop;
     }
 
-    private EventLoop lameControl(){
-        EventLoop loop = new EventLoop();
-        setDefaultCommand(new AbsoluteDriveAdv(SystemManager.swerve, ()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->-xbox1.getLeftTriggerAxis()+xbox1.getRightTriggerAxis(), xbox1.pov(180), xbox1.pov(0), xbox1.pov(90), xbox1.pov(270))
-           ,SystemManager.swerve, loop);
-
-        return loop;
-    }
 
 
 
