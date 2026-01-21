@@ -128,7 +128,6 @@ public class simShooter extends SubsystemBase{
                 g*x));
         }
 
-        
         return Radians.of(0);
     }
 
