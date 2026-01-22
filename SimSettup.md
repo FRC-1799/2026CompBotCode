@@ -1,5 +1,5 @@
 ## Downloads:
-newest wpilib vscode
+newest wpilib vscode download [here](https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-2/wpilib-setup.html)
 newest code version from https://github.com/FRC-1799/2026CompBotCode/releases/
 
 ## Running the Simulator:
