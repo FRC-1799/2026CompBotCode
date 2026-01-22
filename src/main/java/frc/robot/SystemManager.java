@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.autoManager;
 import frc.robot.subsystems.GeneralManager;
 import frc.robot.subsystems.Intake.simIntake;
+import frc.robot.subsystems.Intake.realIntake;
 import frc.robot.subsystems.Shooter.simShooter;
 import frc.robot.subsystems.lidar.lidarInterface;
 import frc.robot.subsystems.lidar.realLidar;
@@ -36,7 +37,8 @@ public class SystemManager{
 
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
-    public static simIntake intake;
+    public static simIntake simIntake;
+    public static realIntake realIntake;
     public static simShooter shooter;
     public static Robot robot;
 
@@ -96,7 +98,8 @@ public class SystemManager{
             simButRealTrain = new realSimulatedDriveTrain();
         }
         
-        intake = new simIntake();
+        //simIntake = new simIntake();
+        realIntake = new realIntake();
         shooter = new simShooter();
 
 

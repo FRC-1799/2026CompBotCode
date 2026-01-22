@@ -110,10 +110,14 @@ public class ControlChooser {
             if(utilFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
            ,SystemManager.swerve, loop);
             
-        xbox1.rightTrigger(0.4,loop).onTrue(GeneralManager.startIntaking())
-            .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
-        xbox1.leftTrigger(0.4,loop).onTrue(GeneralManager.startShooting())
-        .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
+        // xbox1.rightTrigger(0.4,loop).onTrue(GeneralManager.startIntaking())
+        //     .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
+        // xbox1.leftTrigger(0.4,loop).onTrue(GeneralManager.startShooting())
+        // .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
+        
+        xbox1.rightTrigger(0.4,loop).onTrue(GeneralManager.startRealIntaking())
+             .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
+        
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         

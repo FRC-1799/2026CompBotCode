@@ -5,7 +5,7 @@ import java.util.Set;
 
 import frc.robot.SystemManager;
 import frc.robot.commands.states.*;
-
+//import frc.robot.subsystems.Intake.realIntake;
 import edu.wpi.first.util.function.BooleanConsumer;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,6 +22,7 @@ public class GeneralManager{
         shooting(new shooting()),
         spitting(new spitting()),
         intaking(new intaking()),
+        realIntaking(new realIntaking()),
         passing(new passing());
 
         Command state;
@@ -50,7 +51,7 @@ public class GeneralManager{
     /**initializes the general manager. Should be called before any other general manager actions are taken*/
     public static void generalManagerInit(){
       resting();
-      subsystems.add(SystemManager.intake);
+      subsystems.add(SystemManager.simIntake);
       subsystems.add(SystemManager.shooter);
 
     }
@@ -123,6 +124,19 @@ public class GeneralManager{
      */
     public static InstantCommand startIntaking(){
                 return new InstantCommand(()->{intaking();});
+    }
+
+        /**<h2>Changes the current state to the intaking state</h2>*/
+    public static void realIntaking(){
+        startState(generalState.realIntaking);
+    }
+
+    /**
+     * <h2>Creates a command that will start the intaking state when called</h2>
+     * @return A command too start resting state
+     */
+    public static InstantCommand startRealIntaking(){
+                return new InstantCommand(()->{realIntaking();});
     }
 
     /**<h2>Changes the current state to the passing state</h2>*/
