@@ -75,7 +75,7 @@ public class simShooter extends SubsystemBase{
     public void shootInternal(){
             
         if (SystemManager.intake.getPieceCount()>0){
-            SystemManager.intake.intakeSim.obtainGamePieceFromIntake();
+            SystemManager.intake.removePiece();
             
             SimulatedArena.getInstance()
             .addGamePieceProjectile(new RebuiltFuelOnFly(

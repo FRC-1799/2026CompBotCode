@@ -104,6 +104,11 @@ public final class Constants
     public static final int[] supportedPOV={0,90,180,270};
   }
 
+  public static class IntakeConstants{
+    public static final int intakeCanID = 0;
+    public static final double intakeSpeed=1;
+  }
+
   /**Constants used for sim */
   public static class sim{
     public static double targetTolerance =0.2;
