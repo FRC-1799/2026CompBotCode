@@ -22,7 +22,7 @@ public class intaking  extends Command{
             swervePose.getX()>FieldPosits.bottomAllianceDSCorner.getX()&& swervePose.getY() > FieldPosits.bottomAllianceDSCorner.getY() &&
             swervePose.getX()<FieldPosits.topAllianceMidCorner.getX()&& swervePose.getY()<FieldPosits.topAllianceMidCorner.getY()
         ){
-            driveCommand =  SystemManager.swerve.driveToPose(swervePose.nearest(FieldPosits.intakingHandoffPoses), AutonConstants.intakeHandoffSpeed);
+            driveCommand =  
             driveCommand.schedule();
         }
     }

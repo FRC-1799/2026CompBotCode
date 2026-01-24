@@ -1,36 +1,81 @@
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants.AutonConstants;
+import frc.robot.FieldPosits;
+import frc.robot.SystemManager;
+import frc.robot.Utils.utilFunctions;
+import frc.robot.commands.auto.smallAutoDrive;
+import frc.robot.commands.auto.spin;
 
+
+/**An additionally state manager to handle fancier states with autoDrive. */
 public class AutoManager{
     public enum autoDriveState{
-        resting,
-        intakeHandoff,
-        shootHandoff,
-        passing,
-        spin;
+        resting(null, null, ()->false),
+
+        intakeHandoff(
+            new ConditionalCommand(
+                SystemManager.swerve.driveToPose(SystemManager.getSwervePose().nearest(FieldPosits.intakingHandoffPoses), AutonConstants.intakeHandoffSpeed),
+                new InstantCommand(),
+                ()->FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
+            ),
+            GeneralManager.startIntaking()       
+        ),
+        shootHandoff(
+            new ConditionalCommand(
+                SystemManager.swerve.driveToPose(SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses)),
+                new InstantCommand(),
+                ()->!FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
+            ),
+            GeneralManager.startShooting()  
+        ),
+
+        passing(
+            new smallAutoDrive(
+                new Pose2d(
+                    SystemManager.getSwervePose().getTranslation(),
+                    utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), SystemManager.getSwervePose().nearest(FieldPosits.passingPoses))
+                )
+            ),
+            GeneralManager.startPassing()
+
+        ),
+
+        spin(
+            new spin(),
+            new InstantCommand(),
+            ()->false
+        );
 
         protected Command driveCommand;
         protected Command happyCommand;
+        protected BooleanSupplier happySupplier; 
 
-        private autoDriveState(Command driveCommand, Command happyCommand){
+        private autoDriveState(Command driveCommand, Command happyCommand, BooleanSupplier happySupplier){
             this.driveCommand=driveCommand;
             this.happyCommand=happyCommand;
         }
 
-
-        public Pose2d getGoal(){
-            return new Pose2d();
+        private autoDriveState(Command driveCommand, Command happyCommand){
+            this(driveCommand, happyCommand, SystemManager::swerveIsAtGoal);
         }
 
         public Command getDriveCommand(){
-            return new Command(){};
+            return driveCommand;
         }
 
         public Command getHappyCommand(){
-            return new Command(){};
+            return happyCommand;
+        }
+
+        public boolean isHappy(){
+            return happySupplier.getAsBoolean();
         }
 
         
@@ -39,13 +84,16 @@ public class AutoManager{
 
 
     protected static autoDriveState state = autoDriveState.resting;
-    protected static Command autoDriveCommand;
+    protected static boolean isHappy =false;
 
     public static void changeState(autoDriveState state){
-        if (autoDriveCommand!=null){
-            autoDriveCommand.cancel();
+        if (state.getDriveCommand()!=null){
+            state.getDriveCommand().cancel();
         }
+
         AutoManager.state=state;
+        if (AutoManager.state!=null) AutoManager.state.driveCommand.schedule();
+        isHappy=false;
     }
 
     public static void resting(){
@@ -91,12 +139,19 @@ public class AutoManager{
 
 
     //One must imagine the autoManager happy.
-    public boolean isHappy(){
-        return autoDriveCommand==null&&autoDriveCommand.isScheduled();
+    public static boolean isHappy(){
+        return isHappy;
     }
 
-    public void periodic(){
-
+    public static void periodic(){
+        if (state!=autoDriveState.resting)
+            if (!isHappy && state.isHappy()){
+                isHappy=true;
+                if (state.getHappyCommand()!=null)state.getHappyCommand().schedule();
+                resting();
+            }
     }
+
+    
 
 }
