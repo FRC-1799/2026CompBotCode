@@ -145,10 +145,10 @@ public final class Constants
 
     public static final Distance shooterHeight = Inches.of(21);
     public static final Angle shootingTolerance = Degrees.of(2);
-    public static final AngularVelocity shootingSpeed = RPM.of(5000);
+    public static final AngularVelocity shootingSpeed = RPM.of(4000);
     public static final int mainMotorID=0;
     public static final int followerMotorID=0;
-    public static final Angle shotAngle = Degrees.of(35);
+    public static final Angle shotAngle = Degrees.of(65);
     public static final double SimRPMToMPS=0.002;
     //public static final simMap = InterpolatingDoubleTreeMap
 

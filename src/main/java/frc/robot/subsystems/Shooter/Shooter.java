@@ -78,8 +78,8 @@ public class Shooter extends SubsystemBase{
 
         SmartDashboard.putNumber("Shooter/ShooterSpeed", getFlywheelSpeed().in(RPM));
         SmartDashboard.putString("Shooter/ShooterState", state.toString());
-        if (state==shooterState.resting){shooter.set(0);}
-        else {shooter.setSpeed(shooterConstants.shootingSpeed);}
+        
+        
         shooter.updateTelemetry();
 
     }
@@ -92,10 +92,12 @@ public class Shooter extends SubsystemBase{
 
     public void startRevving(){
         state = shooterState.rev;
+        shooter.setSpeed(shooterConstants.shootingSpeed).schedule();
     }
 
     public void startShooting(){
         state=shooterState.shooting;
+        shooter.setSpeed(shooterConstants.shootingSpeed).schedule();
     }
 
     public void stop(){
@@ -105,6 +107,7 @@ public class Shooter extends SubsystemBase{
 
     public void rest(){
         state = shooterState.resting;
+        shooter.set(0).schedule();
     }
 
     public AngularVelocity getFlywheelSpeed(){
