@@ -13,6 +13,8 @@ public class resting extends Command{
 
     @Override
     public void initialize(){
+        SystemManager.shooter.stop();
+
     }
 
     /**called ever rio cycle while the command is scheduled*/
@@ -27,7 +29,6 @@ public class resting extends Command{
     */
     @Override
     public void end(boolean wasInterrupted){
-        SystemManager.shooter.stop();
         GeneralManager.endCallback(wasInterrupted);
     }
 }

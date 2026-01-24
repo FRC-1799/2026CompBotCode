@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
+import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Rotation;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
@@ -24,6 +25,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -143,6 +145,11 @@ public final class Constants
 
     public static final Distance shooterHeight = Inches.of(21);
     public static final Angle shootingTolerance = Degrees.of(2);
+    public static final AngularVelocity shootingSpeed = RPM.of(5000);
+    public static final int mainMotorID=0;
+    public static final int followerMotorID=0;
+    public static final Angle shotAngle = Degrees.of(35);
+    public static final double SimRPMToMPS=0.002;
     //public static final simMap = InterpolatingDoubleTreeMap
 
 

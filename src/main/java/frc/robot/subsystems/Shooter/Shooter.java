@@ -10,9 +10,14 @@ import static edu.wpi.first.units.Units.Seconds;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.shooterConstants;
 import yams.gearing.GearBox;
 import yams.gearing.MechanismGearing;
 import yams.mechanisms.config.FlyWheelConfig;
@@ -35,48 +40,75 @@ public class Shooter extends SubsystemBase{
         
     public shooterState state = shooterState.resting;
 
-      private final TalonFX                   ShooterMotor    = new TalonFX(10);
+      private final TalonFX                   ShooterMotor    = new TalonFX(shooterConstants.mainMotorID);
 
   private final SmartMotorControllerConfig motorConfig = new SmartMotorControllerConfig(this)
       .withClosedLoopController(1, 0, 0, RPM.of(10000), RPM.per(Second).of(60))
-      .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 4)))
       .withIdleMode(MotorMode.COAST)
+      .withGearing(1)
       .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
       .withStatorCurrentLimit(Amps.of(40))
       .withMotorInverted(false)
       .withClosedLoopRampRate(Seconds.of(0.25))
       .withOpenLoopRampRate(Seconds.of(0.25))
-      .withFeedforward(new SimpleMotorFeedforward(0, 0, 0))
-      .withControlMode(ControlMode.CLOSED_LOOP);
-  private final SmartMotorController motor         = new TalonFXWrapper(ShooterMotor, DCMotor.getNEO(1), motorConfig);
- 
+      .withFeedforward(new SimpleMotorFeedforward(0.27937, 0.089836, 0.014557))
+      .withSimFeedforward(new SimpleMotorFeedforward(0.27937, 0.089836, 0.014557))
+      .withControlMode(ControlMode.CLOSED_LOOP)
+      .withFollowers(Pair.of(new TalonFX(shooterConstants.followerMotorID),false));
+  
+
+
+    private final SmartMotorController motor         = new TalonFXWrapper(ShooterMotor, DCMotor.getKrakenX60(2), motorConfig);
+
   private final FlyWheelConfig       shooterConfig = new FlyWheelConfig(motor)
-      // Diameter of the flywheel.
       .withDiameter(Inches.of(4))
-      // Mass of the flywheel.
       .withMass(Pounds.of(1))
-      .withTelemetry("ShooterMech", TelemetryVerbosity.HIGH);
+      .withTelemetry("FlywheelMech", TelemetryVerbosity.HIGH)
+      .withSoftLimit(RPM.of(-5000), RPM.of(5000))
+      
+      .withSpeedometerSimulation(RPM.of(7500));
 
       
   private final FlyWheel             shooter       = new FlyWheel(shooterConfig);
         
-    
+
+
     @Override
     public void periodic(){
 
-        
+        SmartDashboard.putNumber("Shooter/ShooterSpeed", getFlywheelSpeed().in(RPM));
+        SmartDashboard.putString("Shooter/ShooterState", state.toString());
+        if (state==shooterState.resting){shooter.set(0);}
+        else {shooter.setSpeed(shooterConstants.shootingSpeed);}
+        shooter.updateTelemetry();
 
     }
     
+    @Override
+    public void simulationPeriodic(){
+        shooter.simIterate();
+    }
     
 
+    public void startRevving(){
+        state = shooterState.rev;
+    }
 
     public void startShooting(){
         state=shooterState.shooting;
     }
 
     public void stop(){
+        if (state==shooterState.resting) rest();
+        else startRevving();;
+    }
+
+    public void rest(){
         state = shooterState.resting;
+    }
+
+    public AngularVelocity getFlywheelSpeed(){
+        return shooter.getSpeed();
     }
 
 
