@@ -18,7 +18,7 @@ import frc.robot.Utils.utilFunctions;
 
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
-import frc.robot.subsystems.autoManager;
+import frc.robot.subsystems.AutoManager;
 import frc.robot.subsystems.GeneralManager.generalState;
 import frc.robot.subsystems.GeneralManager;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
@@ -51,7 +51,6 @@ public class ControlChooser {
 
         chooser.addOption("testControl", getTestControl());
         chooser.addOption("rock control", getRockControl());
-        chooser.addOption("runAutoControl", runAutoDrive());
 
         
         
@@ -69,7 +68,7 @@ public class ControlChooser {
      */
     public void changeControl(EventLoop scheme){
         CommandScheduler.getInstance().cancelAll();
-        autoManager.takeControl();
+        autoManager.resting();
         CommandScheduler.getInstance().setActiveButtonLoop(scheme);
 
     }
@@ -145,20 +144,6 @@ public class ControlChooser {
         return loop;
     }
 
-
-
-
-
-    private EventLoop runAutoDrive(){
-        EventLoop loop = new EventLoop();
-
-    
-
-        new Trigger(loop, ()->SystemManager.robot.heartBeat%2==1).onTrue(new InstantCommand(()->autoManager.giveControl()));
-
-       
-        return loop;
-    }
 
 
 

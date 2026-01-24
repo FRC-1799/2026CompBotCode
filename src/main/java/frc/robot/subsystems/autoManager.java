@@ -1,136 +1,86 @@
 package frc.robot.subsystems;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Utils.LocalAStar;
-import frc.robot.commands.auto.spin;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-
-
-public class autoManager{
-
-    public static boolean hasControl=false;
-    public static BooleanSupplier hasControlSupplier=null;
-    public static Command currentRoutine=null;
-    public static LocalAStar map = new LocalAStar();
-
-    //static int resetCount=0;
-
-
-
-
-
-    /**initializes the auto manager. this must be called before the auto manager is used */
-    public static void autoManagerInit() {
+public class AutoManager{
+    public enum autoDriveState{
+        resting,
+        intakeHandoff,
+        shootHandoff,
+        passing,
+        spin;
 
         
-    }
-
-
-    /**handles the periodic tasks of the auto manager. should be called every cycle */
-    public static void periodic(){
-
-
-        if (currentRoutine!=null){
-            if (!currentRoutine.isScheduled()){
-                currentRoutine=null;
-            }
+        public Pose2d getGoal(){
+            return new Pose2d();
         }
 
-
-        if (hasControlSupplier!=null){
-            if (hasControlSupplier.getAsBoolean()!=hasControl){
-                if (hasControlSupplier.getAsBoolean()==false){
-                    takeControl();
-                }
-                else{
-                    giveControl();
-                }
-            }
+        public Command getDriveCommand(){
+            return new Command(){};
         }
 
-
-        if (hasControl){
-            if (currentRoutine==null || currentRoutine.getClass()==spin.class){
-                currentRoutine=getAutoAction();
-                currentRoutine.schedule();
-            }
+        public Command getHappyCommand(){
+            return new Command(){};
         }
 
-        if (currentRoutine==null){
-            SmartDashboard.putString("autoRoutine", "null");
-            
-        }
-        else{
-            SmartDashboard.putString("autoRoutine", currentRoutine.getName());
-        }
-    }
-
-
-    /**
-     * swaps wether or not the auto manager has control
-     * @param isGift wether or not the auto manager should gain control
-     */
-    public static void swapControl(boolean isGift){
-        if (isGift){
-            giveControl();
-        }
-        else{
-            takeControl();
-        }
-    }
-
-    /**gives the auto manager control */
-    public static void giveControl(){
-        hasControl=true;
-    }
-
-    /**takes control away from the auto manager */
-    public static void takeControl(){
-        hasControl=false;
-        if (currentRoutine!=null){
-            currentRoutine.cancel();
-        }
-    }
-
-    /**
-     * sets a supplier that the auto manager will use to determine if it has control. Note if this function is used the giveControl and take control methods may not work as intended.
-     * @param supplier the supplier to determine wether the auto manager has control
-     */
-    public static void setControlBooleanSupplier(BooleanSupplier supplier){
-        hasControlSupplier=supplier;    
-    }
-
-
-    /**
-     * resets the internal A* map and recalculates paths using the starting pose
-     * @param startingPose the pose to start the pathplanner on
-     */
-    protected static void resetMap(Pose2d startingPose){
-        map.resetMap();
-        map.getMapPoint(startingPose).start();
-    }
-
-
-
-
-
-
-
-
-
-    /** @return the best auto action to take at the frame called in the form of a command*/
-    public static Command getAutoAction(){
-        
-        return new spin();
         
 
     }
 
- 
 
+    protected static autoDriveState state = autoDriveState.resting;
+    protected static Command autoDriveCommand;
+
+    public static void changeState(autoDriveState state){
+        if (autoDriveCommand!=null){
+            autoDriveCommand.cancel();
+        }
+        AutoManager.state=state;
+    }
+
+    public static void resting(){
+        changeState(autoDriveState.resting);
+    }
+
+    public static Command startResting(){
+        return new InstantCommand(AutoManager::resting);
+    }
+
+    public static void intake(){
+        changeState(autoDriveState.intakeHandoff);
+    }
+
+    public static Command startIntake(){
+        return new InstantCommand(AutoManager::intake);
+    }
+
+    public static void shooting(){
+        changeState(autoDriveState.shootHandoff);
+    }
+
+    public static Command startShooting(){
+        return new InstantCommand(AutoManager::shooting);
+    }
+
+    public static void passing(){
+        changeState(autoDriveState.passing); 
+    }
+    
+    public static Command startPassing(){
+        return new InstantCommand(AutoManager::passing);
+    }
+
+
+
+    //One must imagine the autoManager happy.
+    public boolean isHappy(){
+        return autoDriveCommand==null&&autoDriveCommand.isScheduled();
+    }
+
+    public void periodic(){
+
+    }
 
 }
