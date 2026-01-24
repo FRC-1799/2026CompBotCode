@@ -258,7 +258,10 @@ public class SwerveSubsystem extends SubsystemBase
    * @return PathFinding command
    */
   public Command driveToPose(Pose2d pose, LinearVelocity velocity){
-    return AutoBuilder.pathfindToPose(pose, constraints, velocity);
+    return new SequentialCommandGroup(
+      new InstantCommand(()->{SystemManager.autoDriveGoal=pose;}),
+      AutoBuilder.pathfindToPose(pose, constraints, velocity)
+    );
   }
 
 

@@ -46,7 +46,7 @@ public class SystemManager{
     public static Robot robot;
 
     public static Pose2d autoDriveGoal=new Pose2d();
-    StructPublisher<Pose2d> autoDriveGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("SmartDashboard/autodrive/goal", Pose2d.struct).publish();
+    public static StructPublisher<Pose2d> autoDriveGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("SmartDashboard/AutoDrive/goal", Pose2d.struct).publish();
 
 
     protected static int score = 0;
@@ -121,7 +121,7 @@ public class SystemManager{
     /** Calls periodic on all the systems that do not inherit subsystem base. This function should be called in robot periodic */
     public static void periodic(){
         SmartDashboard.putNumber("Score", score);
-    
+        autoDriveGoalPublisher.set(autoDriveGoal);
 
 
         GeneralManager.periodic();
@@ -155,7 +155,7 @@ public class SystemManager{
 
     public static boolean swerveIsAtGoal(){
         Pose2d error = SystemManager.getSwervePose().relativeTo(autoDriveGoal);
-
+        //System.out.println(error);
         return utilFunctions.pythagorean(error.getX(), error.getY())<AutonConstants.autoDriveScoreTolerance && error.getRotation().getDegrees()<AutonConstants.angleTolerance;
     }
 
