@@ -50,8 +50,8 @@ public class ControlChooser {
 
 
         chooser.addOption("testControl", getTestControl());
+        chooser.addOption("rock control", getRockControl());
         chooser.addOption("runAutoControl", runAutoDrive());
-        chooser.addOption("lameControl", lameControl());
 
         
         
@@ -118,6 +118,26 @@ public class ControlChooser {
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
         xbox1.a(loop).onTrue(GeneralManager.startPassing()).onFalse(GeneralManager.startResting());
+
+
+
+        return loop;
+    }
+
+        /**@return a new test control loop*/
+    private EventLoop getRockControl(){
+        EventLoop loop = new EventLoop();
+        setDefaultCommand(SystemManager.swerve.driveRobotOrientedCommand(()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->xbox1.getRightX())
+           ,SystemManager.swerve, loop);
+            
+        xbox1.rightTrigger(0.4,loop).onTrue(GeneralManager.startIntaking())
+            .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
+        xbox1.leftTrigger(0.4,loop).onTrue(GeneralManager.startShooting())
+        .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
+
+        //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
+        
+        xbox1.a(loop).onTrue(GeneralManager.startPassing()).onFalse(GeneralManager.startResting());
         xbox1.b(loop).onTrue(new InstantCommand(()->((Arena2026Rebuilt)SimulatedArena.getInstance()).outpostThrowForGoal(false)));
 
 
@@ -140,13 +160,6 @@ public class ControlChooser {
         return loop;
     }
 
-    private EventLoop lameControl(){
-        EventLoop loop = new EventLoop();
-        setDefaultCommand(new AbsoluteDriveAdv(SystemManager.swerve, ()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->-xbox1.getLeftTriggerAxis()+xbox1.getRightTriggerAxis(), xbox1.pov(180), xbox1.pov(0), xbox1.pov(90), xbox1.pov(270))
-           ,SystemManager.swerve, loop);
-
-        return loop;
-    }
 
 
 

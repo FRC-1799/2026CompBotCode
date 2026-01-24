@@ -284,6 +284,19 @@ public class SwerveSubsystem extends SubsystemBase
     });
   }
 
+  public Command driveRobotOrientedCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier rotation)
+  {
+    // swerveDrive.setHeadingCorrection(true); // Normally you would want heading correction for this kind of control.
+    return run(() -> {
+      // Make the robot move
+      drive(swerveDrive.swerveController.getTargetSpeeds(translationX.getAsDouble(),
+                                                                      translationY.getAsDouble(),
+                                                                      swerveDrive.getOdometryHeading().getRadians()+rotation.getAsDouble(),
+                                                                      swerveDrive.getOdometryHeading().getRadians(),
+                                                                      swerveDrive.getMaximumChassisVelocity()));
+    });
+  }
+
   /**
    * Command to drive the robot using translative values and heading as a setpoint.
    *
@@ -437,14 +450,12 @@ public class SwerveSubsystem extends SubsystemBase
    * @param rotationGoal the rotation that the robot should try and acheave
    */
   public void drive(double speed, Rotation2d driveAngle, Rotation2d rotationGoal){
-
     driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(
             -(driveAngle.getCos()*speed )* swerveDrive.getMaximumChassisVelocity(),
             (driveAngle.getSin()*speed) * swerveDrive.getMaximumChassisVelocity(), 
             rotationGoal.getRadians(),
             swerveDrive.getOdometryHeading().getRadians(),
             swerveDrive.getMaximumChassisVelocity()));
-
   }
 
   /**
