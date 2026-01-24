@@ -68,7 +68,6 @@ public class ControlChooser {
      */
     public void changeControl(EventLoop scheme){
         CommandScheduler.getInstance().cancelAll();
-        autoManager.resting();
         CommandScheduler.getInstance().setActiveButtonLoop(scheme);
 
     }

@@ -238,13 +238,14 @@ public class SwerveSubsystem extends SubsystemBase
   public Command driveToPose(Pose2d pose){
     return new SequentialCommandGroup(
       new InstantCommand(()->{SystemManager.autoDriveGoal=pose;}),
-      ConditionalCommand(
+      new ConditionalCommand(
         AutoBuilder.pathfindToPose(
           pose,
           constraints
         ),
         new smallAutoDrive(pose),
-      ()->{return utilFunctions.getDistanceBetweenTwoPoints(getPose(), pose).in(Meters)>Constants.AutonConstants.distanceWithinPathplannerDontWork;}));
+        ()->{return utilFunctions.getDistanceBetweenTwoPoints(getPose(), pose).in(Meters)>Constants.AutonConstants.distanceWithinPathplannerDontWork;})
+      );
 
   }
 
