@@ -38,7 +38,7 @@ public class Shooter extends SubsystemBase{
         shooting
     }
         
-    public shooterState state = shooterState.resting;
+    public shooterState state = shooterState.rev;
 
       private final TalonFX                   ShooterMotor    = new TalonFX(shooterConstants.mainMotorID);
 
