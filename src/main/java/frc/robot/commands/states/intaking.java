@@ -9,30 +9,20 @@ import frc.robot.Constants.AutonConstants;
 import frc.robot.subsystems.GeneralManager;
 
 public class intaking  extends Command{
-    protected Command driveCommand;
     public intaking(){
         addRequirements(GeneralManager.subsystems);
     }
 
     @Override
     public void initialize(){
-        Pose2d swervePose = SystemManager.getSwervePose();
         SystemManager.intake.start();
-        if (
-            swervePose.getX()>FieldPosits.bottomAllianceDSCorner.getX()&& swervePose.getY() > FieldPosits.bottomAllianceDSCorner.getY() &&
-            swervePose.getX()<FieldPosits.topAllianceMidCorner.getX()&& swervePose.getY()<FieldPosits.topAllianceMidCorner.getY()
-        ){
-            driveCommand =  SystemManager.swerve.driveToPose(swervePose.nearest(FieldPosits.intakingHandoffPoses), AutonConstants.intakeHandoffSpeed);
-            driveCommand.schedule();
-        }
+
     }
 
     @Override
     public void end(boolean wasInterrupted){
         SystemManager.intake.stop();
         GeneralManager.endCallback(wasInterrupted);
-        if (driveCommand!=null){
-            CommandScheduler.getInstance().cancel(driveCommand);
-        }
+
     }
 }

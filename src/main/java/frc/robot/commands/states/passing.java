@@ -15,39 +15,17 @@ import frc.robot.subsystems.GeneralManager;
 
 public class passing  extends Command{
 
-    public Pose3d goal; 
 
-    boolean isShooting;
 
     public passing(){
         addRequirements(GeneralManager.subsystems);
-        addRequirements(SystemManager.swerve);
     }
 
     @Override 
     public void initialize(){
-        isShooting=false;
-        goal = new Pose3d(SystemManager.getSwervePose().nearest(FieldPosits.passingPoses));
-
-
-        SystemManager.shooter.setGoal(goal);
-
-
+        SystemManager.shooter.startShooting();
     }
-    @Override
-    public void execute(){
-        SystemManager.swerve.drive(0, new Rotation2d(), utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), goal.toPose2d()));
-        
-        if (Math.abs(
-                SystemManager.getSwervePose().getRotation().getDegrees() -
-                utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), goal.toPose2d()).getDegrees())
-            <shooterConstants.shootingTolerance.in(Degrees)){
-            SystemManager.shooter.startShooting();
-        }
-        else{
-            SystemManager.shooter.stop();
-        }
-    }
+
 
     @Override
     public void end(boolean wasCanceled){

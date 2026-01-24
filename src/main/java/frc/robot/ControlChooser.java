@@ -18,7 +18,7 @@ import frc.robot.Utils.utilFunctions;
 
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
-import frc.robot.subsystems.autoManager;
+import frc.robot.subsystems.AutoManager;
 import frc.robot.subsystems.GeneralManager.generalState;
 import frc.robot.subsystems.GeneralManager;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
@@ -51,7 +51,6 @@ public class ControlChooser {
 
         chooser.addOption("testControl", getTestControl());
         chooser.addOption("rock control", getRockControl());
-        chooser.addOption("runAutoControl", runAutoDrive());
 
         
         
@@ -69,7 +68,6 @@ public class ControlChooser {
      */
     public void changeControl(EventLoop scheme){
         CommandScheduler.getInstance().cancelAll();
-        autoManager.takeControl();
         CommandScheduler.getInstance().setActiveButtonLoop(scheme);
 
     }
@@ -110,14 +108,14 @@ public class ControlChooser {
             if(utilFunctions.pythagorean(xbox1.getRightX(), xbox1.getRightY())>=0.2)return Math.atan2(-xbox1.getRightX(), -xbox1.getRightY())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
            ,SystemManager.swerve, loop);
             
-        xbox1.rightTrigger(0.4,loop).onTrue(GeneralManager.startIntaking())
+        xbox1.rightTrigger(0.4,loop).onTrue(AutoManager.startIntake())
             .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
-        xbox1.leftTrigger(0.4,loop).onTrue(GeneralManager.startShooting())
+        xbox1.leftTrigger(0.4,loop).onTrue(AutoManager.startShooting())
         .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
-        xbox1.a(loop).onTrue(GeneralManager.startPassing()).onFalse(GeneralManager.startResting());
+        xbox1.a(loop).onTrue(AutoManager.startPassing()).onFalse(GeneralManager.startResting());
 
 
 
@@ -145,20 +143,6 @@ public class ControlChooser {
         return loop;
     }
 
-
-
-
-
-    private EventLoop runAutoDrive(){
-        EventLoop loop = new EventLoop();
-
-    
-
-        new Trigger(loop, ()->SystemManager.robot.heartBeat%2==1).onTrue(new InstantCommand(()->autoManager.giveControl()));
-
-       
-        return loop;
-    }
 
 
 
