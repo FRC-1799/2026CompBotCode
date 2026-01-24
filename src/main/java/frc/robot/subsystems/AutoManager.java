@@ -12,7 +12,15 @@ public class AutoManager{
         passing,
         spin;
 
-        
+        protected Command driveCommand;
+        protected Command happyCommand;
+
+        private autoDriveState(Command driveCommand, Command happyCommand){
+            this.driveCommand=driveCommand;
+            this.happyCommand=happyCommand;
+        }
+
+
         public Pose2d getGoal(){
             return new Pose2d();
         }
@@ -70,6 +78,14 @@ public class AutoManager{
     
     public static Command startPassing(){
         return new InstantCommand(AutoManager::passing);
+    }
+
+    public static void spin(){
+        changeState(autoDriveState.spin);
+    }
+
+    public static Command startSpin(){
+        return new InstantCommand(AutoManager::spin);
     }
 
 
