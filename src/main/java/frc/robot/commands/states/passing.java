@@ -30,7 +30,6 @@ public class passing  extends Command{
         goal = new Pose3d(SystemManager.getSwervePose().nearest(FieldPosits.passingPoses));
 
 
-        SystemManager.shooter.setGoal(goal);
 
 
     }

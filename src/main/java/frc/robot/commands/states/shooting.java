@@ -46,7 +46,6 @@ public class shooting extends Command{
         driveCommand = SystemManager.swerve.driveToPose(goal);
         CommandScheduler.getInstance().schedule(driveCommand);
 
-        SystemManager.shooter.setGoal(FieldPosits.hubPose3d);
         isShooting=false;
 
     }
