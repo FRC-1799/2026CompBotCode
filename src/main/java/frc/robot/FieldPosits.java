@@ -6,6 +6,7 @@ import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rectangle2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -47,6 +48,8 @@ public class FieldPosits {
     public static final Pose2d topIntakePassoffMid = new Pose2d(5.67, 7.5, new Rotation2d());
     public static final Pose2d bottomIntakePassoffMid = new Pose2d(5.67, 0.5, new Rotation2d());
     public static final Collection<Pose2d> intakingHandoffPoses= List.of(topIntakePassoffMid, bottomIntakePassoffMid);
+
+    public static final Rectangle2d alianceZone = new Rectangle2d(bottomAllianceDSCorner.getTranslation(), topAllianceMidCorner.getTranslation());
 
 
 

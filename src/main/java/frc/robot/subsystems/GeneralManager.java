@@ -20,7 +20,6 @@ public class GeneralManager{
     public enum generalState{
         resting(new resting()),
         shooting(new shooting()),
-        spitting(new spitting()),
         intaking(new intaking()),
         passing(new passing());
 
@@ -97,19 +96,6 @@ public class GeneralManager{
      */
     public static InstantCommand startShooting(){
                 return new InstantCommand(()->{shooting();});
-    }
-
-    /**<h2>Changes the current state to the spitting state</h2>*/
-    public static void spitting(){
-        startState(generalState.spitting);
-    }
-
-    /**
-     * <h2>Creates a command that will start the spitting state when called</h2>
-     * @return A command too start resting state
-     */
-    public static InstantCommand startSpitting(){
-                return new InstantCommand(()->{spitting();});
     }
 
     /**<h2>Changes the current state to the intaking state</h2>*/

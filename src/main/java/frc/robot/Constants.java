@@ -86,7 +86,7 @@ public final class Constants
 
     public static final LinearVelocity intakeHandoffSpeed = MetersPerSecond.of(3);
 
-    public static final double autoDriveScoreTolerance  = 0.5;
+    public static final double autoDriveScoreTolerance  = 0.03;
     public static final double autoDriveIntakeTolerance = 0.1;
     public static final double angleTolerance = 3;
     public static final double distanceWithinPathplannerDontWork = 0.5;
