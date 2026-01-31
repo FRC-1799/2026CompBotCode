@@ -34,6 +34,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
@@ -234,13 +236,16 @@ public class SwerveSubsystem extends SubsystemBase
    * @return PathFinding command
    */
   public Command driveToPose(Pose2d pose){
-    return new ConditionalCommand(
+    return new SequentialCommandGroup(
+      new InstantCommand(()->{SystemManager.autoDriveGoal=pose;}),
+      new ConditionalCommand(
         AutoBuilder.pathfindToPose(
           pose,
           constraints
         ),
         new smallAutoDrive(pose),
-      ()->{return utilFunctions.getDistanceBetweenTwoPoints(getPose(), pose).in(Meters)>Constants.AutonConstants.distanceWithinPathplannerDontWork;});
+        ()->{return utilFunctions.getDistanceBetweenTwoPoints(getPose(), pose).in(Meters)>Constants.AutonConstants.distanceWithinPathplannerDontWork;})
+      );
 
   }
 
@@ -253,7 +258,10 @@ public class SwerveSubsystem extends SubsystemBase
    * @return PathFinding command
    */
   public Command driveToPose(Pose2d pose, LinearVelocity velocity){
-    return AutoBuilder.pathfindToPose(pose, constraints, velocity);
+    return new SequentialCommandGroup(
+      new InstantCommand(()->{SystemManager.autoDriveGoal=pose;}),
+      AutoBuilder.pathfindToPose(pose, constraints, velocity)
+    );
   }
 
 
@@ -279,6 +287,19 @@ public class SwerveSubsystem extends SubsystemBase
       driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(), scaledInputs.getY(),
                                                                       headingX.getAsDouble(),
                                                                       headingY.getAsDouble(),
+                                                                      swerveDrive.getOdometryHeading().getRadians(),
+                                                                      swerveDrive.getMaximumChassisVelocity()));
+    });
+  }
+
+  public Command driveRobotOrientedCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier rotation)
+  {
+    // swerveDrive.setHeadingCorrection(true); // Normally you would want heading correction for this kind of control.
+    return run(() -> {
+      // Make the robot move
+      drive(swerveDrive.swerveController.getTargetSpeeds(translationX.getAsDouble(),
+                                                                      translationY.getAsDouble(),
+                                                                      swerveDrive.getOdometryHeading().getRadians()+rotation.getAsDouble(),
                                                                       swerveDrive.getOdometryHeading().getRadians(),
                                                                       swerveDrive.getMaximumChassisVelocity()));
     });
@@ -437,14 +458,12 @@ public class SwerveSubsystem extends SubsystemBase
    * @param rotationGoal the rotation that the robot should try and acheave
    */
   public void drive(double speed, Rotation2d driveAngle, Rotation2d rotationGoal){
-
     driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(
             -(driveAngle.getCos()*speed )* swerveDrive.getMaximumChassisVelocity(),
             (driveAngle.getSin()*speed) * swerveDrive.getMaximumChassisVelocity(), 
             rotationGoal.getRadians(),
             swerveDrive.getOdometryHeading().getRadians(),
             swerveDrive.getMaximumChassisVelocity()));
-
   }
 
   /**

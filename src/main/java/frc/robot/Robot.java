@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.autoManager;
+import frc.robot.subsystems.AutoManager;
 import frc.robot.subsystems.GeneralManager;
 
 import java.io.File;
@@ -60,7 +60,6 @@ public class Robot extends TimedRobot{
       instance = this;
       SystemManager.SystemManagerInit(instance);
 
-        autoChooser.setDefaultOption("smart", new InstantCommand(()->autoManager.giveControl()));
 
         if (!RobotBase.isReal()){
             //for schemes too unsafe to run on the real bot
@@ -169,7 +168,6 @@ public class Robot extends TimedRobot{
      
 
       controlChooser.restart();
-      autoManager.takeControl();
       if (!RobotBase.isReal()){
         blueIsActive=((Arena2026Rebuilt)SimulatedArena.getInstance()).isActive(true);
         swaps=0;

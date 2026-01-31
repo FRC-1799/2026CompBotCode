@@ -7,12 +7,17 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.PubSubOption;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.autoManager;
 import frc.robot.Constants.simConfigs;
+import frc.robot.Constants.AutonConstants;
+import frc.robot.Utils.utilFunctions;
+import frc.robot.subsystems.AutoManager;
 import frc.robot.subsystems.GeneralManager;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.realIntake;
@@ -42,6 +47,10 @@ public class SystemManager{
     public static Intake intake;
     public static simShooter shooter;
     public static Robot robot;
+
+    public static Pose2d autoDriveGoal=new Pose2d();
+    public static StructPublisher<Pose2d> autoDriveGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("SmartDashboard/AutoDrive/goal", Pose2d.struct).publish();
+
 
     protected static int score = 0;
     
@@ -108,7 +117,6 @@ public class SystemManager{
         //initializes and distributes the managers
 
         GeneralManager.generalManagerInit();
-        autoManager.autoManagerInit();
         
 
 
@@ -117,10 +125,11 @@ public class SystemManager{
     /** Calls periodic on all the systems that do not inherit subsystem base. This function should be called in robot periodic */
     public static void periodic(){
         SmartDashboard.putNumber("Score", score);
+        autoDriveGoalPublisher.set(autoDriveGoal);
 
 
         GeneralManager.periodic();
-        autoManager.periodic();
+        AutoManager.periodic();
     }
 
     /** @return the current pose of the robot */
@@ -146,6 +155,12 @@ public class SystemManager{
 
     public static int getScore(){
         return score;
+    }
+
+    public static boolean swerveIsAtGoal(){
+        Pose2d error = SystemManager.getSwervePose().relativeTo(autoDriveGoal);
+        //System.out.println(error);
+        return utilFunctions.pythagorean(error.getX(), error.getY())<AutonConstants.autoDriveScoreTolerance && error.getRotation().getDegrees()<AutonConstants.angleTolerance;
     }
 
 
