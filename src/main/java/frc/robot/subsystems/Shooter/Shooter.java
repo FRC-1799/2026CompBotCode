@@ -31,7 +31,7 @@ import yams.motorcontrollers.local.SparkWrapper;
 import yams.motorcontrollers.remote.TalonFXSWrapper;
 import yams.motorcontrollers.remote.TalonFXWrapper;
 
-public class Shooter extends SubsystemBase{
+public abstract class Shooter extends SubsystemBase{
     public enum shooterState{
         resting, 
         rev,
