@@ -22,12 +22,6 @@ public class simIntake extends Intake{
     public IntakeSimulation intakeSim;
     
 
-    public static enum intakeState{
-        intaking,
-        resting,
-        backRun;
-
-    }
     
     intakeState state = intakeState.resting;
 

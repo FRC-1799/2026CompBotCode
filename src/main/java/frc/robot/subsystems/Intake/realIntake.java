@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.Constants.IntakeConstants;
 
 public class realIntake extends Intake{
-     public static final double kWristMomentOfInertia = 0.00032; // kg * m^2
 
   private final SparkFlex intakeMotor = new SparkFlex(IntakeConstants.intakeCanID, MotorType.kBrushless);
 
