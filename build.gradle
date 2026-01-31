@@ -1,60 +1,14 @@
 import edu.wpi.first.toolchain.*
 
 plugins {
-    id 'cpp'
-    id 'java'
-    id 'google-test'
-    id 'idea'
-    id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin' version '2025.0'
-    id 'edu.wpi.first.NativeUtils' version '2025.9.0'
-    id "edu.wpi.first.GradleRIO" version "2026.1.1"
-    id 'edu.wpi.first.GradleJni' version '1.1.0'
-    id 'edu.wpi.first.GradleVsCode' version '2.1.0'
+    id "java"
+    id "edu.wpi.first.GradleRIO" version "2026.2.1"
 }
-
-// WPILib Version
-ext.wpilibVersion = "2025.3.2"
-
-
-
-repositories {
-    maven {
-    url = uri("https://maven.pkg.github.com/Mechanical-Advantage/AdvantageKit")
-    credentials {
-        username = "Mechanical-Advantage-Bot"
-        password = "\u0067\u0068\u0070\u005f\u006e\u0056\u0051\u006a\u0055\u004f\u004c\u0061\u0079\u0066\u006e\u0078\u006e\u0037\u0051\u0049\u0054\u0042\u0032\u004c\u004a\u006d\u0055\u0070\u0073\u0031\u006d\u0037\u004c\u005a\u0030\u0076\u0062\u0070\u0063\u0051"
-    }
-
-
-    }
-    mavenLocal()
-    mavenCentral()
-}
-// if (project.hasProperty('releaseMode')) {
-//   wpilibRepositories.addAllReleaseRepositories(project)
-// } else {
-//   wpilibRepositories.addAllDevelopmentRepositories(project)
-// }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
-
-sourceSets {
-    main {
-        java {
-            srcDir "src/main/java"
-        }
-    }
-   test {
-       java {
-           srcDir "src/tests/java"
-       }
-   }
-}
-
-var javaVersion = "17"
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 
@@ -82,7 +36,7 @@ deploy {
                     files = project.fileTree('src/main/deploy')
                     directory = '/home/lvuser/deploy'
                     deleteOldFiles = false // Change to true to delete files on roboRIO that no
-                                           // longer exist in deploy directory on roboRIO
+                                           // longer exist in deploy directory of this project
                 }
             }
         }
@@ -91,17 +45,15 @@ deploy {
 
 def deployArtifact = deploy.targets.roborio.artifacts.frcJava
 
-// // Set to true to use debug for JNI.
-// wpi.java.debugJni = false
+// Set to true to use debug for all targets including JNI, which will drastically impact
+// performance.
+wpi.java.debugJni = false
 
 // Set this to true to enable desktop support.
 def includeDesktopSupport = true
 
-
-// Apply C++ configuration
-//apply from: 'config.gradle'
-
-// Apply Java configuration
+// Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
+// Also defines JUnit 5.
 dependencies {
     annotationProcessor wpi.java.deps.wpilibAnnotations()
     implementation wpi.java.deps.wpilib()
@@ -113,26 +65,6 @@ dependencies {
     roborioRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.roborio)
     roborioRelease wpi.java.vendor.jniRelease(wpi.platforms.roborio)
 
-    implementation "edu.wpi.first.cscore:cscore-java:$wpilibVersion"
-    implementation "edu.wpi.first.cameraserver:cameraserver-java:$wpilibVersion"
-    implementation "edu.wpi.first.ntcore:ntcore-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpilibj:wpilibj-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpiutil:wpiutil-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpimath:wpimath-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpiunits:wpiunits-java:$wpilibVersion"
-    implementation "edu.wpi.first.hal:hal-java:$wpilibVersion"
-    implementation "org.ejml:ejml-simple:0.44.0"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:2.19.2"
-    implementation "com.fasterxml.jackson.core:jackson-core:2.19.2"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.19.2"
-    implementation 'edu.wpi.first.thirdparty.frc2025.opencv:opencv-java:4.10.0-2'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    
-
-//    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
-//    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
     nativeDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.desktop)
     nativeDebug wpi.java.vendor.jniDebug(wpi.platforms.desktop)
     simulationDebug wpi.sim.enableDebug()
@@ -141,26 +73,14 @@ dependencies {
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
 
-    testImplementation platform("org.junit:junit-bom:5.11.4")
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "org.junit.jupiter:junit-jupiter-params"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
-    testImplementation "org.mockito:mockito-core:5.3.1"
-    testImplementation "org.mockito:mockito-junit-jupiter:5.3.1"
-    testImplementation wpi.java.vendor.java()
-
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-// Set up java tests
 test {
     useJUnitPlatform()
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
-    // testLogging {
-    //     exceptionFormat = "full"
 
-    //     showStandardStreams = true
-    
-    // }
     ignoreFailures=true
 
     afterTest { descriptor, result ->
@@ -200,29 +120,18 @@ test {
     }
 }
 
+// Simulation configuration (e.g. environment variables).
 wpi.sim.addGui().defaultEnabled = true
 wpi.sim.addDriverstation()
-wpi.java.configureTestTasks(test)
-
-tasks.test {
-    // Disable test when running 'build' task, but enable when running 'test' task directly
-    enabled = !gradle.startParameter.taskNames.contains('build')
-}
-
-if (project.hasProperty('onlylinuxathena') || project.hasProperty('onlylinuxarm32') || project.hasProperty('onlylinuxarm64') || project.hasProperty('onlywindowsarm64') || project.hasProperty('onlylinuxsystemcore')) {
-    test.enabled = false
-}
-
-// Simulation configuration (e.g. environment variables).
-// wpi.sim.addGui().defaultEnabled = true
-// wpi.sim.addDriverstation()
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
 // in order to make them all available at runtime. Also adding the manifest so WPILib
 // knows where to look for our Robot Class.
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-    from sourceSets.main.allSource
+    from('src') { into 'backup/src' }
+    from('vendordeps') { into 'backup/vendordeps' }
+    from('build.gradle') { into 'backup' }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
@@ -232,43 +141,7 @@ deployArtifact.jarTask = jar
 wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
 
-
+// Configure string concat to always inline compile
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
-    options.encoding = 'UTF-8'
-}
-
-// javadoc {
-//     title = "Yet Another Mechanism System API"
-//     destinationDir = file("$releasePath/javadocs")
-//     options {
-//         links "https://docs.oracle.com/en/java/javase/$javaVersion/docs/api/",
-//                 'https://github.wpilib.org/allwpilib/docs/release/java/',
-//                 'https://codedocs.revrobotics.com/java/',
-//                 'https://api.ctr-electronics.com/phoenix6/release/java/',
-//                 'https://api.ctr-electronics.com/phoenix/release/java/',
-//                 "https://www.kauailabs.com/public_files/navx-mxp/apidocs/java/"
-//         tags 'todo:X"',
-//             'apiNote:a:API Note:',
-//             'implSpec:a:Implementation Requirements:',
-//             'implNote:a:Implementation Note:'
-
-//     }
-// }
-ext.getCurrentArch = {
-    return NativePlatforms.desktop
-}
-
-def systemArch = getCurrentArch()
-
-model {
-  components {
-  }
-}
-
-// build.dependsOn javadoc
-// apply from: 'publish.gradle'
-
-wrapper {
-  gradleVersion = '8.14.3'
 }
