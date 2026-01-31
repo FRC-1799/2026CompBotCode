@@ -18,41 +18,63 @@ import frc.robot.Constants;
 import frc.robot.SystemManager;
 import swervelib.simulation.ironmaple.simulation.IntakeSimulation;
 
-public class simIntake extends Intake{
-    public IntakeSimulation intakeSim;
+public abstract class Intake extends SubsystemBase{
     
 
+    public static enum intakeState{
+        intaking,
+        resting,
+        backRun;
+
+    }
     
     intakeState state = intakeState.resting;
 
    
 
-    public simIntake(){
-        if (RobotBase.isReal()){
-            intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.simButRealTrain, Meters.of(0.7), IntakeSimulation.IntakeSide.FRONT, 40);
+
+
+    @Override 
+    public void periodic(){
+        
+
+
+        if (state==intakeState.intaking){
+            intake();
         }
         else{
-            intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.swerve.getMapleSimDrive().get(), Meters.of(0.7), IntakeSimulation.IntakeSide.FRONT, 40);
+            shutDown();
         }
+        
+
+        SmartDashboard.putNumber("fuelCount", getPieceCount());
+        SmartDashboard.putBoolean("intakeIsRunning", state==intakeState.intaking);
+
 
     }
 
 
-    public int getPieceCount(){
-        return intakeSim.getGamePiecesAmount();
+    public abstract int getPieceCount();
+
+
+   
+
+    public void stop(){
+        state=intakeState.resting;
+       
     }
 
-
-    protected void intake(){
-        intakeSim.startIntake();
+    public void start(){
+        state=intakeState.intaking;
     }
 
-    protected void shutDown(){
-        intakeSim.stopIntake();
-    }
+    protected abstract void intake();
 
+    protected abstract void shutDown();
+
+    /**Removes an game piece from a simulated intake if aplicable. This method will do nothing on a real intake*/
     public void removePiece(){
-        intakeSim.obtainGamePieceFromIntake();
+        return;
     }
 
 }

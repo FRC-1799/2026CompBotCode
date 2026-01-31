@@ -23,6 +23,11 @@ public class passing  extends Command{
 
     @Override 
     public void initialize(){
+    }
+  
+    @Override
+    public void execute(){
+
         SystemManager.shooter.startShooting();
     }
 

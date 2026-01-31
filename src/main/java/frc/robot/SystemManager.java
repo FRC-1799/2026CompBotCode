@@ -14,10 +14,13 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.simConfigs;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.Utils.utilFunctions;
 import frc.robot.subsystems.AutoManager;
 import frc.robot.subsystems.GeneralManager;
+import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.realIntake;
 import frc.robot.subsystems.Intake.simIntake;
 import frc.robot.subsystems.Shooter.simShooter;
 import frc.robot.subsystems.lidar.lidarInterface;
@@ -41,7 +44,7 @@ public class SystemManager{
 
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
-    public static simIntake intake;
+    public static Intake intake;
     public static simShooter shooter;
     public static Robot robot;
 
@@ -104,8 +107,9 @@ public class SystemManager{
         else{
             simButRealTrain = new realSimulatedDriveTrain();
         }
-        
-        intake = new simIntake();
+        if (simConfigs.intakeShouldBeSim) intake = new simIntake();
+        else intake = new realIntake();
+
         shooter = new simShooter();
 
 

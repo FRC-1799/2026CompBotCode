@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.Inch;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radian;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Seconds;
@@ -32,27 +33,17 @@ import frc.robot.Utils.utilFunctions;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnFly;
 
-public class simShooter extends SubsystemBase{
-    public enum shooterState{
-        resting, 
-        rev,
-        shooting
-    }
+public class simShooter extends Shooter{
+
         
     protected double cooldown=0;
     protected double matchTime = DriverStation.getMatchTime();
 
-    public shooterState state = shooterState.resting;
 
-
-    protected Pose3d currentGoal=FieldPosits.hubPose3d;
-    public StructPublisher<Rotation2d> rotationGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("shooter/RotationGoal", Rotation2d.struct).publish();
-    public BooleanPublisher isShootingPublisher = NetworkTableInstance.getDefault().getBooleanTopic("shooter/isShooting").publish();
-        
-    public static final double g = 9.8; 
     
         @Override
         public void periodic(){
+            super.periodic();
             cooldown-=Timer.getFPGATimestamp()-matchTime;
             matchTime=Timer.getFPGATimestamp();
             if (state==shooterState.shooting){
@@ -62,12 +53,6 @@ public class simShooter extends SubsystemBase{
                 }
             }
 
-            rotationGoalPublisher.set(new Rotation2d( getShotAngle(utilFunctions.getDistanceBetweenTwoPoints(
-                SystemManager.getSwervePose(), currentGoal.toPose2d()),
-                MetersPerSecond.of(8),
-                currentGoal.getMeasureZ().minus(shooterConstants.shooterHeight)
-            )));
-            isShootingPublisher.set(state==shooterState.shooting);
 
         }
     
@@ -75,7 +60,7 @@ public class simShooter extends SubsystemBase{
     public void shootInternal(){
             
         if (SystemManager.intake.getPieceCount()>0){
-            SystemManager.intake.intakeSim.obtainGamePieceFromIntake();
+            SystemManager.intake.removePiece();
             
             SimulatedArena.getInstance()
             .addGamePieceProjectile(new RebuiltFuelOnFly(
@@ -90,53 +75,14 @@ public class simShooter extends SubsystemBase{
                 // The height at which the fuel is ejected
                 shooterConstants.shooterHeight,
             // The initial speed of the fuel
-            MetersPerSecond.of(8),
+            MetersPerSecond.of(getFlywheelSpeed().in(RPM)*shooterConstants.SimRPMToMPS),
             // The fuel is ejected at a 35-degree slope
-            getShotAngle(utilFunctions.getDistanceBetweenTwoPoints(
-                SystemManager.getSwervePose(), currentGoal.toPose2d()),
-                MetersPerSecond.of(8),
-                currentGoal.getMeasureZ().minus(shooterConstants.shooterHeight)
-            )));
+            shooterConstants.shotAngle
+            ));
             
 
         }
     }
 
-    public void startShooting(){
-        state=shooterState.shooting;
-    }
-
-    public void stop(){
-        state = shooterState.resting;
-    }
-    
-
-    public Angle getShotAngle(Distance range, LinearVelocity fireSpeed, Distance heightDif){
-        if (!RobotBase.isReal()){
-            //Stolen from https://en.wikipedia.org/wiki/Projectile_motion#Angle_%CE%B8_required_to_hit_coordinate_(x,_y)
-
-            double v = fireSpeed.in(MetersPerSecond);
-            double x = range.in(Meters);
-            double y = heightDif.in(Meters);
-            return Radians.of(
-                Math.atan2(
-                    Math.pow(v, 2)+ 
-                    Math.sqrt(
-                        Math.pow(v, 4)-
-                        g*(g*x*x+2*y*v*v)
-                    ),
-                g*x));
-        }
-
-        return Radians.of(0);
-    }
-
-    public void setGoal(Pose3d goal){
-        currentGoal=goal;
-    }
-
-    public Pose3d getGoal(){
-        return currentGoal;
-    }
 
 }

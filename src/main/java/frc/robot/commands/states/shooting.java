@@ -28,6 +28,7 @@ public class shooting extends Command{
 
     @Override 
     public void initialize(){
+
         SystemManager.shooter.startShooting();
 
     }
