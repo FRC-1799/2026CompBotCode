@@ -57,9 +57,5 @@
     "edu.wpi.first.math.**.proto.*",
     "edu.wpi.first.math.**.struct.*",
   ],
-  "cSpell.words": [
-    "Auton",
-    "intaking"
-    "neccisary"
-  ]
+  "java.dependency.enableDependencyCheckup": false
 }
