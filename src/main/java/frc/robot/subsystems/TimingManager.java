@@ -1,12 +1,16 @@
 package frc.robot.subsystems;
 
-import java.lang.StackWalker.Option;
 import java.util.Optional;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class TimingManager {
+    /**
+     * Timing Manager that is able to return whether our alliance's hub is 
+     * active or not. This is done by finding the auto winner and active shift
+     * based on the time elapsed in the match. 
+    */
+
     public enum Shift {
         AUTO(0, 20, ActiveType.BOTH),
         TRANSITION(20, 30, ActiveType.BOTH),
@@ -36,8 +40,8 @@ public class TimingManager {
     public static boolean activeTeamHub = false;
 
     public static Optional<Alliance> getAutoWinner() {
-        String msg = DriverStation.getGameSpecificMessage();
-        char msgChar = msg.length() > 0 ? msg.charAt(0) : ' ';
+        String msg = DriverStation.getGameSpecificMessage(); 
+        char msgChar = msg.length() > 0 ? msg.charAt(0) : ' '; // the first charecter is the alliance that lost auto stage
         switch (msgChar) {
             case 'B':
                 return Optional.of(Alliance.Blue);
@@ -52,6 +56,7 @@ public class TimingManager {
         if (DriverStation.isAutonomous()) {
             if (DriverStation.getMatchTime() < 0) return DriverStation.getMatchTime();
             return 20 - DriverStation.getMatchTime(); // Subtracts from 20 so that timer counts up instead of down
+            
         } else if (DriverStation.isTeleop()) {
             if (DriverStation.getMatchTime() < 0) return DriverStation.getMatchTime();
             return 160 - DriverStation.getMatchTime();
@@ -89,57 +94,4 @@ public class TimingManager {
                 return false;
         }
     }
-
-
-
-
-    // public enum activeTeamHub {
-    //     NONE,
-    //     RED,
-    //     BLUE
-    // };
-
-    // public static activeTeamHub hub = activeTeamHub.NONE;
-    // public static String gameData;
-    // public static Timer timer = new Timer();
-    // public static boolean hubDataRecieved = false;
-    // public static TimerTask changeHubColor = new TimerTask() {
-    //     @Override
-    //     public void run() {
-    //         switchActiveHub();
-    //     }
-    // };
-
-
-
-    // public static void periodic() {
-    //     gameData = DriverStation.getGameSpecificMessage();
-    //     if(gameData.length() > 0) {
-    //         switch (gameData.charAt(0)) {
-    //             case 'B':
-    //                 hub = activeTeamHub.BLUE;
-    //                 timer.schedule(changeHubColor, 25);
-    //                 break;
-    //             case 'R':
-    //                 hub = activeTeamHub.RED;
-    //                 break;
-    //         }
-    //         timer.schedule(changeHubColor, constants.secondsBeforeHubColorSwitch);
-    //     }
-
-        
-    // }
-
-    // public static void switchActiveHub() {
-    //     switch (hub.toString()) {
-    //         case "BLUE":
-    //             hub = activeTeamHub.RED;
-    //         case "RED":
-    //             hub = activeTeamHub.BLUE;
-
-
-    //     }
-    // }
-
-    
 }
