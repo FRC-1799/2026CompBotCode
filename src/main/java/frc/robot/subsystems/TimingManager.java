@@ -4,12 +4,13 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
+/**
+ * Timing Manager that is able to return whether our alliance's hub is 
+ * active or not. This is done by finding the auto winner and active shift
+ * based on the time elapsed in the match. 
+*/
 public class TimingManager {
-    /**
-     * Timing Manager that is able to return whether our alliance's hub is 
-     * active or not. This is done by finding the auto winner and active shift
-     * based on the time elapsed in the match. 
-    */
+
 
     public enum Shift {
         AUTO(0, 20, ActiveType.BOTH),
@@ -56,7 +57,7 @@ public class TimingManager {
         if (DriverStation.isAutonomous()) {
             if (DriverStation.getMatchTime() < 0) return DriverStation.getMatchTime();
             return 20 - DriverStation.getMatchTime(); // Subtracts from 20 so that timer counts up instead of down
-            
+
         } else if (DriverStation.isTeleop()) {
             if (DriverStation.getMatchTime() < 0) return DriverStation.getMatchTime();
             return 160 - DriverStation.getMatchTime();
@@ -95,3 +96,6 @@ public class TimingManager {
         }
     }
 }
+
+
+
