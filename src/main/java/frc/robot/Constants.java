@@ -139,6 +139,8 @@ public final class Constants
   public static class controllerIDs{
     public static final int commandXboxController1ID=0;
     public static final int commandXboxController2ID=1;
+
+    public static final String controllerConfigFilePath = "src/main/java/frc/robot/Utils/controllerConfig.json";
   }
 
   public static class shooterConstants{
