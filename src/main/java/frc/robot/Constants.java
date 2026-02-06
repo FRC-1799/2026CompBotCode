@@ -151,6 +151,8 @@ public final class Constants
     public static final Angle shotAngle = Degrees.of(65);
     public static final double SimRPMToMPS=0.002;
     //public static final simMap = InterpolatingDoubleTreeMap
+    public static final int indexerID = 0;
+    public static final double indexerSpeed=0.2;
 
 
   }
