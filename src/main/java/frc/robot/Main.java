@@ -25,8 +25,8 @@ public final class Main
   public static void main(String... args)
   {
       // TODO make next line show code version and  short commit SHA 
-      System.out.println("**** Version: 67 ****");
-
+    System.out.printf("Version: %s Branch: %s\n", BuildConstants.VERSION, BuildConstants.GIT_BRANCH);
+    
     RobotBase.startRobot(Robot::new);
   }
 }
