@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public class TimingManager {
 
 
-    public enum Shift {
+    protected enum Shift {
         AUTO(0, 20, ActiveType.BOTH),
         TRANSITION(20, 30, ActiveType.BOTH),
         SHIFT_1(30, 55, ActiveType.AUTO_LOSER),
@@ -34,15 +34,13 @@ public class TimingManager {
         }
     }
 
-    private enum ActiveType {
+    protected enum ActiveType {
         BOTH,
         AUTO_WINNER,
         AUTO_LOSER
     }
 
-    public static boolean activeTeamHub = false;
-
-    public static Optional<Alliance> getAutoWinner() {
+    protected static Optional<Alliance> getAutoWinner() {
         String msg = DriverStation.getGameSpecificMessage(); 
         char msgChar = msg.length() > 0 ? msg.charAt(0) : ' '; // the first charecter is the alliance that lost auto stage
         switch (msgChar) {
@@ -55,7 +53,7 @@ public class TimingManager {
         }
     }
 
-    public static double getMatchTime() {
+    protected static double getMatchTime() {
         if (DriverStation.isAutonomous()) {
             if (DriverStation.getMatchTime() < 0) return DriverStation.getMatchTime();
             return 20 - DriverStation.getMatchTime(); // Subtracts from 20 so that timer counts up instead of down
