@@ -93,19 +93,19 @@ public class TimingManager {
         Optional<Alliance> currentAlliance = DriverStation.getAlliance();
 
             switch (currentShift.activeType) {
-            case BOTH:
-                return true;
+                case BOTH:
+                    return true;
 
-            case AUTO_WINNER:
-                return autoWinner.isPresent() && currentAlliance.isPresent() && autoWinner.get() == currentAlliance.get(); 
+                case AUTO_WINNER:
+                    return autoWinner.isPresent() && currentAlliance.isPresent() && autoWinner.get() == currentAlliance.get(); 
 
-            case AUTO_LOSER:
-                return autoWinner.isPresent() && currentAlliance.isPresent() && autoWinner.get() != currentAlliance.get();```
-            
-            default:
-                // Will not run unless a new value is added to ActiveType
-                return false;
-        }
+                case AUTO_LOSER:
+                    return autoWinner.isPresent() && currentAlliance.isPresent() && autoWinner.get() != currentAlliance.get();```
+                
+                default:
+                    // Will not run unless a new value is added to ActiveType
+                    return false;
+            }
     }
 
     public static double timeRemaining() {
