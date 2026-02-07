@@ -43,7 +43,7 @@ import frc.robot.Constants;
 
 import frc.robot.SystemManager;
 import frc.robot.Utils.utilFunctions;
-import frc.robot.commands.auto.smallAutoDrive;
+import frc.robot.commands.swervedrive.smallAutoDrive;
 
 import java.io.IOException;
 import java.util.Optional;

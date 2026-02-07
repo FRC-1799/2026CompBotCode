@@ -17,8 +17,8 @@ import frc.robot.Constants.AutonConstants;
 import frc.robot.FieldPosits;
 import frc.robot.SystemManager;
 import frc.robot.Utils.utilFunctions;
-import frc.robot.commands.auto.smallAutoDrive;
-import frc.robot.commands.auto.spin;
+import frc.robot.commands.swervedrive.smallAutoDrive;
+import frc.robot.commands.swervedrive.spin;
 
 
 /**An additionally state manager to handle fancier states with autoDrive. */
