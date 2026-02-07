@@ -23,6 +23,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.auto.DepoAuto;
+import frc.robot.commands.auto.MidGrab;
+import frc.robot.commands.auto.OutpostAuto;
+import frc.robot.commands.swervedrive.spin;
 import frc.robot.subsystems.AutoManager;
 import frc.robot.subsystems.GeneralManager;
 
@@ -66,7 +70,11 @@ public class Robot extends TimedRobot{
         }
 
 
-        
+        autoChooser.setDefaultOption("spin", new spin());
+        autoChooser.addOption("DoubleMid", new MidGrab());
+
+        autoChooser.addOption("depo", new SequentialCommandGroup(new DepoAuto(())));
+        autoChooser.addOption("outpost", new SequentialCommandGroup(new OutpostAuto()));
         SmartDashboard.putData("auto chooser", autoChooser);
 
     
