@@ -35,7 +35,7 @@ import frc.robot.subsystems.vision.realVision;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 
 
-public class SystemManager{
+public class SystemManager {
     public static SwerveSubsystem swerve;
 
     public static SimulatedArena simField;

@@ -1,4 +1,5 @@
 {
     "Deadzone": 0.1,
-    "Points Array": [0.1, 1]
+    "Points Array X": [0.1, 1],
+    "Points Array Y": [0.1, 1]
 }

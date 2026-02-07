@@ -141,6 +141,9 @@ public final class Constants
     public static final int commandXboxController2ID=1;
 
     public static final String controllerConfigFilePath = "src/main/java/frc/robot/Utils/controllerConfig.json";
+
+    public static final double defaultDeadzone = 0.1;
+    public static final int degreeOfCurveFit = 3;
   }
 
   public static class shooterConstants{
