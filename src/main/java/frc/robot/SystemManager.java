@@ -19,6 +19,7 @@ import frc.robot.Constants.AutonConstants;
 import frc.robot.Utils.utilFunctions;
 import frc.robot.subsystems.AutoManager;
 import frc.robot.subsystems.GeneralManager;
+import frc.robot.subsystems.TimingManager;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.realIntake;
 import frc.robot.subsystems.Intake.simIntake;
@@ -130,6 +131,7 @@ public class SystemManager{
 
         GeneralManager.periodic();
         AutoManager.periodic();
+        TimingManager.periodic();
     }
 
     /** @return the current pose of the robot */
