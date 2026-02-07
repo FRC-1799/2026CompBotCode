@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -55,15 +56,21 @@ public class TimingManager {
     }
 
     protected static double getMatchTime() {
-        if (DriverStation.isAutonomous()) {
-            if (DriverStation.getMatchTime() < 0) return DriverStation.getMatchTime();
-            return 20 - DriverStation.getMatchTime(); // Subtracts from 20 so that timer counts up instead of down
+        if (DriverStation.isFMSAttached()){
+            if (DriverStation.isAutonomous()) {
+                if (DriverStation.getMatchTime() < 0) return DriverStation.getMatchTime();
+                return 20 - DriverStation.getMatchTime(); // Subtracts from 20 so that timer counts up instead of down
 
-        } else if (DriverStation.isTeleop()) {
-            if (DriverStation.getMatchTime() < 0) return DriverStation.getMatchTime();
-            return 160 - DriverStation.getMatchTime();
+            } else if (DriverStation.isTeleop()) {
+                if (DriverStation.getMatchTime() < 0) return DriverStation.getMatchTime();
+                return 160 - DriverStation.getMatchTime();
+            }
+            return -1;
         }
-        return -1;
+        else {
+            return Timer.getFPGATimestamp();
+        }
+        
     }
 
     public static Shift getCurrentShift() {
@@ -72,7 +79,7 @@ public class TimingManager {
 
         for (Shift shift : Shift.values()) {
             if (shift.startTime < matchTime && matchTime < shift.endTime) { 
-                return Shift.NA;
+                return shift;
             }
         }
         return Shift.NA;
@@ -102,7 +109,14 @@ public class TimingManager {
     }
 
     public static double timeRemaining() {
-        return getMatchTime() - getCurrentShift().endTime;
+        double time = getCurrentShift().endTime;
+        if (time > 0) {
+            return time - getMatchTime();
+        }
+        else {
+            return -1;
+        }
+        
 
     }
 
