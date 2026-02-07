@@ -100,7 +100,7 @@ public class TimingManager {
                     return autoWinner.isPresent() && currentAlliance.isPresent() && autoWinner.get() == currentAlliance.get(); 
 
                 case AUTO_LOSER:
-                    return autoWinner.isPresent() && currentAlliance.isPresent() && autoWinner.get() != currentAlliance.get();```
+                    return autoWinner.isPresent() && currentAlliance.isPresent() && autoWinner.get() != currentAlliance.get();
                 
                 default:
                     // Will not run unless a new value is added to ActiveType
