@@ -7,6 +7,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
@@ -156,7 +157,17 @@ public final class Constants
   }
 
 
-  
+  public static class limelightConstants {
+
+    // Camera pose relative to robot center (x forward, y left, z up, degrees)
+    public static final Distance forwardOffset = Meters.of(0);
+    public static final Distance sideOffset = Meters.of(0);
+    public static final Distance heightOffset = Meters.of(0);
+    public static final Angle roll = Degrees.of(0);
+    public static final Angle pitch = Degrees.of(0);
+    public static final Angle yaw = Degrees.of(0);
+
+  }
 
   //constants used for the simulated camera
   public static class cameraConstants{
