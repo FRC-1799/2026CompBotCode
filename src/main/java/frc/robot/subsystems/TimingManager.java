@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Timing Manager that is able to return whether our alliance's hub is 
@@ -70,7 +71,7 @@ public class TimingManager {
         if (matchTime < 0) return Shift.NA;
 
         for (Shift shift : Shift.values()) {
-            if (matchTime < shift.endTime) {
+            if (shift.startTime < matchTime && matchTime < shift.endTime) { 
                 return Shift.NA;
             }
         }
@@ -98,6 +99,16 @@ public class TimingManager {
                 // Will not run unless a new value is added to ActiveType
                 return false;
         }
+    }
+
+    public static double timeRemaining() {
+        return getMatchTime() - getCurrentShift().endTime;
+
+    }
+
+    public static void periodic() {
+        SmartDashboard.putBoolean("Timer/IsActive", isActive());
+        SmartDashboard.putNumber("Timer/TimeRemainingInStep", timeRemaining());
     }
 }
 
