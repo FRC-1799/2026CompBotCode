@@ -21,6 +21,6 @@ public class OutpostAuto extends SequentialCommandGroup{
                 SystemManager.getSwervePose().getY()-FieldPosits.mid.getY()))
             ),
             AutoManager.startShooting()
-        )
+        );
     }
 }
