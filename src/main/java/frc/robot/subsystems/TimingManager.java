@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TimingManager {
 
 
-    protected enum Shift {
+    public enum Shift {
         AUTO(0, 20, ActiveType.BOTH),
         TRANSITION(20, 30, ActiveType.BOTH),
         SHIFT_1(30, 55, ActiveType.AUTO_LOSER),
@@ -41,7 +41,7 @@ public class TimingManager {
         AUTO_LOSER
     }
 
-    protected static Optional<Alliance> getAutoWinner() {
+    public static Optional<Alliance> getAutoWinner() {
         String msg = DriverStation.getGameSpecificMessage(); 
         char msgChar = msg.length() > 0 ? msg.charAt(0) : ' '; // the first charecter is the alliance that lost auto stage
         switch (msgChar) {
