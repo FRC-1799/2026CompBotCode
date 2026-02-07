@@ -97,7 +97,7 @@ public class TimingManager {
                 return true;
 
             case AUTO_WINNER:
-                return autoWinner.isPresent() && autoWinner.get().toString() == currentAlliance.toString(); 
+                return autoWinner.isPresent() && currentAlliance.isPresent() && autoWinner.get() == currentAlliance.get(); 
 
             case AUTO_LOSER:
                 return autoWinner.isPresent() && autoWinner.get().toString() != currentAlliance.toString();
