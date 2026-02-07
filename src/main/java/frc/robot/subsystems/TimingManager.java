@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.Optional;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
@@ -19,7 +20,8 @@ public class TimingManager {
         SHIFT_2(55, 80, ActiveType.AUTO_WINNER),
         SHIFT_3(80, 105, ActiveType.AUTO_LOSER),
         SHIFT_4(105, 130, ActiveType.AUTO_WINNER),
-        ENDGAME(130, 160, ActiveType.BOTH);
+        ENDGAME(130, 160, ActiveType.BOTH),
+        NA(-1, -1, ActiveType.BOTH);
 
         final int startTime;
         final int endTime;
@@ -65,33 +67,37 @@ public class TimingManager {
         return -1;
     }
 
-    public static Optional<Shift> getCurrentShift() {
+    public static Shift getCurrentShift() {
         double matchTime = getMatchTime();
-        if (matchTime < 0) return Optional.empty();
+        if (matchTime < 0) return Shift.NA;
 
         for (Shift shift : Shift.values()) {
             if (matchTime < shift.endTime) {
-                return Optional.of(shift);
+                return Shift.NA;
             }
         }
-        return Optional.empty();
+        return Shift.NA;
     }
 
 
 
-    public static boolean isActive(Alliance alliance, Shift shift) {
+    public static boolean isActive() {
         Optional<Alliance> autoWinner = getAutoWinner();
-        switch (shift.activeType) {
+        Shift currentShift = getCurrentShift();
+        Optional<Alliance> currentAlliance = DriverStation.getAlliance();
+
+            switch (currentShift.activeType) {
             case BOTH:
                 return true;
 
             case AUTO_WINNER:
-                return autoWinner.isPresent() && autoWinner.get() == alliance;
+                return autoWinner.isPresent() && autoWinner.get().toString() == currentAlliance.toString(); 
 
             case AUTO_LOSER:
-                return autoWinner.isPresent() && autoWinner.get() != alliance;
-                
+                return autoWinner.isPresent() && autoWinner.get().toString() != currentAlliance.toString();
+            
             default:
+                // Will not run unless a new value is added to ActiveType
                 return false;
         }
     }
