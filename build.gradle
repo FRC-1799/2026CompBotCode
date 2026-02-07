@@ -11,6 +11,7 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2026.2.1"
     id 'edu.wpi.first.GradleJni' version '1.1.0'
     id 'edu.wpi.first.GradleVsCode' version '2.1.0'
+    id "com.peterabeles.gversion" version "1.10"
 }
 
 java {
@@ -152,4 +153,14 @@ wpi.java.configureTestTasks(test)
 // Configure string concat to always inline compile
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
+}
+
+project.compileJava.dependsOn(createVersionFile)
+gversion {
+  srcDir       = "src/main/java/"
+  classPackage = "frc.robot"
+  className    = "BuildConstants"
+  dateFormat   = "yyyy-MM-dd HH:mm:ss z"
+  timeZone     = "America/Denver" // Use preferred time zone
+  indent       = "  "
 }
