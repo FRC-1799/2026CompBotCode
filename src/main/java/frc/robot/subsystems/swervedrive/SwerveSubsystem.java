@@ -20,6 +20,7 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -27,6 +28,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -48,7 +50,7 @@ import frc.robot.commands.auto.smallAutoDrive;
 import java.io.IOException;
 import java.util.Optional;
 
-
+import org.dyn4j.geometry.Rotation;
 import org.json.simple.parser.ParseException;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
@@ -647,6 +649,10 @@ public class SwerveSubsystem extends SubsystemBase
     return getPose().getRotation();
   }
 
+  public Rotation3d getRotation3d() {
+    return swerveDrive.getGyroRotation3d();
+  }
+
   /**
    * Get the chassis speeds based on controller input of 2 joysticks. One for speeds in which direction. The other for
    * the angle of the robot.
@@ -745,6 +751,15 @@ public class SwerveSubsystem extends SubsystemBase
   {
     return swerveDrive.getPitch();
   }
+
+  public AngularVelocity getYawVelocity() {
+    return swerveDrive.getGyro().getYawAngularVelocity();
+  }
+
+  public AngularVelocity getPitchVelocity() {
+    return swerveDrive.get;
+  }
+
 
   /**
    * Add a fake vision reading for testing purposes.
