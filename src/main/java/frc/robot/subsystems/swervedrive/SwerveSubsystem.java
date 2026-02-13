@@ -756,8 +756,8 @@ public class SwerveSubsystem extends SubsystemBase
     return swerveDrive.getGyro().getYawAngularVelocity();
   }
 
-  public AngularVelocity getPitchVelocity() {
-    return swerveDrive.get;
+  public Object getIMU() {
+    return swerveDrive.getGyro().getIMU();
   }
 
 

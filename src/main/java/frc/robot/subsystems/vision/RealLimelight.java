@@ -8,10 +8,12 @@ import limelight.networktables.LimelightSettings.LEDMode;
 import limelight.networktables.Orientation3d;
 import limelight.networktables.PoseEstimate;
 
-import edu.wpi.first.math.geometry.DegreesPerSecond;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
 import java.util.Optional;
 
 import org.photonvision.estimation.VisionEstimation;
+
+import com.ctre.phoenix6.hardware.core.CorePigeon2;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +25,7 @@ public class RealLimelight implements aprilTagInterface {
     Limelight limelight;
     SwerveSubsystem swerve;
     LimelightPoseEstimator visionEstimate;
+    CorePigeon2 gyro;
 
     // double robotYaw;
     // SwerveSubsystem swerve;
@@ -38,7 +41,13 @@ public class RealLimelight implements aprilTagInterface {
 
         this.swerve = swerve;
 
-        visionEstimate = limelight.createPoseEstimator(EstimationMode.MEGATAG2);
+        gyro = (CorePigeon2) swerve.getIMU();
+
+
+
+
+
+        visionEstimate = limelight.createPoseEstimator(EstimationMode.MEGATAG1);
 
         // // Camera pose relative to robot center (x forward, y left, z up, degrees)
         // LimelightHelpers.setCameraPose_RobotSpace("",
@@ -56,13 +65,14 @@ public class RealLimelight implements aprilTagInterface {
 
     @Override
     public void periodic() {
-        // Get MegaTag2 pose
         limelight.getSettings()
-            .withRobotOrientation(new Orientation3d(swerve.getRotation3d(),
-                                                    new AngularVelocity3d(DegreesPerSecond.of(swerve.getPitchVelocity()),
-                                                                        DegreesPerSecond.of(gyro.getRollVelocity()),
-                                                                        DegreesPerSecond.of(gyro.getYawVelocity()))))
-            .save();
+                .withRobotOrientation(new Orientation3d(gyro.get(),
+                                                        new AngularVelocity3d(DegreesPerSecond.of(gyro.getPitchVelocity()),
+                                                                            DegreesPerSecond.of(gyro.getRollVelocity()),
+                                                                            DegreesPerSecond.of(gyro.getYawVelocity()))))
+                .save();
+                
+
 
     }
 
