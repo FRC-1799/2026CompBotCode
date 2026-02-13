@@ -43,18 +43,18 @@ public abstract class Shooter extends SubsystemBase{
       private final TalonFX                   ShooterMotor    = new TalonFX(shooterConstants.mainMotorID);
 
   private final SmartMotorControllerConfig motorConfig = new SmartMotorControllerConfig(this)
-      .withClosedLoopController(1, 0, 0, RPM.of(10000), RPM.per(Second).of(60))
+      .withClosedLoopController(shooterConstants.P, shooterConstants.I, shooterConstants.D, RPM.of(10000), RPM.per(Second).of(1000))
       .withIdleMode(MotorMode.COAST)
       .withGearing(1)
       .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
-      .withStatorCurrentLimit(Amps.of(40))
+      .withStatorCurrentLimit(Amps.of(60))
       .withMotorInverted(false)
       .withClosedLoopRampRate(Seconds.of(0.25))
       .withOpenLoopRampRate(Seconds.of(0.25))
-      .withFeedforward(new SimpleMotorFeedforward(0.27937, 0.089836, 0.014557))
-      .withSimFeedforward(new SimpleMotorFeedforward(0.27937, 0.089836, 0.014557))
+      .withFeedforward(shooterConstants.shooterFeedForward)
+      .withSimFeedforward(shooterConstants.shooterFeedForward)
       .withControlMode(ControlMode.CLOSED_LOOP)
-      .withFollowers(Pair.of(new TalonFX(shooterConstants.followerMotorID),false));
+      .withFollowers(Pair.of(new TalonFX(shooterConstants.followerMotorID),true));
   
 
 

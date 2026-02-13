@@ -17,6 +17,7 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.pathplanner.lib.config.PIDConstants;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -108,7 +109,7 @@ public final class Constants
 
   public static class IntakeConstants{
     public static final int intakeCanID = 1;
-    public static final double intakeSpeed=-0.2;
+    public static final double intakeSpeed=-0.55;
   }
 
   /**Constants used for sim */
@@ -145,9 +146,15 @@ public final class Constants
 
     public static final Distance shooterHeight = Inches.of(21);
     public static final Angle shootingTolerance = Degrees.of(2);
-    public static final AngularVelocity shootingSpeed = RPM.of(4000);
-    public static final int mainMotorID=0;
-    public static final int followerMotorID=0;
+    public static final AngularVelocity shootingSpeed = RPM.of(-4000);
+    public static final double P = 5;
+    public static final double I = 0;
+    public static final double D = 0;
+    public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0, 0, 0);
+
+    // public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0.27937, 0.089836, 0.014557);
+    public static final int mainMotorID=2;
+    public static final int followerMotorID=1;
     public static final Angle shotAngle = Degrees.of(65);
     public static final double SimRPMToMPS=0.002;
     //public static final simMap = InterpolatingDoubleTreeMap
