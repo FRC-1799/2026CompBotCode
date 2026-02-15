@@ -110,6 +110,7 @@ public final class Constants
   public static class IntakeConstants{
     public static final int intakeCanID = 1;
     public static final double intakeSpeed=-0.55;
+    public static final double backRunSpeed=0.55;
   }
 
   /**Constants used for sim */

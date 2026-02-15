@@ -116,6 +116,7 @@ public class ControlChooser {
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
         xbox1.a(loop).onTrue(AutoManager.startPassing()).onFalse(GeneralManager.startResting());
+        xbox1.b(loop).onTrue(GeneralManager.startspitting()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.spitting)));
 
 
 
