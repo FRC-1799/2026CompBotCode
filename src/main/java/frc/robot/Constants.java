@@ -145,18 +145,35 @@ public final class Constants
   public static class shooterConstants{
 
     public static final Distance shooterHeight = Inches.of(21);
-    public static final Angle shootingTolerance = Degrees.of(2);
-    public static final AngularVelocity shootingSpeed = RPM.of(-4000);
-    public static final double P = 5;
-    public static final double I = 0;
-    public static final double D = 0;
-    public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0, 0, 0);
-
-    // public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0.27937, 0.089836, 0.014557);
-    public static final int mainMotorID=2;
-    public static final int followerMotorID=1;
+    
     public static final Angle shotAngle = Degrees.of(65);
     public static final double SimRPMToMPS=0.002;
+
+
+    public static final class topMotorConstants{
+      public static final double shootingSpeedDutyCycle = 0;
+      public static final double P = 5;
+      public static final double I = 0;
+      public static final double D = 0;
+      public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0, 0, 0);
+      public static final AngularVelocity shootingSpeedRPM = RPM.of(3000);
+      public static final Distance wheelRadius = Inches.of(4);
+      public static final double gearReduction = 2;
+      public static final int canID=2;
+    }
+    public static final class bottomMotorConstants{
+      public static final double shootingSpeedDutyCycle = 0;
+      public static final double P = 5;
+      public static final double I = 0;
+      public static final double D = 0;
+      public static final double gearReduction = 1;
+      public static final Distance wheelRadius = Inches.of(3);
+      public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0, 0, 0);
+      public static final AngularVelocity shootingSpeedRPM = RPM.of(0);
+      public static final int canID=1;
+    }
+
+
     //public static final simMap = InterpolatingDoubleTreeMap
 
 
