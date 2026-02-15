@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -48,7 +49,7 @@ public class AutoManager{
                             FieldPosits.hubPose2d)
 
                     )),
-                    new InstantCommand(),
+                     SystemManager.swerve.driveToPose(new Pose2d(SystemManager.getSwervePose().getTranslation(), utilFunctions.getAngleBetweenTwoPoints(new Pose2d(SystemManager.getSwervePose().getTranslation(), new Rotation2d()), FieldPosits.hubPose2d))),
                     ()->!FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
                 );}
             ,new HashSet<Subsystem>()),
@@ -166,6 +167,7 @@ public class AutoManager{
 
     public static void periodic(){
         SmartDashboard.putString("AutoDrive/State", state.toString());
+        SmartDashboard.putBoolean("Auto/Drive is active", state.getDriveCommand()!=null&&CommandScheduler.getInstance().isScheduled(state.getDriveCommand()));
         if (state!=autoDriveState.resting)
             if (state.isHappy()){
                 if (state.getHappyCommand()!=null)state.getHappyCommand().schedule();

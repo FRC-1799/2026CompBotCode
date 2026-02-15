@@ -73,8 +73,8 @@ public class Robot extends TimedRobot{
         autoChooser.setDefaultOption("spin", new spin());
         autoChooser.addOption("DoubleMid", new MidGrab());
 
-        autoChooser.addOption("depo", new SequentialCommandGroup(new DepoAuto(())));
-        autoChooser.addOption("outpost", new SequentialCommandGroup(new OutpostAuto()));
+        autoChooser.addOption("depo", new DepoAuto());
+        autoChooser.addOption("outpost", new OutpostAuto());
         SmartDashboard.putData("auto chooser", autoChooser);
 
     
@@ -158,7 +158,7 @@ public class Robot extends TimedRobot{
     public void autonomousInit()
     {
 
-      //autoChooser.getSelected().schedule();
+      autoChooser.getSelected().schedule();
 
     }
 

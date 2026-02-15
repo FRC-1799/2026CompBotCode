@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Utils.BetterTrigger;
 import frc.robot.Utils.utilFunctions;
-
+import frc.robot.commands.auto.DepoAuto;
+import frc.robot.commands.auto.MidGrab;
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
 import frc.robot.subsystems.AutoManager;
@@ -116,7 +117,7 @@ public class ControlChooser {
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
         xbox1.a(loop).onTrue(AutoManager.startPassing()).onFalse(GeneralManager.startResting());
-
+        xbox1.b(loop).onTrue(new MidGrab());
 
 
         return loop;

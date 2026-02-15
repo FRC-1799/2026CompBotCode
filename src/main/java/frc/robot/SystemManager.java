@@ -160,7 +160,8 @@ public class SystemManager{
     public static boolean swerveIsAtGoal(){
         Pose2d error = SystemManager.getSwervePose().relativeTo(autoDriveGoal);
         //System.out.println(error);
-        return utilFunctions.pythagorean(error.getX(), error.getY())<AutonConstants.autoDriveScoreTolerance && error.getRotation().getDegrees()<AutonConstants.angleTolerance;
+        return utilFunctions.pythagorean(error.getX(), error.getY())<AutonConstants.autoDriveScoreTolerance &&
+             Math.abs(autoDriveGoal.getRotation().getDegrees()-SystemManager.getSwervePose().getRotation().getDegrees())<AutonConstants.angleTolerance;
     }
 
 
