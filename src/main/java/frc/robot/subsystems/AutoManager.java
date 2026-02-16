@@ -167,7 +167,8 @@ public class AutoManager{
 
     public static void periodic(){
         SmartDashboard.putString("AutoDrive/State", state.toString());
-        SmartDashboard.putBoolean("Auto/Drive is active", state.getDriveCommand()!=null&&CommandScheduler.getInstance().isScheduled(state.getDriveCommand()));
+        SmartDashboard.putBoolean("AutoDrive/Drive is active", state.getDriveCommand()!=null&&CommandScheduler.getInstance().isScheduled(state.getDriveCommand()));
+        SmartDashboard.putString("AutoDrive/CurrentDrive", SystemManager.swerve.getCurrentCommand()!=null?SystemManager.swerve.getCurrentCommand().getName() : "NULL");
         if (state!=autoDriveState.resting)
             if (state.isHappy()){
                 if (state.getHappyCommand()!=null)state.getHappyCommand().schedule();
