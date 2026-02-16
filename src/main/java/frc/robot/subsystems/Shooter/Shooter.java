@@ -108,7 +108,8 @@ public abstract class Shooter extends SubsystemBase{
     @Override
     public void periodic(){
 
-        SmartDashboard.putNumber("Shooter/ShooterSpeed", getTopFlywheelSpeed().in(RPM));
+        SmartDashboard.putNumber("Shooter/ShooterTopSpeed", getTopFlywheelSpeed().in(RPM));
+        SmartDashboard.putNumber("Shooter/ShooterBottomSpeed", getBottomFlywheelSpeed().in(RPM));
         SmartDashboard.putString("Shooter/ShooterState", state.toString());
         
         
