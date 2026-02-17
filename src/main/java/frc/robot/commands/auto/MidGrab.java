@@ -20,16 +20,13 @@ public class MidGrab extends SequentialCommandGroup{
                 SystemManager.getSwervePose().getY()-FieldPosits.mid.getY()))
             ),
             AutoManager.startShooting(),
-            new WaitUntilCommand(()->SystemManager.intake.getPieceCount()==0),
             
             GeneralManager.startIntaking(),
             SystemManager.swerve.driveToPose(new Pose2d(FieldPosits.mid, new Rotation2d(
                 SystemManager.getSwervePose().getX()-FieldPosits.mid.getX(),
                 SystemManager.getSwervePose().getY()-FieldPosits.mid.getY()))
             ),
-            AutoManager.startShooting(),
-            GeneralManager.startShooting()
-
+            AutoManager.startShooting()
         );
 
     }

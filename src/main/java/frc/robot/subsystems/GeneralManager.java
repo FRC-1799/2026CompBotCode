@@ -53,7 +53,7 @@ public class GeneralManager{
       subsystems.add(SystemManager.intake);
       subsystems.add(SystemManager.shooter);
 
-      subsystemsPlusSwerve=Set.copyOf(subsystems);
+      subsystemsPlusSwerve=new HashSet<>(subsystems);
       subsystemsPlusSwerve.add(SystemManager.swerve);
 
     }

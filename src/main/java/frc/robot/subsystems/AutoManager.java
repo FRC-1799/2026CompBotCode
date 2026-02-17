@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.FieldPosits;
 import frc.robot.SystemManager;
@@ -31,30 +33,25 @@ import frc.robot.commands.swervedrive.spin;
 /**An additionally state manager to handle fancier states with autoDrive. */
 public class AutoManager{
     public enum autoDriveState{
-        resting(()->{return new SemiAutoState(new RunCommand(()->{}));}),
+        resting(new SemiAutoState(new RunCommand(()->{}))),
 
-        intakeHandoff(()->{return new IntakeHandoff();}),
-        shootHandoff(()->{return new ShootHandoff();}),
-        passing(()->{return new PassingHandoff();}),
-        spin(()->{return new SemiAutoState(new spin());});
+        intakeHandoff(new IntakeHandoff()),
+        shootHandoff(new ShootHandoff()),
+        passing(new PassingHandoff()),
+        spin(new SemiAutoState(new spin()));
 
-        protected Supplier<SemiAutoState> stateSupplier;
+        protected SemiAutoState state;
 
-        private autoDriveState(Supplier<SemiAutoState> stateSupplier){
-            this.stateSupplier = stateSupplier;
+        private autoDriveState(SemiAutoState stateSupplier){
+            this.state = stateSupplier;
         }
 
-        public Command getDriveCommand(){
-            return driveCommand;
+        public SemiAutoState getStateCommand(){
+            return state;
         }
 
-        public Command getHappyCommand(){
-            return happyCommand;
-        }
-
-        public boolean isHappy(){
-            
-            return happySupplier!=null&& happySupplier.getAsBoolean();
+        public boolean isScheduled(){
+            return state.isScheduled();
         }
 
         
@@ -65,12 +62,10 @@ public class AutoManager{
     protected static autoDriveState state = autoDriveState.resting;
 
     public static void changeState(autoDriveState state){
-        if (state.getDriveCommand()!=null){
-            state.getDriveCommand().cancel();
-        }
+        AutoManager.state.state.cancel();
 
         AutoManager.state=state;
-        if (AutoManager.state.getDriveCommand()!=null) AutoManager.state.getDriveCommand().schedule();
+        state.state.schedule();
     }
 
     public static void resting(){
@@ -78,7 +73,7 @@ public class AutoManager{
     }
 
     public static Command startResting(){
-        return new InstantCommand(AutoManager::resting);
+        return new SequentialCommandGroup(new InstantCommand(AutoManager::resting), new WaitUntilCommand(()->{return state!=autoDriveState.resting;}));
     }
 
     public static void intake(){
@@ -86,7 +81,7 @@ public class AutoManager{
     }
 
     public static Command startIntake(){
-        return new InstantCommand(AutoManager::intake);
+        return new SequentialCommandGroup(new InstantCommand(AutoManager::intake), new WaitUntilCommand(()->{return state!=autoDriveState.intakeHandoff;}));
     }
 
     public static void shooting(){
@@ -94,7 +89,7 @@ public class AutoManager{
     }
 
     public static Command startShooting(){
-        return new InstantCommand(AutoManager::shooting);
+        return new SequentialCommandGroup(new InstantCommand(AutoManager::shooting), new WaitUntilCommand(()->{return state!=autoDriveState.shootHandoff;}));
     }
 
     public static void passing(){
@@ -102,7 +97,7 @@ public class AutoManager{
     }
     
     public static Command startPassing(){
-        return new InstantCommand(AutoManager::passing);
+        return new SequentialCommandGroup(new InstantCommand(AutoManager::passing), new WaitUntilCommand(()->{return state!=autoDriveState.passing;}));
     }
 
     public static void spin(){
@@ -110,16 +105,15 @@ public class AutoManager{
     }
 
     public static Command startSpin(){
-        return new InstantCommand(AutoManager::spin);
+        return new SequentialCommandGroup(new InstantCommand(AutoManager::spin), new WaitUntilCommand(()->{return state!=autoDriveState.spin;}));
     }
 
     public static void periodic(){
         SmartDashboard.putString("AutoDrive/State", state.toString());
-        SmartDashboard.putBoolean("AutoDrive/Drive is active", state.getDriveCommand()!=null&&CommandScheduler.getInstance().isScheduled(state.getDriveCommand()));
+        SmartDashboard.putBoolean("AutoDrive/Drive is active", state.isScheduled());
         SmartDashboard.putString("AutoDrive/CurrentDrive", SystemManager.swerve.getCurrentCommand()!=null?SystemManager.swerve.getCurrentCommand().getName() : "NULL");
         if (state!=autoDriveState.resting)
-            if (state.isHappy()){
-                if (state.getHappyCommand()!=null)state.getHappyCommand().schedule();
+            if (!state.isScheduled()){
                 resting();
             }
     }
