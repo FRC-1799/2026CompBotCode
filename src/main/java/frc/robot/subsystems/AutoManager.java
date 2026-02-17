@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,11 +14,16 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.FieldPosits;
 import frc.robot.SystemManager;
 import frc.robot.Utils.utilFunctions;
+import frc.robot.commands.AutoStates.IntakeHandoff;
+import frc.robot.commands.AutoStates.PassingHandoff;
+import frc.robot.commands.AutoStates.SemiAutoState;
+import frc.robot.commands.AutoStates.ShootHandoff;
 import frc.robot.commands.swervedrive.smallAutoDrive;
 import frc.robot.commands.swervedrive.spin;
 
@@ -25,75 +31,17 @@ import frc.robot.commands.swervedrive.spin;
 /**An additionally state manager to handle fancier states with autoDrive. */
 public class AutoManager{
     public enum autoDriveState{
-        resting(null, null, ()->false),
+        resting(()->{return new SemiAutoState(new RunCommand(()->{}));}),
 
-        intakeHandoff(
-            new DeferredCommand(
-                ()->{
-                    return new ConditionalCommand(
-                        SystemManager.swerve.driveToPose(SystemManager.getSwervePose().nearest(FieldPosits.intakingHandoffPoses), AutonConstants.intakeHandoffSpeed),
-                        new InstantCommand(()->{SystemManager.autoDriveGoal=SystemManager.getSwervePose();}),
-                        ()->FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
-                    );
-                }
-            ,new HashSet<Subsystem>()),
-            GeneralManager.startIntaking()
-        ),
-        shootHandoff(
-            new DeferredCommand(
-                ()->{return new ConditionalCommand(
-                    SystemManager.swerve.driveToPose(new Pose2d(
-                        SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses).getTranslation(),
-                        utilFunctions.getAngleBetweenTwoPoints(
-                            new Pose2d(SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses).getTranslation(), new Rotation2d()),
-                            FieldPosits.hubPose2d)
+        intakeHandoff(()->{return new IntakeHandoff();}),
+        shootHandoff(()->{return new ShootHandoff();}),
+        passing(()->{return new PassingHandoff();}),
+        spin(()->{return new SemiAutoState(new spin());});
 
-                    )),
-                     SystemManager.swerve.driveToPose(new Pose2d(SystemManager.getSwervePose().getTranslation(), utilFunctions.getAngleBetweenTwoPoints(new Pose2d(SystemManager.getSwervePose().getTranslation(), new Rotation2d()), FieldPosits.hubPose2d))),
-                    ()->!FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
-                );}
-            ,new HashSet<Subsystem>()),
-            GeneralManager.startShooting(), 
-            ()->{return 
-                SystemManager.swerveIsAtGoal()&&
-                utilFunctions.pythagorean(SystemManager.swerve.getFieldVelocity().vxMetersPerSecond, SystemManager.swerve.getFieldVelocity().vxMetersPerSecond)<0.05&&
-                Math.abs(SystemManager.swerve.getFieldVelocity().omegaRadiansPerSecond)<0.02;
-            }
-        ),
+        protected Supplier<SemiAutoState> stateSupplier;
 
-        passing(
-            new DeferredCommand(
-                ()->{return new smallAutoDrive(
-                    new Pose2d(
-                        SystemManager.getSwervePose().getTranslation(),
-                        utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), SystemManager.getSwervePose().nearest(FieldPosits.passingPoses))
-                    )
-                    );
-                },
-                new HashSet<Subsystem>()
-            ),
-            GeneralManager.startPassing()
-
-        ),
-
-        spin(
-            new spin(),
-            new InstantCommand(),
-            ()->false
-        );
-
-        protected Command driveCommand;
-        protected Command happyCommand;
-        protected BooleanSupplier happySupplier; 
-
-        private autoDriveState(Command driveCommand, Command happyCommand, BooleanSupplier happySupplier){
-            this.driveCommand=driveCommand;
-            this.happyCommand=happyCommand;
-            this.happySupplier=happySupplier;
-        }
-
-        private autoDriveState(Command driveCommand, Command happyCommand){
-            this(driveCommand, happyCommand, SystemManager::swerveIsAtGoal);
+        private autoDriveState(Supplier<SemiAutoState> stateSupplier){
+            this.stateSupplier = stateSupplier;
         }
 
         public Command getDriveCommand(){
