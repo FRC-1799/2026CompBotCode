@@ -144,9 +144,6 @@
         "open": true
       },
       "SmartDashboard": {
-        "Control chooser": {
-          "open": true
-        },
         "Field": {
           "double[]##v_/SmartDashboard/Field/Bot Chara": {
             "open": false
@@ -169,7 +166,9 @@
               },
               "open": true
             }
-          },
+          }
+        },
+        "Timer": {
           "open": true
         },
         "bot chara map": {
