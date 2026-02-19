@@ -78,7 +78,7 @@ public class SystemManager{
         if (Constants.simConfigs.aprilTagShouldBeSim){
             aprilTag = new photonSim();
         } else {
-            realVisTemp = new realVision();
+            realVisTemp = new realVision(swerve);
             aprilTag = realVisTemp;
         }
 

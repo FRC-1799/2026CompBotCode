@@ -127,6 +127,15 @@
           "open": true
         }
       },
+      "Limelight1": {
+        "open": true
+      },
+      "Limelight2": {
+        "double[]##v_/Limelight2/camerapose_robotspace_set": {
+          "open": true
+        },
+        "open": true
+      },
       "PathPlanner": {
         "HotReload": {
           "open": false
@@ -204,6 +213,12 @@
       "open": true
     },
     "Server": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      },
       "open": true
     },
     "visible": true

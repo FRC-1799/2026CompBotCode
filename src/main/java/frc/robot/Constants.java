@@ -126,7 +126,7 @@ public final class Constants
     public static final boolean driveShouldBeSim=false||!RobotBase.isReal();
     public static final boolean intakeShouldBeSim=false||!RobotBase.isReal();
 
-    public static final boolean aprilTagShouldBeSim=false||!RobotBase.isReal();
+    public static final boolean aprilTagShouldBeSim=false;//||!RobotBase.isReal();
 
     public static final boolean lidarShouldBeSim=false||!RobotBase.isReal();
 
