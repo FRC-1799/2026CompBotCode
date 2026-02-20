@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.FieldPosits;
 import frc.robot.SystemManager;
-import frc.robot.subsystems.AutoManager;
+import frc.robot.commands.AutoStates.ShootHandoff;
 import frc.robot.subsystems.GeneralManager;
 
 public class DepoAuto extends SequentialCommandGroup{
@@ -20,7 +20,7 @@ public class DepoAuto extends SequentialCommandGroup{
                 SystemManager.getSwervePose().getX()-FieldPosits.depo.getX(),
                 SystemManager.getSwervePose().getY()-FieldPosits.depo.getY()))
             ),
-            AutoManager.startShooting(),
+            new ShootHandoff(),
             new PrintCommand("=^.^="),
 
             new WaitUntilCommand(()->SystemManager.intake.getPieceCount()==0),
@@ -33,7 +33,7 @@ public class DepoAuto extends SequentialCommandGroup{
                 SystemManager.getSwervePose().getX()-FieldPosits.mid.getX(),
                 SystemManager.getSwervePose().getY()-FieldPosits.mid.getY()))
             ),
-            AutoManager.startShooting()
+            new ShootHandoff()
 
 
         );

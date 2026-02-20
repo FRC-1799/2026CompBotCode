@@ -22,7 +22,7 @@ public class PassingHandoff extends SemiAutoState{
                     )
                     );
                 },
-                GeneralManager.subsystemsPlusSwerve),
+                Set.of(SystemManager.swerve)),
             GeneralManager.startPassing());
     }
 }

@@ -1,6 +1,7 @@
 package frc.robot.commands.AutoStates;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
@@ -22,7 +23,7 @@ public class IntakeHandoff extends SemiAutoState{
                             ()->FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
                         );
                     },
-                GeneralManager.subsystemsPlusSwerve),
+                Set.of(SystemManager.swerve)),
                 GeneralManager.startIntaking()
         );
     }

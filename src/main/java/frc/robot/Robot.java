@@ -27,7 +27,6 @@ import frc.robot.commands.auto.DepoAuto;
 import frc.robot.commands.auto.MidGrab;
 import frc.robot.commands.auto.OutpostAuto;
 import frc.robot.commands.swervedrive.spin;
-import frc.robot.subsystems.AutoManager;
 import frc.robot.subsystems.GeneralManager;
 
 import java.io.File;

@@ -1,221 +1,34 @@
 {
-  "HALProvider": {
-    "Other Devices": {
-      "SPARK MAX [2]": {
-        "header": {
-          "open": false
-        }
-      },
-      "SPARK MAX [4]": {
-        "header": {
-          "open": false
-        }
-      },
-      "SPARK MAX [5]": {
-        "header": {
-          "open": false
-        }
-      },
-      "SPARK MAX [7]": {
-        "header": {
-          "open": false
-        }
-      },
-      "Talon FX (v6)[8]/Fwd Limit": {
-        "header": {
-          "open": false
-        }
-      },
-      "Talon FX[50]": {
-        "header": {
-          "open": false
-        }
-      },
-      "Talon FX[51]/Integrated Sensor": {
-        "header": {
-          "open": false
-        }
-      },
-      "Talon FX[52]/Integrated Sensor": {
-        "header": {
-          "open": false
-        }
-      },
-      "Talon FX[8]/Integrated Sensor": {
-        "header": {
-          "open": false
-        }
-      },
-      "window": {
-        "visible": false
-      }
-    },
-    "Timing": {
-      "window": {
-        "visible": false
-      }
-    }
-  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/SmartDashboard//Mechanisms/Elevator/LiveTuning": "Command",
       "/SmartDashboard/AIRobotBehaviors/Opponent Robot 1 Behavior": "String Chooser",
       "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Control chooser": "String Chooser",
-      "/SmartDashboard/Elevator/mechanism": "Mechanism2d",
       "/SmartDashboard/Encoders": "Alerts",
       "/SmartDashboard/Field": "Field2d",
-      "/SmartDashboard/FlywheelMech/mechanism": "Mechanism2d",
       "/SmartDashboard/IMU": "Alerts",
       "/SmartDashboard/JSON": "Alerts",
       "/SmartDashboard/Mechanisms/Commands//Live Tuning": "Command",
       "/SmartDashboard/Mechanisms/Commands/BottomShooterMotor/Down": "Command",
       "/SmartDashboard/Mechanisms/Commands/BottomShooterMotor/Up": "Command",
       "/SmartDashboard/Mechanisms/Commands/BottomShooterMotor/ZeroEncoder": "Command",
-      "/SmartDashboard/Mechanisms/Commands/ShooterMotor/Down": "Command",
-      "/SmartDashboard/Mechanisms/Commands/ShooterMotor/Up": "Command",
-      "/SmartDashboard/Mechanisms/Commands/ShooterMotor/ZeroEncoder": "Command",
       "/SmartDashboard/Mechanisms/Commands/TopShooterMotor/Down": "Command",
       "/SmartDashboard/Mechanisms/Commands/TopShooterMotor/Up": "Command",
       "/SmartDashboard/Mechanisms/Commands/TopShooterMotor/ZeroEncoder": "Command",
       "/SmartDashboard/Mechanisms/Commands/simShooter/Live Tuning": "Command",
-      "/SmartDashboard/Mechanisms/Elevator/ElevatorMotor/LiveTuning": "Command",
       "/SmartDashboard/Motors": "Alerts",
       "/SmartDashboard/PathPlanner": "Alerts",
       "/SmartDashboard/PhotonAlerts": "Alerts",
       "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
-      "/SmartDashboard/SendableChooser[1]": "String Chooser",
-      "/SmartDashboard/SendableChooser[2]": "String Chooser",
       "/SmartDashboard/Starting chooser": "String Chooser",
       "/SmartDashboard/Swerve Drive": "Alerts",
       "/SmartDashboard/TopFlywheelMech/mechanism": "Mechanism2d",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d",
-      "/SmartDashboard/auto chooser": "String Chooser",
-      "/SmartDashboard/elevator": "Mechanism2d",
-      "/SmartDashboard/wrist": "Mechanism2d"
-    },
-    "windows": {
-      "/FMSInfo": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Control chooser": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Field": {
-        "bottom": 1914,
-        "height": 8.069275856018066,
-        "left": 245,
-        "right": 3942,
-        "top": 118,
-        "width": 16.54119300842285,
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/auto chooser": {
-        "window": {
-          "visible": true
-        }
-      }
-    }
-  },
-  "NetworkTables": {
-    "Persistent Values": {
-      "open": false
-    },
-    "transitory": {
-      "GridData": {
-        "CoralF3": {
-          "open": true
-        },
-        "CoralF4": {
-          "double[]##v_/GridData/CoralF4/data": {
-            "open": true
-          },
-          "open": true
-        }
-      },
-      "PathPlanner": {
-        "HotReload": {
-          "open": false
-        }
-      },
-      "Pose2d##v_robot": {
-        "open": true
-      },
-      "Pose3d##v_heldCoral": {
-        "open": true
-      },
-      "SmartDashboard": {
-        "Field": {
-          "double[]##v_/SmartDashboard/Field/Bot Chara": {
-            "open": false
-          },
-          "double[]##v_/SmartDashboard/Field/René DesCoded": {
-            "open": false
-          },
-          "double[]##v_/SmartDashboard/Field/Robot": {
-            "open": false
-          },
-          "double[]##v_/SmartDashboard/Field/XModules": {
-            "open": false
-          }
-        },
-        "MapleSim": {
-          "MatchData": {
-            "Breakdown": {
-              "Red Alliance": {
-                "open": true
-              },
-              "open": true
-            }
-          }
-        },
-        "Timer": {
-          "open": true
-        },
-        "bot chara map": {
-          "double[]##v_/SmartDashboard/bot chara map/Robot": {
-            "open": false
-          },
-          "open": false
-        },
-        "open": true
-      }
+      "/SmartDashboard/auto chooser": "String Chooser"
     }
   },
   "NetworkTables Info": {
-    "AdvantageScope@2": {
-      "Subscribers": {
-        "open": true
-      }
-    },
-    "Connections": {
-      "open": true
-    },
-    "DartClient_30458887@1": {
-      "Publishers": {
-        "open": false
-      },
-      "Subscribers": {
-        "open": false
-      },
-      "open": false
-    },
-    "DartClient_40640690@3": {
-      "Publishers": {
-        "open": true
-      },
-      "Subscribers": {
-        "open": true
-      },
-      "open": true
-    },
     "visible": true
   }
 }

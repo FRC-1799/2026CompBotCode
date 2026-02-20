@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.simConfigs;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.Utils.utilFunctions;
-import frc.robot.subsystems.AutoManager;
 import frc.robot.subsystems.GeneralManager;
 import frc.robot.subsystems.TimingManager;
 import frc.robot.subsystems.Intake.Intake;
@@ -130,7 +129,6 @@ public class SystemManager{
 
 
         GeneralManager.periodic();
-        AutoManager.periodic();
         TimingManager.periodic();
     }
 
