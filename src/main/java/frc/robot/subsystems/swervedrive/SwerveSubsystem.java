@@ -19,6 +19,7 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -493,19 +494,25 @@ public class SwerveSubsystem extends SubsystemBase
 
   @Override
   public void periodic(){
-    if (SystemManager.aprilTag.getBackPose()!=null){
+    Pose3d frontPose = SystemManager.aprilTag.getFrontPose();
+    Pose3d backPose = SystemManager.aprilTag.getBackPose();
+
+    Double frontTimestamp = SystemManager.aprilTag.getFrontTimestamp();
+    Double backTimestamp = SystemManager.aprilTag.getBackTimestamp();
+
+    if (Constants.limelightConstants.readLimelight2 && backPose!=null){
       SmartDashboard.putBoolean("Vision/BackVisionAdding", true);
-      swerveDrive.addVisionMeasurement(SystemManager.aprilTag.getBackPose().toPose2d(), SystemManager.aprilTag.getBackTimestamp());
+      swerveDrive.addVisionMeasurement(backPose.toPose2d(), backTimestamp);
     }
     else{
       SmartDashboard.putBoolean("Vision/BackVisionAdding", false);
 
     }
 
-    if (SystemManager.aprilTag.getFrontPose()!=null){
+    if (Constants.limelightConstants.readLimelight1 && frontPose!=null ){
       SmartDashboard.putBoolean("Vision/FrontVisionAdding", true);
 
-      swerveDrive.addVisionMeasurement(SystemManager.aprilTag.getFrontPose().toPose2d(),SystemManager.aprilTag.getFrontTimestamp());
+      swerveDrive.addVisionMeasurement(frontPose.toPose2d(), frontTimestamp);
     }
     else{
       SmartDashboard.putBoolean("Vision/FrontVisionAdding", false);
@@ -513,10 +520,10 @@ public class SwerveSubsystem extends SubsystemBase
     }
 
 
-    SmartDashboard.putBoolean("saw front camera", SystemManager.aprilTag.getFrontPose()!=null);
-    SmartDashboard.putBoolean("saw back camera", SystemManager.aprilTag.getBackPose()!=null);
-    SmartDashboard.putNumber("received front camera timestamp", SystemManager.aprilTag.getFrontTimestamp());
-    SystemManager.aprilTag.getBackTimestamp();
+    SmartDashboard.putBoolean("saw front camera", frontPose!=null);
+    SmartDashboard.putBoolean("saw back camera", backPose!=null);
+    SmartDashboard.putNumber("received front camera timestamp", frontTimestamp);
+    SmartDashboard.putNumber("received back camera timestamp", backTimestamp);
     // if (SystemManager.lidar!=null){
     //   Pathfinding.ensureInitialized();
     //   Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObstacles(), swerveDrive.getPose().getTranslation());

@@ -19,6 +19,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -160,12 +161,10 @@ public final class Constants
   public static class limelightConstants {
 
     // Camera pose relative to robot center (x forward, y left, z up, degrees)
-    public static final Distance forwardOffset = Meters.of(0);
-    public static final Distance sideOffset = Meters.of(0);
-    public static final Distance heightOffset = Meters.of(0);
-    public static final Angle roll = Degrees.of(0);
-    public static final Angle pitch = Degrees.of(0);
-    public static final Angle yaw = Degrees.of(0);
+    public static final Pose3d frontCameraPose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
+    public static final Pose3d backCameraPose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
+
+
 
     public static final Boolean readLimelight1 = true;
     public static final Boolean readLimelight2 = true;
