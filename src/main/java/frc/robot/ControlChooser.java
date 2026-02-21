@@ -108,7 +108,7 @@ public class ControlChooser {
     private EventLoop getTestControl(){
         EventLoop loop = new EventLoop();
         setDefaultCommand(new AbsoluteFieldDrive(SystemManager.swerve, ()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->{
-            if(utilFunctions.pythagorean(xbox1.getRightY(), xbox1.getRightX())>=0.2)return Math.atan2(xbox1.getRightY(), -xbox1.getRightX())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
+            return utilFunctions.pythagorean(xbox1.getRightY(), xbox1.getRightX())>=0.2? Math.atan2(-xbox1.getRightX(), xbox1.getRightY())/Math.PI: SystemManager.swerve.getHeading().getRadians()/Math.PI;})
            ,SystemManager.swerve, loop);
             
         xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
