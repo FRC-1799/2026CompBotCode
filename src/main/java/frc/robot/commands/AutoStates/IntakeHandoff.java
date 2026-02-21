@@ -19,7 +19,7 @@ public class IntakeHandoff extends SemiAutoState{
                     ()->{
                         return new ConditionalCommand(
                             SystemManager.swerve.driveToPose(SystemManager.getSwervePose().nearest(FieldPosits.intakingHandoffPoses), AutonConstants.intakeHandoffSpeed),
-                            new InstantCommand(),
+                            new InstantCommand(()->{SystemManager.autoDriveGoal=SystemManager.getSwervePose();}),
                             ()->FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
                         );
                     },

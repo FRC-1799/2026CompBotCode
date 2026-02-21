@@ -111,14 +111,12 @@ public class ControlChooser {
             if(utilFunctions.pythagorean(xbox1.getRightY(), xbox1.getRightX())>=0.2)return Math.atan2(xbox1.getRightY(), -xbox1.getRightX())/Math.PI; return SystemManager.swerve.getHeading().getRadians()/Math.PI;})
            ,SystemManager.swerve, loop);
             
-        xbox1.rightTrigger(0.4,loop).onTrue(new IntakeHandoff())
-            .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
-        xbox1.leftTrigger(0.4,loop).onTrue(new ShootHandoff())
-        .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
+        xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
+        xbox1.leftTrigger(0.4,loop).whileTrue(new ShootHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
-        xbox1.a(loop).onTrue(AutoManager.startPassing()).onFalse(GeneralManager.startResting());
+        xbox1.a(loop).onTrue(GeneralManager.startPassing()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.passing)));
         xbox1.b(loop).onTrue(GeneralManager.startspitting()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.spitting)));
         xbox1.x(loop).onTrue(new MidGrab());
 
@@ -133,10 +131,8 @@ public class ControlChooser {
         setDefaultCommand(SystemManager.swerve.driveRobotOrientedCommand(()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->xbox1.getRightX())
            ,SystemManager.swerve, loop);
             
-        xbox1.rightTrigger(0.4,loop).onTrue(new IntakeHandoff())
-            .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
-        xbox1.leftTrigger(0.4,loop).onTrue(new ShootHandoff())
-        .onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
+        xbox1.a(loop).whileTrue(GeneralManager.startPassing()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.spitting)));
+        xbox1.b(loop).whileTrue(GeneralManager.startspitting()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.spitting)));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
