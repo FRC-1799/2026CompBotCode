@@ -42,6 +42,9 @@ public abstract class Intake extends SubsystemBase{
         if (state==intakeState.intaking){
             intake();
         }
+        else if (state==intakeState.backRun){
+            backRun();
+        }
         else{
             shutDown();
         }
@@ -68,9 +71,15 @@ public abstract class Intake extends SubsystemBase{
         state=intakeState.intaking;
     }
 
+    public void outtake(){
+        state=intakeState.backRun;
+    }
+
     protected abstract void intake();
 
     protected abstract void shutDown();
+
+    protected abstract void backRun();
 
     /**Removes an game piece from a simulated intake if aplicable. This method will do nothing on a real intake*/
     public void removePiece(){

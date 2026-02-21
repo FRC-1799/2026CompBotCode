@@ -28,6 +28,11 @@ public class realIntake extends Intake{
   protected void shutDown() {
     intakeMotor.set(0);
   }
+
+  @Override
+  protected void backRun() {
+    intakeMotor.set(IntakeConstants.backRunSpeed);
+  }
  
 
   

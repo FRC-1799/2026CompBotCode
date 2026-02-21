@@ -48,6 +48,10 @@ public class SystemManager{
     public static simShooter shooter;
     public static Robot robot;
 
+    public static Pose2d autoDriveGoal=new Pose2d();
+    public static StructPublisher<Pose2d> autoDriveGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("SmartDashboard/AutoDrive/goal", Pose2d.struct).publish();
+
+
 
 
     protected static int score = 0;
@@ -154,6 +158,12 @@ public class SystemManager{
         return score;
     }
 
+    public static boolean swerveIsAtGoal(){
+        Pose2d error = SystemManager.getSwervePose().relativeTo(autoDriveGoal);
+        //System.out.println(error);
+        return utilFunctions.pythagorean(error.getX(), error.getY())<AutonConstants.autoDriveScoreTolerance &&
+             Math.abs(autoDriveGoal.getRotation().getDegrees()-SystemManager.getSwervePose().getRotation().getDegrees())<AutonConstants.angleTolerance;
+    }
 
 
 }

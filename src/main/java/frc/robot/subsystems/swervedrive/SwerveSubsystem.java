@@ -236,18 +236,17 @@ public class SwerveSubsystem extends SubsystemBase
    * @return PathFinding command
    */
   public Command driveToPose(Pose2d pose){
-    
-    return new ConditionalCommand(
-      AutoBuilder.pathfindToPose(
-        pose,
-        constraints
-      ),
-      new smallAutoDrive(pose),
-      ()->{return utilFunctions.getDistanceBetweenTwoPoints(getPose(), pose).in(Meters)>Constants.AutonConstants.distanceWithinPathplannerDontWork;});
-    
-
+    return new SequentialCommandGroup(
+      new InstantCommand(()->{SystemManager.autoDriveGoal=pose;}),
+      new ConditionalCommand(
+        AutoBuilder.pathfindToPose(
+          pose,
+          constraints
+        ),
+        new smallAutoDrive(pose),
+        ()->{return utilFunctions.getDistanceBetweenTwoPoints(getPose(), pose).in(Meters)>Constants.AutonConstants.distanceWithinPathplannerDontWork;})
+      );
   }
-
 
     /**
    * Use PathPlanner Path finding to go to a point on the field.
@@ -258,7 +257,10 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Command driveToPose(Pose2d pose, LinearVelocity velocity){
 
-    return AutoBuilder.pathfindToPose(pose, constraints, velocity);
+    return new SequentialCommandGroup(
+        new InstantCommand(()->{SystemManager.autoDriveGoal=pose;}),
+        AutoBuilder.pathfindToPose(pose, constraints, velocity)
+    );
     
   }
 
