@@ -30,6 +30,12 @@ public class FieldPosits {
 
     public static final Pose2d hubPose2d = hubPose3d.toPose2d();
 
+    public static final Translation2d mid = new Translation2d(8.25, 4);
+
+    public static final Translation2d depo = new Translation2d(0.514, 6);
+
+    public static final Pose2d outpost = new Pose2d(0.514, 0.650, new Rotation2d());
+
     public static final Pose2d bottomAllianceDSCorner = new Pose2d(0,0, new Rotation2d());
     public static final Pose2d topAllianceDSCorner = new Pose2d(0, 8.0, new Rotation2d());
     public static final Collection<Pose2d> passingPoses = List.of(bottomAllianceDSCorner, topAllianceDSCorner);

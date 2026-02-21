@@ -33,10 +33,10 @@ public class simIntake extends Intake{
 
     public simIntake(){
         if (RobotBase.isReal()){
-            intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.simButRealTrain, Meters.of(0.7), IntakeSimulation.IntakeSide.FRONT, 40);
+            intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.simButRealTrain, Meters.of(0.7), IntakeSimulation.IntakeSide.BACK, 40);
         }
         else{
-            intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.swerve.getMapleSimDrive().get(), Meters.of(0.7), IntakeSimulation.IntakeSide.FRONT, 40);
+            intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.swerve.getMapleSimDrive().get(), Meters.of(0.7), IntakeSimulation.IntakeSide.BACK, 40);
         }
 
     }

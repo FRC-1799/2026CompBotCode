@@ -44,6 +44,7 @@ public class GeneralManager{
     public static generalState state;
     public static BooleanConsumer externalCallback=null;
     public static Set<Subsystem> subsystems = new HashSet<>();
+    public static Set<Subsystem> subsystemsPlusSwerve;
     
     
     
@@ -52,6 +53,9 @@ public class GeneralManager{
       resting();
       subsystems.add(SystemManager.intake);
       subsystems.add(SystemManager.shooter);
+
+      subsystemsPlusSwerve=new HashSet<>(subsystems);
+      subsystemsPlusSwerve.add(SystemManager.swerve);
 
     }
 

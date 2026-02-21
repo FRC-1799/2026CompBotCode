@@ -86,7 +86,7 @@ public abstract class Shooter extends SubsystemBase{
       .withDiameter(Inches.of(4))
       .withMass(Pounds.of(1))
       .withTelemetry("TopFlywheelMech", TelemetryVerbosity.HIGH)
-      .withSoftLimit(RPM.of(-3000), RPM.of(3000))
+      .withSoftLimit(RPM.of(-6600), RPM.of(6600))
       
       .withSpeedometerSimulation(RPM.of(7500));
 
@@ -94,7 +94,7 @@ public abstract class Shooter extends SubsystemBase{
       .withDiameter(Inches.of(4))
       .withMass(Pounds.of(1))
       .withTelemetry("TopFlywheelMech", TelemetryVerbosity.HIGH)
-      .withSoftLimit(RPM.of(-3000), RPM.of(3000))
+      .withSoftLimit(RPM.of(-6600), RPM.of(6600))
       
       .withSpeedometerSimulation(RPM.of(7500));
 
@@ -108,7 +108,8 @@ public abstract class Shooter extends SubsystemBase{
     @Override
     public void periodic(){
 
-        SmartDashboard.putNumber("Shooter/ShooterSpeed", getTopFlywheelSpeed().in(RPM));
+        SmartDashboard.putNumber("Shooter/ShooterTopSpeed", getTopFlywheelSpeed().in(RPM));
+        SmartDashboard.putNumber("Shooter/ShooterBottomSpeed", getBottomFlywheelSpeed().in(RPM));
         SmartDashboard.putString("Shooter/ShooterState", state.toString());
         
         
