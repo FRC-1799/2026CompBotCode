@@ -17,22 +17,26 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
 import swervelib.simulation.ironmaple.simulation.IntakeSimulation;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnFly;
 
 public class simIntake extends Intake{
     public IntakeSimulation intakeSim;
     
 
     
-    intakeState state = intakeState.resting;
+    protected intakeState state = intakeState.resting;
+
+    protected double backRunState=0;
 
    
 
     public simIntake(){
         if (RobotBase.isReal()){
-            intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.simButRealTrain, Meters.of(0.7), IntakeSimulation.IntakeSide.FRONT, 40);
+            intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.simButRealTrain, Meters.of(0.7), IntakeSimulation.IntakeSide.BACK, 40);
         }
         else{
-            intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.swerve.getMapleSimDrive().get(), Meters.of(0.7), IntakeSimulation.IntakeSide.FRONT, 40);
+            intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.swerve.getMapleSimDrive().get(), Meters.of(0.7), IntakeSimulation.IntakeSide.BACK, 40);
         }
 
     }
@@ -53,6 +57,38 @@ public class simIntake extends Intake{
 
     public void removePiece(){
         intakeSim.obtainGamePieceFromIntake();
+    }
+
+
+    @Override
+    protected void backRun() {
+        if (backRunState==0&&getPieceCount()!=0){
+            removePiece();
+            
+            SimulatedArena.getInstance()
+                .addGamePieceProjectile(new RebuiltFuelOnFly(
+                    // Obtain robot position from drive simulation
+                    SystemManager.getRealPoseMaple().getTranslation(),
+                    // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
+                    new Translation2d(),
+                    // Obtain robot speed from drive simulation
+                    SystemManager.swerve.getFieldVelocity(),
+                    // Obtain robot facing from drive simulation
+                    SystemManager.getRealPoseMaple().getRotation(),
+                    // The height at which the fuel is ejected
+                    Meters.of(0),
+                // The initial speed of the fuel
+                MetersPerSecond.of(2),
+                // The fuel is ejected at a 35-degree slope
+                Degrees.of(0)
+                ));
+
+                backRunState=5;
+        }
+        else{
+            backRunState--;
+        }
+            
     }
 
 }
