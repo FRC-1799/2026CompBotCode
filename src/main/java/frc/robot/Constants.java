@@ -147,11 +147,11 @@ public final class Constants
     public static final Distance shooterHeight = Inches.of(21);
     
     public static final Angle shotAngle = Degrees.of(65);
-    public static final double SimRPMToMPS=0.002;
+    public static final double SimRPMToMPS=0.0048;
 
 
     public static final class topMotorConstants{
-      public static final double shootingSpeedDutyCycle = 0;
+      public static final double shootingSpeedDutyCycle = 0.5;
       public static final double P = 5;
       public static final double I = 0;
       public static final double D = 0;
@@ -162,7 +162,7 @@ public final class Constants
       public static final int canID=2;
     }
     public static final class bottomMotorConstants{
-      public static final double shootingSpeedDutyCycle = 0;
+      public static final double shootingSpeedDutyCycle = 0.5;
       public static final double P = 5;
       public static final double I = 0;
       public static final double D = 0;
