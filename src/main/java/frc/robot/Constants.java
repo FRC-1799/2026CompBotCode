@@ -164,7 +164,8 @@ public final class Constants
     public static final Pose3d frontCameraPose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
     public static final Pose3d backCameraPose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
 
-
+    public static final String frontCameraName = "limelight-one";
+    public static final String backCameraName = "limelight-two";
 
     public static final Boolean readLimelight1 = true;
     public static final Boolean readLimelight2 = true;
