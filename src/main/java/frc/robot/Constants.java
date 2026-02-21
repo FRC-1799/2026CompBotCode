@@ -18,6 +18,7 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.pathplanner.lib.config.PIDConstants;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -110,7 +111,8 @@ public final class Constants
 
   public static class IntakeConstants{
     public static final int intakeCanID = 1;
-    public static final double intakeSpeed=-0.2;
+    public static final double intakeSpeed=-0.55;
+    public static final double backRunSpeed=0.55;
   }
 
   /**Constants used for sim */
@@ -146,12 +148,35 @@ public final class Constants
   public static class shooterConstants{
 
     public static final Distance shooterHeight = Inches.of(21);
-    public static final Angle shootingTolerance = Degrees.of(2);
-    public static final AngularVelocity shootingSpeed = RPM.of(4000);
-    public static final int mainMotorID=0;
-    public static final int followerMotorID=0;
+    
     public static final Angle shotAngle = Degrees.of(65);
-    public static final double SimRPMToMPS=0.002;
+    public static final double SimRPMToMPS=0.0048;
+
+
+    public static final class topMotorConstants{
+      public static final double shootingSpeedDutyCycle = 0.5;
+      public static final double P = 5;
+      public static final double I = 0;
+      public static final double D = 0;
+      public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0, 0, 0);
+      public static final AngularVelocity shootingSpeedRPM = RPM.of(3000);
+      public static final Distance wheelRadius = Inches.of(4);
+      public static final double gearReduction = 2;
+      public static final int canID=2;
+    }
+    public static final class bottomMotorConstants{
+      public static final double shootingSpeedDutyCycle = 0.5;
+      public static final double P = 5;
+      public static final double I = 0;
+      public static final double D = 0;
+      public static final double gearReduction = 1;
+      public static final Distance wheelRadius = Inches.of(3);
+      public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0, 0, 0);
+      public static final AngularVelocity shootingSpeedRPM = RPM.of(0);
+      public static final int canID=1;
+    }
+
+
     //public static final simMap = InterpolatingDoubleTreeMap
 
 

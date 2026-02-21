@@ -1,8 +1,7 @@
 {
   "imu": {
     "type": "pigeon2",
-    "id": 13,
-    "canbus": "cantBus"
+    "id": 13
   },
   "invertedIMU": false,
   "modules": [

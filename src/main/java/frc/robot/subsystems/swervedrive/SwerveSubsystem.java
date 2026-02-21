@@ -46,7 +46,7 @@ import frc.robot.Constants;
 
 import frc.robot.SystemManager;
 import frc.robot.Utils.utilFunctions;
-import frc.robot.commands.auto.smallAutoDrive;
+import frc.robot.commands.swervedrive.smallAutoDrive;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -249,9 +249,7 @@ public class SwerveSubsystem extends SubsystemBase
         new smallAutoDrive(pose),
         ()->{return utilFunctions.getDistanceBetweenTwoPoints(getPose(), pose).in(Meters)>Constants.AutonConstants.distanceWithinPathplannerDontWork;})
       );
-
   }
-
 
     /**
    * Use PathPlanner Path finding to go to a point on the field.
@@ -261,10 +259,12 @@ public class SwerveSubsystem extends SubsystemBase
    * @return PathFinding command
    */
   public Command driveToPose(Pose2d pose, LinearVelocity velocity){
+
     return new SequentialCommandGroup(
-      new InstantCommand(()->{SystemManager.autoDriveGoal=pose;}),
-      AutoBuilder.pathfindToPose(pose, constraints, velocity)
+        new InstantCommand(()->{SystemManager.autoDriveGoal=pose;}),
+        AutoBuilder.pathfindToPose(pose, constraints, velocity)
     );
+    
   }
 
 

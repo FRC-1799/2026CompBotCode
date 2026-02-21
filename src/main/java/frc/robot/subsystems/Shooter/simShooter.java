@@ -75,7 +75,7 @@ public class simShooter extends Shooter{
                 // The height at which the fuel is ejected
                 shooterConstants.shooterHeight,
             // The initial speed of the fuel
-            MetersPerSecond.of(getFlywheelSpeed().in(RPM)*shooterConstants.SimRPMToMPS),
+            MetersPerSecond.of(getTopFlywheelSpeed().in(RPM)*shooterConstants.SimRPMToMPS),
             // The fuel is ejected at a 35-degree slope
             shooterConstants.shotAngle
             ));

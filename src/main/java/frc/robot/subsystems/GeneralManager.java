@@ -21,7 +21,8 @@ public class GeneralManager{
         resting(new resting()),
         shooting(new shooting()),
         intaking(new intaking()),
-        passing(new passing());
+        passing(new passing()),
+        spitting(new spitting());
 
         Command state;
 
@@ -43,6 +44,7 @@ public class GeneralManager{
     public static generalState state;
     public static BooleanConsumer externalCallback=null;
     public static Set<Subsystem> subsystems = new HashSet<>();
+    public static Set<Subsystem> subsystemsPlusSwerve;
     
     
     
@@ -51,6 +53,9 @@ public class GeneralManager{
       resting();
       subsystems.add(SystemManager.intake);
       subsystems.add(SystemManager.shooter);
+
+      subsystemsPlusSwerve=new HashSet<>(subsystems);
+      subsystemsPlusSwerve.add(SystemManager.swerve);
 
     }
 
@@ -96,6 +101,19 @@ public class GeneralManager{
      */
     public static InstantCommand startShooting(){
                 return new InstantCommand(()->{shooting();});
+    }
+
+        /**<h2>Changes the current state to the shooting state</h2>*/
+    public static void spitting(){
+        startState(generalState.spitting);
+    }
+
+    /**
+     * <h2>Creates a command that will start the shooting state when called</h2>
+     * @return A command to start resting state
+     */
+    public static InstantCommand startspitting(){
+                return new InstantCommand(()->{spitting();});
     }
 
     /**<h2>Changes the current state to the intaking state</h2>*/
