@@ -494,21 +494,21 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic(){
     if (SystemManager.aprilTag.getBackPose()!=null){
-      SmartDashboard.putBoolean("BackVisionAdding", true);
+      SmartDashboard.putBoolean("Vision/BackVisionAdding", true);
       swerveDrive.addVisionMeasurement(SystemManager.aprilTag.getBackPose().toPose2d(), SystemManager.aprilTag.getBackTimestamp());
     }
     else{
-      SmartDashboard.putBoolean("BackVisionAdding", false);
+      SmartDashboard.putBoolean("Vision/BackVisionAdding", false);
 
     }
 
     if (SystemManager.aprilTag.getFrontPose()!=null){
-      SmartDashboard.putBoolean("FrontVisionAdding", true);
+      SmartDashboard.putBoolean("Vision/FrontVisionAdding", true);
 
       swerveDrive.addVisionMeasurement(SystemManager.aprilTag.getFrontPose().toPose2d(),SystemManager.aprilTag.getFrontTimestamp());
     }
     else{
-      SmartDashboard.putBoolean("FrontVisionAdding", false);
+      SmartDashboard.putBoolean("Vision/FrontVisionAdding", false);
 
     }
 

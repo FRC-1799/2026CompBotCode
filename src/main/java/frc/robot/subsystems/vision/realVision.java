@@ -65,7 +65,7 @@ public class realVision implements aprilTagInterface{
          .save();
         
         limelightBack.getSettings()
-         .withLimelightLEDMode(LEDMode.ForceOn)
+         .withLimelightLEDMode(LEDMode.PipelineControl)
          .withCameraOffset(Pose3d.kZero)
          .save();
 
@@ -76,8 +76,8 @@ public class realVision implements aprilTagInterface{
         backVisionEstimate = limelightBack.createPoseEstimator(EstimationMode.MEGATAG2);
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        frontPosePublisher = inst.getTable("Vision").getStructTopic("FrontPoseEstimation", Pose3d.struct).publish(PubSubOption.keepDuplicates(true));
-        backPosePublisher = inst.getTable("Vision").getStructTopic("BackPoseEstimation", Pose3d.struct).publish(PubSubOption.keepDuplicates(true));
+        frontPosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("FrontPoseEstimation", Pose3d.struct).publish(PubSubOption.keepDuplicates(true));
+        backPosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("BackPoseEstimation", Pose3d.struct).publish(PubSubOption.keepDuplicates(true));
 
 
     //     // Default values just in case no values are grabbed
@@ -125,12 +125,20 @@ public class realVision implements aprilTagInterface{
 
     @Override
     public void periodic() {
+        limelightBack.getSettings()
+        .withRobotOrientation(new Orientation3d(swerve.getRotation3d(),
+                                                new AngularVelocity3d(DegreesPerSecond.of(0), // Roll, our robot will not be front flipping
+                                                                    DegreesPerSecond.of(0), // Pitch, our robot will not be rolling around in mud
+                                                                    DegreesPerSecond.of(swerve.getYawVelocity().baseUnitMagnitude())))) // Yaw, rotation along the ground floor
+        .save();
+
         limelightFront.getSettings()
         .withRobotOrientation(new Orientation3d(swerve.getRotation3d(),
                                                 new AngularVelocity3d(DegreesPerSecond.of(0), // Roll, our robot will not be front flipping
                                                                     DegreesPerSecond.of(0), // Pitch, our robot will not be rolling around in mud
                                                                     DegreesPerSecond.of(swerve.getYawVelocity().baseUnitMagnitude())))) // Yaw, rotation along the ground floor
         .save();
+
 
     }
     
@@ -139,7 +147,9 @@ public class realVision implements aprilTagInterface{
         estimatedFrontPose = frontVisionEstimate.getPoseEstimate();
         if (estimatedFrontPose.isEmpty()) {
             SmartDashboard.putBoolean("Vision/FrontPoseReadCorrectly", false);
+            frontPosePublisher.set(Pose3d.kZero);
             return new Pose3d(0, 0, 0, Rotation3d.kZero);
+            
         }
         SmartDashboard.putBoolean("Vision/FrontPoseReadCorrectly", true);
         
@@ -178,6 +188,7 @@ public class realVision implements aprilTagInterface{
         estimatedBackPose = backVisionEstimate.getPoseEstimate();
         if (estimatedBackPose.isEmpty()) {
             SmartDashboard.putBoolean("Vision/BackPoseReadCorrectly", false);
+            backPosePublisher.set(Pose3d.kZero);
             return new Pose3d(0, 0, 0, Rotation3d.kZero);
         }
         SmartDashboard.putBoolean("Vision/BackPoseReadCorrectly", true);
@@ -192,13 +203,13 @@ public class realVision implements aprilTagInterface{
         Double timestamp;
         if (!estimatedBackPose.isEmpty()) {
             timestamp = estimatedBackPose.get().timestampSeconds;
-            SmartDashboard.putNumber("Vision/received front timestamp", timestamp);
-            SmartDashboard.putBoolean("Vision/frontTimestampConnected", true);
+            SmartDashboard.putNumber("Vision/received back timestamp", timestamp);
+            SmartDashboard.putBoolean("Vision/backTimestampConnected", true);
         }
         else {
             timestamp = 0.0;
-            SmartDashboard.putNumber("Vision/received front timestamp", timestamp);
-            SmartDashboard.putBoolean("Vision/frontTimestampConnected", false);
+            SmartDashboard.putNumber("Vision/received back timestamp", timestamp);
+            SmartDashboard.putBoolean("Vision/backTimestampConnected", false);
         }
 
 
