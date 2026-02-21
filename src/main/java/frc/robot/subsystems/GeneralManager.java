@@ -110,7 +110,7 @@ public class GeneralManager{
 
     /**
      * <h2>Creates a command that will start the shooting state when called</h2>
-     * @return A command too start resting state
+     * @return A command to start resting state
      */
     public static InstantCommand startspitting(){
                 return new InstantCommand(()->{spitting();});
