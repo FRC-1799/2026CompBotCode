@@ -126,7 +126,7 @@ public final class Constants
     public static final boolean driveShouldBeSim=false||!RobotBase.isReal();
     public static final boolean intakeShouldBeSim=false||!RobotBase.isReal();
 
-    public static final boolean aprilTagShouldBeSim=false;//||!RobotBase.isReal();
+    public static final boolean aprilTagShouldBeSim=false||!RobotBase.isReal();
 
     public static final boolean lidarShouldBeSim=false||!RobotBase.isReal();
 
@@ -166,6 +166,9 @@ public final class Constants
     public static final Angle roll = Degrees.of(0);
     public static final Angle pitch = Degrees.of(0);
     public static final Angle yaw = Degrees.of(0);
+
+    public static final Boolean readLimelight1 = true;
+    public static final Boolean readLimelight2 = true;
 
   }
 

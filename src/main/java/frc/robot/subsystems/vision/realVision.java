@@ -56,8 +56,8 @@ public class realVision implements aprilTagInterface{
 
     public realVision(SwerveSubsystem swerve) {
 
-        limelightFront = new Limelight("Limelight1");
-        limelightBack = new Limelight("Limelight2");
+        limelightFront = new Limelight("limelight-one");
+        limelightBack = new Limelight("limelight2");
 
         limelightFront.getSettings()
          .withLimelightLEDMode(LEDMode.PipelineControl)
@@ -148,7 +148,7 @@ public class realVision implements aprilTagInterface{
         if (estimatedFrontPose.isEmpty()) {
             SmartDashboard.putBoolean("Vision/FrontPoseReadCorrectly", false);
             frontPosePublisher.set(Pose3d.kZero);
-            return new Pose3d(0, 0, 0, Rotation3d.kZero);
+            return null;
             
         }
         SmartDashboard.putBoolean("Vision/FrontPoseReadCorrectly", true);
@@ -189,7 +189,7 @@ public class realVision implements aprilTagInterface{
         if (estimatedBackPose.isEmpty()) {
             SmartDashboard.putBoolean("Vision/BackPoseReadCorrectly", false);
             backPosePublisher.set(Pose3d.kZero);
-            return new Pose3d(0, 0, 0, Rotation3d.kZero);
+            return null;
         }
         SmartDashboard.putBoolean("Vision/BackPoseReadCorrectly", true);
         
