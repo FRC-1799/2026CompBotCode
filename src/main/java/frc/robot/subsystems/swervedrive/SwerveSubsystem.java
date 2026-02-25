@@ -520,10 +520,10 @@ public class SwerveSubsystem extends SubsystemBase
     }
 
 
-    SmartDashboard.putBoolean("saw front camera", frontPose!=null);
-    SmartDashboard.putBoolean("saw back camera", backPose!=null);
-    SmartDashboard.putNumber("received front camera timestamp", frontTimestamp);
-    SmartDashboard.putNumber("received back camera timestamp", backTimestamp);
+    SmartDashboard.putBoolean("Vision/saw front camera", frontPose!=null);
+    SmartDashboard.putBoolean("Vision/saw back camera", backPose!=null);
+    SmartDashboard.putNumber("Vision/received front camera timestamp", frontTimestamp);
+    SmartDashboard.putNumber("Vision/received back camera timestamp", backTimestamp);
     // if (SystemManager.lidar!=null){
     //   Pathfinding.ensureInitialized();
     //   Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObstacles(), swerveDrive.getPose().getTranslation());

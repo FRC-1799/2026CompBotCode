@@ -1,27 +1,15 @@
 package frc.robot.subsystems.vision;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.networktables.BooleanArrayPublisher;
-import edu.wpi.first.networktables.BooleanArraySubscriber;
-import edu.wpi.first.networktables.BooleanArrayTopic;
-import edu.wpi.first.networktables.DoubleSubscriber;
-import edu.wpi.first.networktables.DoubleTopic;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.networktables.StructSubscriber;
-import edu.wpi.first.networktables.StructTopic;
-import edu.wpi.first.util.struct.Struct;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.Constants;
+import frc.robot.SystemManager;
 import limelight.Limelight;
 import limelight.networktables.AngularVelocity3d;
 import limelight.networktables.LimelightPoseEstimator;
@@ -37,7 +25,6 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 public class realVision implements aprilTagInterface{
     Limelight limelightFront;
     Limelight limelightBack;
-    SwerveSubsystem swerve;
     LimelightPoseEstimator frontVisionEstimate;
     LimelightPoseEstimator backVisionEstimate;
     StructPublisher<Pose3d> frontPosePublisher;
@@ -52,9 +39,8 @@ public class realVision implements aprilTagInterface{
      *
      * Will be used to get vision estimations of where the robot is on the field when not in simulation
      *
-     * @param swerve swerve subsystem, used to fetch the yaw velocity of the robot.
      */
-    public realVision(SwerveSubsystem swerve) {
+    public realVision() {
 
         limelightFront = new Limelight(Constants.limelightConstants.frontCameraName);
         limelightBack = new Limelight(Constants.limelightConstants.backCameraName);
@@ -68,8 +54,6 @@ public class realVision implements aprilTagInterface{
          .withLimelightLEDMode(LEDMode.PipelineControl)
          .withCameraOffset(Constants.limelightConstants.backCameraPose)
          .save();
-
-        this.swerve = swerve;
 
 
         frontVisionEstimate = limelightFront.createPoseEstimator(EstimationMode.MEGATAG2);
@@ -85,18 +69,30 @@ public class realVision implements aprilTagInterface{
     public void periodic() {
         // These are called in periodic because they need to be according to YALL docs
         limelightBack.getSettings()
-        .withRobotOrientation(new Orientation3d(swerve.getRotation3d(),
-                                                new AngularVelocity3d(DegreesPerSecond.of(0), // Roll, our robot will not be front flipping
-                                                                    DegreesPerSecond.of(0), // Pitch, our robot will not be rolling around in mud
-                                                                    DegreesPerSecond.of(swerve.getYawVelocity().baseUnitMagnitude())))) // Yaw, rotation along the ground floor
-        .save();
+            .withRobotOrientation(
+                new Orientation3d(
+                    SystemManager.swerve.getRotation3d(),
+                    new AngularVelocity3d(
+                        DegreesPerSecond.of(0), // Roll, our robot will not be front flipping
+                        DegreesPerSecond.of(0), // Pitch, our robot will not be rolling around in mud
+                        DegreesPerSecond.of(SystemManager.swerve.getYawVelocity().baseUnitMagnitude()) // Yaw, rotation along the ground floor
+                        )  
+                )
+            )
+            .save();
 
         limelightFront.getSettings()
-        .withRobotOrientation(new Orientation3d(swerve.getRotation3d(),
-                                                new AngularVelocity3d(DegreesPerSecond.of(0), // Roll, our robot will not be front flipping
-                                                                    DegreesPerSecond.of(0), // Pitch, our robot will not be rolling around in mud
-                                                                    DegreesPerSecond.of(swerve.getYawVelocity().baseUnitMagnitude())))) // Yaw, rotation along the ground floor
-        .save();
+         .withRobotOrientation(
+            new Orientation3d(
+                SystemManager.swerve.getRotation3d(),
+                new AngularVelocity3d(
+                    DegreesPerSecond.of(0), // Roll, our robot will not be front flipping
+                    DegreesPerSecond.of(0), // Pitch, our robot will not be rolling around in mud
+                    DegreesPerSecond.of(SystemManager.swerve.getYawVelocity().baseUnitMagnitude()) // Yaw, rotation along the ground floor
+                    )
+            )
+         )
+         .save();
 
 
     }
