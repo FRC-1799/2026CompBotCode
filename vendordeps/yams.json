@@ -1,18 +1,18 @@
 {
     "fileName": "yams.json",
     "name": "Yet Another Mechanism System",
-    "version": "2026.1",
+    "version": "2026.2.23",
     "frcYear": "2026",
     "uuid": "a1051e86-a979-4880-a28b-a0d5362d1d96",
     "mavenUrls": [
-        "https://FRC-1799.github.io/YAMS/releases/"
+        "https://yet-another-software-suite.github.io/YAMS/releases/"
     ],
-    "jsonUrl": "https://FRC-1799.github.io/YAMS/yams.json",
+    "jsonUrl": "https://yet-another-software-suite.github.io/YAMS/yams.json",
     "javaDependencies": [
         {
             "groupId": "yams",
             "artifactId": "YAMS-java",
-            "version": "2026.1"
+            "version": "2026.2.23"
         }
     ],
     "cppDependencies": [],
