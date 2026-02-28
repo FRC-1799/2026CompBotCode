@@ -13,11 +13,15 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.FieldPosits;
+import frc.robot.SystemManager;
 import frc.robot.Constants.shooterConstants;
 import frc.robot.Constants.shooterConstants.bottomMotorConstants;
 import frc.robot.Constants.shooterConstants.topMotorConstants;
@@ -111,7 +115,7 @@ public abstract class Shooter extends SubsystemBase{
         SmartDashboard.putNumber("Shooter/ShooterTopSpeed", getTopFlywheelSpeed().in(RPM));
         SmartDashboard.putNumber("Shooter/ShooterBottomSpeed", getBottomFlywheelSpeed().in(RPM));
         SmartDashboard.putString("Shooter/ShooterState", state.toString());
-        
+        SmartDashboard.putNumber("Shooter/ShotDistance", SystemManager.getSwervePose().getTranslation().getDistance(FieldPosits.hubPose2d.getTranslation()));        
         
         topShooter.updateTelemetry();
         bottomShooter.updateTelemetry();
@@ -160,6 +164,15 @@ public abstract class Shooter extends SubsystemBase{
         return bottomShooter.getSpeed();
     }
 
+    public Pose2d getClosestShootPoint(){
+        Pose2d robotPose = SystemManager.getSwervePose();
+        Pose2d goalPose = FieldPosits.hubPose2d;
 
+        Transform2d dif = robotPose.minus(goalPose);
+        dif.div(Math.hypot(dif.getX(), dif.getY()));
+        dif.times(shooterConstants.shootRadius);
+        
+        return goalPose.plus(dif);
+    }
 
 }
