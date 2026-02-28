@@ -22,7 +22,7 @@ public class SemiAutoState extends SequentialCommandGroup{
     }
 
     public SemiAutoState(Command driveCommand, Command handoffCommand, BooleanSupplier canHandoff){
-        super(driveCommand, new InstantCommand(()->SystemManager.swerve.lock()), new WaitUntilCommand(canHandoff), handoffCommand);
+        super(driveCommand.repeatedly().until(SystemManager::swerveIsAtGoal), new InstantCommand(()->SystemManager.swerve.lock()), new WaitUntilCommand(canHandoff), handoffCommand);
         this.driveCommand=driveCommand;
         this.handOffCommand=handoffCommand;
         this.canHandoff=canHandoff;
