@@ -30,12 +30,34 @@ public class ShootHandoff extends SemiAutoState{
                             FieldPosits.hubPose2d)
 
                     )),
-                    SystemManager.swerve.driveToPose(new Pose2d(SystemManager.getSwervePose().getTranslation(), utilFunctions.getAngleBetweenTwoPoints(new Pose2d(SystemManager.getSwervePose().getTranslation(), new Rotation2d()), FieldPosits.hubPose2d))),
+                    SystemManager.swerve.driveToPose(new Pose2d(SystemManager.getSwervePose().getTranslation(), utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.hubPose2d))),
                     ()->!FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
                 );},
                 Set.of(SystemManager.swerve)
             ).until(SystemManager::swerveIsAtGoal),
             new SequentialCommandGroup(GeneralManager.startShooting(), new WaitUntilCommand(()->SystemManager.intake.getPieceCount()==0))
+        );
+    }
+
+     public ShootHandoff(BooleanSupplier canHandoff){
+        super(
+
+            new DeferredCommand(
+                ()->{return new ConditionalCommand(
+                    SystemManager.swerve.driveToPose(new Pose2d(
+                        SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses).getTranslation(),
+                        utilFunctions.getAngleBetweenTwoPoints(
+                            new Pose2d(SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses).getTranslation(), new Rotation2d()),
+                            FieldPosits.hubPose2d)
+
+                    )),
+                    SystemManager.swerve.driveToPose(new Pose2d(SystemManager.getSwervePose().getTranslation(), utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.hubPose2d))),
+                    ()->!FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
+                );},
+                Set.of(SystemManager.swerve)
+            ).until(SystemManager::swerveIsAtGoal),
+            new SequentialCommandGroup(GeneralManager.startShooting(), new WaitUntilCommand(()->SystemManager.intake.getPieceCount()==0)),
+            canHandoff
         );
     }
 }
