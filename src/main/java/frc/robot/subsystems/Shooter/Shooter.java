@@ -106,7 +106,8 @@ public abstract class Shooter extends SubsystemBase{
       
     private final FlyWheel topShooter = new FlyWheel(topShooterConfig);
     private final FlyWheel bottomShooter = new FlyWheel(bottomShooterConfig);
-
+    
+    private final TalonFX indexer = new TalonFX(shooterConstants.beltMotorID);
         
 
 
@@ -120,6 +121,13 @@ public abstract class Shooter extends SubsystemBase{
         
         topShooter.updateTelemetry();
         bottomShooter.updateTelemetry();
+        
+        if (state==shooterState.shooting){
+            indexer.set(shooterConstants.indexerShootSpeed);
+        }
+        else{
+            indexer.set(shooterConstants.indexerStopSpeed);
+        }
 
     }
     
