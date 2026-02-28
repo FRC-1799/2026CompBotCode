@@ -3,6 +3,7 @@ package frc.robot;
 
 import java.util.function.Consumer;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -112,7 +113,7 @@ public class ControlChooser {
            ,SystemManager.swerve, loop);
             
         xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
-        xbox1.leftTrigger(0.4,loop).whileTrue(new ShootHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
+        xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
@@ -128,11 +129,11 @@ public class ControlChooser {
         /**@return a new test control loop*/
     private EventLoop getRockControl(){
         EventLoop loop = new EventLoop();
-        setDefaultCommand(SystemManager.swerve.driveRobotOrientedCommand(()->-xbox1.getLeftY(), ()->-xbox1.getLeftX(), ()->xbox1.getRightX())
+        setDefaultCommand(SystemManager.swerve.driveRobotOrientedCommand(()->MathUtil.applyDeadband(-xbox1.getLeftY(), 0.1), ()->MathUtil.applyDeadband(-xbox1.getLeftX(), 0.1),  ()->MathUtil.applyDeadband(xbox1.getRightX(),0.1))
            ,SystemManager.swerve, loop);
             
-        xbox1.a(loop).whileTrue(GeneralManager.startPassing()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.spitting)));
-        xbox1.b(loop).whileTrue(GeneralManager.startspitting()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.spitting)));
+        xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
+        xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
