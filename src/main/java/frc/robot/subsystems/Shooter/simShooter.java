@@ -59,7 +59,7 @@ public class simShooter extends Shooter{
     
     public void shootInternal(){
             
-        if (true){
+        if (SystemManager.intake.getPieceCount()>0){
             SystemManager.intake.removePiece();
             
             SimulatedArena.getInstance()
