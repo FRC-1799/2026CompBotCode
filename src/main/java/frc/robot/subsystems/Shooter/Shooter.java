@@ -170,10 +170,11 @@ public abstract class Shooter extends SubsystemBase{
         Pose2d goalPose = FieldPosits.hubPose2d;
 
         Transform2d dif = robotPose.minus(goalPose);
-        Transform2d unitDif = dif.div(Math.hypot(dif.getX(), dif.getY()));
-        Transform2d scaledDif = unitDif.times(shooterConstants.shootRadius);
+
         
-        return new Pose2d(goalPose.plus(scaledDif).getTranslation(), utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.hubPose2d));
+        return new Pose2d(
+            goalPose.plus(dif.div(Math.hypot(dif.getX(), dif.getY())).times(shooterConstants.shootRadius)).getTranslation(),
+            utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.hubPose2d));
     }
 
 }
