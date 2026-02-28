@@ -149,7 +149,7 @@ public final class Constants
   public static class shooterConstants{
 
     public static final Distance shooterHeight = Inches.of(21);
-    public static final double shootRadius = 3.75;
+    public static final double shootRadius = 3.7;
     public static final Angle shotAngle = Degrees.of(65);
     public static final double SimRPMToMPS=0.0048;
 

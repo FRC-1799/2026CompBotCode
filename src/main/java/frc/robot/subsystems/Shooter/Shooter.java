@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.FieldPosits;
 import frc.robot.SystemManager;
+import frc.robot.Utils.utilFunctions;
 import frc.robot.Constants.shooterConstants;
 import frc.robot.Constants.shooterConstants.bottomMotorConstants;
 import frc.robot.Constants.shooterConstants.topMotorConstants;
@@ -169,10 +170,10 @@ public abstract class Shooter extends SubsystemBase{
         Pose2d goalPose = FieldPosits.hubPose2d;
 
         Transform2d dif = robotPose.minus(goalPose);
-        dif.div(Math.hypot(dif.getX(), dif.getY()));
-        dif.times(shooterConstants.shootRadius);
+        Transform2d unitDif = dif.div(Math.hypot(dif.getX(), dif.getY()));
+        Transform2d scaledDif = unitDif.times(shooterConstants.shootRadius);
         
-        return goalPose.plus(dif);
+        return new Pose2d(goalPose.plus(scaledDif).getTranslation(), utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.hubPose2d));
     }
 
 }
