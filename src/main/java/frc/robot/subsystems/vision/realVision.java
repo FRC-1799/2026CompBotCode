@@ -68,28 +68,26 @@ public class realVision implements aprilTagInterface{
     @Override
     public void periodic() {
         // These are called in periodic because they need to be according to YALL docs
-        limelightBack.getSettings()
-            .withRobotOrientation(
+        limelightBack.getSettings().withRobotOrientation(
                 new Orientation3d(
                     SystemManager.swerve.getRotation3d(),
                     new AngularVelocity3d(
                         DegreesPerSecond.of(0), // Roll, our robot will not be front flipping
                         DegreesPerSecond.of(0), // Pitch, our robot will not be rolling around in mud
                         DegreesPerSecond.of(SystemManager.swerve.getYawVelocity().baseUnitMagnitude()) // Yaw, rotation along the ground floor
-                        )  
+                    )  
                 )
             )
             .save();
 
-        limelightFront.getSettings()
-         .withRobotOrientation(
+        limelightFront.getSettings().withRobotOrientation(
             new Orientation3d(
                 SystemManager.swerve.getRotation3d(),
                 new AngularVelocity3d(
                     DegreesPerSecond.of(0), // Roll, our robot will not be front flipping
                     DegreesPerSecond.of(0), // Pitch, our robot will not be rolling around in mud
                     DegreesPerSecond.of(SystemManager.swerve.getYawVelocity().baseUnitMagnitude()) // Yaw, rotation along the ground floor
-                    )
+                )
             )
          )
          .save();
