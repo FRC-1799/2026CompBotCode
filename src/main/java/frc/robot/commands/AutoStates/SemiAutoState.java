@@ -19,7 +19,7 @@ public class SemiAutoState extends SequentialCommandGroup{
     }
 
     public SemiAutoState(Command driveCommand, Command handoffCommand){
-        super(driveCommand, handoffCommand);
+        super(driveCommand, new InstantCommand(()->SystemManager.swerve.lock()), handoffCommand);
         this.driveCommand=driveCommand;
         this.handOffCommand=handoffCommand;
     }
