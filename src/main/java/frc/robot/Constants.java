@@ -7,6 +7,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
@@ -19,6 +20,7 @@ import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -182,7 +184,19 @@ public final class Constants
   }
 
 
-  
+  public static class limelightConstants {
+
+    // Camera pose relative to robot center (x forward, y left, z up, degrees)
+    public static final Pose3d frontCameraPose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
+    public static final Pose3d backCameraPose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
+
+    public static final String frontCameraName = "limelight-one";
+    public static final String backCameraName = "limelight-two";
+
+    public static final Boolean readLimelight1 = true;
+    public static final Boolean readLimelight2 = true;
+
+  }
 
   //constants used for the simulated camera
   public static class cameraConstants{

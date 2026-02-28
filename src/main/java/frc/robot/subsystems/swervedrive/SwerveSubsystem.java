@@ -19,7 +19,9 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -27,6 +29,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -48,7 +51,7 @@ import frc.robot.commands.swervedrive.smallAutoDrive;
 import java.io.IOException;
 import java.util.Optional;
 
-
+import org.dyn4j.geometry.Rotation;
 import org.json.simple.parser.ParseException;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
@@ -491,30 +494,36 @@ public class SwerveSubsystem extends SubsystemBase
 
   @Override
   public void periodic(){
-    if (SystemManager.aprilTag.getBackPose()!=null){
-      SmartDashboard.putBoolean("BackVisionAdding", true);
-      swerveDrive.addVisionMeasurement(SystemManager.aprilTag.getBackPose().toPose2d(), SystemManager.aprilTag.getBackTimestamp());
+    Pose3d frontPose = SystemManager.aprilTag.getFrontPose();
+    Pose3d backPose = SystemManager.aprilTag.getBackPose();
+
+    Double frontTimestamp = SystemManager.aprilTag.getFrontTimestamp();
+    Double backTimestamp = SystemManager.aprilTag.getBackTimestamp();
+
+    if (Constants.limelightConstants.readLimelight2 && backPose!=null){
+      SmartDashboard.putBoolean("Vision/BackVisionAdding", true);
+      swerveDrive.addVisionMeasurement(backPose.toPose2d(), backTimestamp);
     }
     else{
-      SmartDashboard.putBoolean("BackVisionAdding", false);
+      SmartDashboard.putBoolean("Vision/BackVisionAdding", false);
 
     }
 
-    if (SystemManager.aprilTag.getFrontPose()!=null){
-      SmartDashboard.putBoolean("FrontVisionAdding", true);
+    if (Constants.limelightConstants.readLimelight1 && frontPose!=null ){
+      SmartDashboard.putBoolean("Vision/FrontVisionAdding", true);
 
-      swerveDrive.addVisionMeasurement(SystemManager.aprilTag.getFrontPose().toPose2d(),SystemManager.aprilTag.getFrontTimestamp());
+      swerveDrive.addVisionMeasurement(frontPose.toPose2d(), frontTimestamp);
     }
     else{
-      SmartDashboard.putBoolean("FrontVisionAdding", false);
+      SmartDashboard.putBoolean("Vision/FrontVisionAdding", false);
 
     }
 
 
-    SmartDashboard.putBoolean("saw front camera", SystemManager.aprilTag.getFrontPose()!=null);
-    SmartDashboard.putBoolean("saw back camera", SystemManager.aprilTag.getBackPose()!=null);
-    SmartDashboard.putNumber("received front camera timestamp", SystemManager.aprilTag.getFrontTimestamp());
-    SystemManager.aprilTag.getBackTimestamp();
+    SmartDashboard.putBoolean("Vision/saw front camera", frontPose!=null);
+    SmartDashboard.putBoolean("Vision/saw back camera", backPose!=null);
+    SmartDashboard.putNumber("Vision/received front camera timestamp", frontTimestamp);
+    SmartDashboard.putNumber("Vision/received back camera timestamp", backTimestamp);
     // if (SystemManager.lidar!=null){
     //   Pathfinding.ensureInitialized();
     //   Pathfinding.setDynamicObstacles(SystemManager.lidar.fetchObstacles(), swerveDrive.getPose().getTranslation());
@@ -647,6 +656,10 @@ public class SwerveSubsystem extends SubsystemBase
     return getPose().getRotation();
   }
 
+  public Rotation3d getRotation3d() {
+    return swerveDrive.getGyroRotation3d();
+  }
+
   /**
    * Get the chassis speeds based on controller input of 2 joysticks. One for speeds in which direction. The other for
    * the angle of the robot.
@@ -745,6 +758,15 @@ public class SwerveSubsystem extends SubsystemBase
   {
     return swerveDrive.getPitch();
   }
+
+  public AngularVelocity getYawVelocity() {
+    return swerveDrive.getGyro().getYawAngularVelocity();
+  }
+
+  public Object getIMU() {
+    return swerveDrive.getGyro().getIMU();
+  }
+
 
   /**
    * Add a fake vision reading for testing purposes.
