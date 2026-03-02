@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
+
 /**
  * Do NOT add any static variables to this class, or any initialization at all. Unless you know what you are doing, do
  * not modify this file except to change the parameter class to the startRobot call.
@@ -24,7 +25,13 @@ public final class Main
    */
   public static void main(String... args)
   {
-    System.out.printf("Version: %s Branch: %s\n", BuildConstants.VERSION, BuildConstants.GIT_BRANCH);
+    try {
+      var versionMsg = String.format("Version: %s Branch: %s %s\nBuilt on: %s\n", BuildConstants.VERSION, BuildConstants.GIT_BRANCH, BuildConstants.GIT_SHA.substring(0, 6), BuildConstants.BUILD_DATE);
+      System.out.print(versionMsg);
+    }
+    catch(RuntimeException e) {
+      System.out.println("Version: Unknown (error getting values)");
+    }
     
     RobotBase.startRobot(Robot::new);
   }
