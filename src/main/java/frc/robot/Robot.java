@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructArrayPublisher;
@@ -31,6 +32,9 @@ import frc.robot.subsystems.GeneralManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.stream.IntStream;
+
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import com.pathplanner.lib.commands.FollowPathCommand;
@@ -56,6 +60,14 @@ public class Robot extends TimedRobot{
     int swaps = 0;
     boolean blueIsActive;
 
+    private final String LIMELIGHT_TOGGLE_NAME = "Limelight Toggle";
+
+    private final SendableChooser<String> m_chooser = new SendableChooser<>();
+    private final String m_chooser_ll1 = "Limelight 01";
+    private final String m_chooser_ll2 = "Limelight 02";
+
+    private String m_chooser_current = m_chooser_ll2;
+
     StructArrayPublisher<Pose3d> fuelPublisher = NetworkTableInstance.getDefault().getStructArrayTopic("Fuel", Pose3d.struct).publish();
     
 
@@ -79,8 +91,9 @@ public class Robot extends TimedRobot{
     
         SmartDashboard.putData("Starting chooser", poseChooser);
 
-
-
+        m_chooser.setDefaultOption("Limelightt 01", m_chooser_ll1);
+        m_chooser.addOption("Limelightt 02", m_chooser_ll2);
+        SmartDashboard.putData(LIMELIGHT_TOGGLE_NAME, m_chooser);
     }
 
     public static Robot getInstance(){
@@ -101,7 +114,15 @@ public class Robot extends TimedRobot{
       this.controlChooser=new ControlChooser();
       DriverStation.silenceJoystickConnectionWarning(true);
       DataLogManager.start();
-      
+
+        try {
+            var versionMsg = String.format("\nVersion: %s Branch: %s %s\nBuilt on: %s\n", BuildConstants.VERSION, BuildConstants.GIT_BRANCH, BuildConstants.GIT_SHA.substring(0, 6), BuildConstants.BUILD_DATE);
+            DataLogManager.log(versionMsg);
+        }
+        catch(RuntimeException e) {
+            DataLogManager.log("\nVersion: Unknown (error getting values)\n");
+        }
+
     }
 
     /**
@@ -129,6 +150,18 @@ public class Robot extends TimedRobot{
 
       //System.out.println(CommandScheduler.getInstance().requiring(SystemManager.swerve));
 
+        var m_limelight_setting = m_chooser.getSelected();
+
+        if(!Objects.equals(m_limelight_setting, m_chooser_current)) {
+
+            m_chooser_current = m_limelight_setting;
+
+            IntStream.range(5800, 5820).forEach(PortForwarder::remove);
+
+            IntStream.range(5800, 5810).forEach(port -> {
+                PortForwarder.add(port, Objects.equals(m_chooser_current, m_chooser_ll1) ? "172.29.0.1" : "172.29.1.1", port);
+            });
+        }
     }
 
     /**
