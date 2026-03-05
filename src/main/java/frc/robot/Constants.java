@@ -97,6 +97,9 @@ public final class Constants
     public static final double distanceWithinPathplannerDontWork = 0.5;
 
     public static final int autoDriveCorrectCount = 3;
+
+    //This value is used by SmartShoot to determine whether the hub will still be active by the time a projectile lands.
+    public static final double predictedShotTime = 3; 
   }
 
   /**constants for the controls */

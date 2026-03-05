@@ -22,7 +22,7 @@ public class ShootHandoff extends SemiAutoState{
         this(()->true);
     }
 
-     public ShootHandoff(BooleanSupplier canHandoff){
+    public ShootHandoff(BooleanSupplier canHandoff){
         super(
 
             new DeferredCommand(
@@ -43,4 +43,29 @@ public class ShootHandoff extends SemiAutoState{
             canHandoff
         );
     }
+
+
+    public ShootHandoff(BooleanSupplier canHandoff, boolean midShootCancel){
+        super(
+
+            new DeferredCommand(
+                ()->{return new ConditionalCommand(
+                    SystemManager.swerve.driveToPose(new Pose2d(
+                        SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses).getTranslation(),
+                        utilFunctions.getAngleBetweenTwoPoints(
+                            new Pose2d(SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses).getTranslation(), new Rotation2d()),
+                            FieldPosits.hubPose2d)
+
+                    )),
+                    SystemManager.swerve.driveToPose(SystemManager.shooter.getClosestShootPoint()),
+                    ()->!FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
+                );},
+                Set.of(SystemManager.swerve)
+            ).until(SystemManager::swerveIsAtGoal),
+            new SequentialCommandGroup(GeneralManager.startShooting(), new WaitUntilCommand(()->SystemManager.intake.getPieceCount()==0)),
+            canHandoff
+        );
+    }
+
+    
 }

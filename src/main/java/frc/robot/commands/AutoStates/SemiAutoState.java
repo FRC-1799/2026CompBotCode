@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.SystemManager;
+import frc.robot.subsystems.GeneralManager;
 
 public class SemiAutoState extends SequentialCommandGroup{
     Command driveCommand;
@@ -22,9 +23,19 @@ public class SemiAutoState extends SequentialCommandGroup{
     }
 
     public SemiAutoState(Command driveCommand, Command handoffCommand, BooleanSupplier canHandoff){
-        super(driveCommand.repeatedly().until(SystemManager::swerveIsAtGoal), new InstantCommand(()->SystemManager.swerve.lock()), new WaitUntilCommand(canHandoff), handoffCommand);
+        this(driveCommand, handoffCommand, canHandoff, true);
+    }
+
+    public SemiAutoState(Command driveCommand, Command handoffCommand, BooleanSupplier canHandoff, boolean CancelHandoff){
+        super(driveCommand.repeatedly().until(
+            SystemManager::swerveIsAtGoal),
+            new InstantCommand(()->SystemManager.swerve.lock()).until(()->{return canHandoff.getAsBoolean()&&CancelHandoff;}),
+            new WaitUntilCommand(canHandoff),
+            handoffCommand
+        );
         this.driveCommand=driveCommand;
         this.handOffCommand=handoffCommand;
         this.canHandoff=canHandoff;
     }
+
 }

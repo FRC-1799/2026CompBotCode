@@ -19,6 +19,7 @@ import frc.robot.Utils.utilFunctions;
 import frc.robot.commands.AutoStates.IntakeHandoff;
 import frc.robot.commands.AutoStates.PassingHandoff;
 import frc.robot.commands.AutoStates.ShootHandoff;
+import frc.robot.commands.AutoStates.SmartShoot;
 import frc.robot.commands.auto.DepoAuto;
 import frc.robot.commands.auto.MidGrab;
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
@@ -113,7 +114,7 @@ public class ControlChooser {
            ,SystemManager.swerve, loop);
             
         xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
-        xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
+        xbox1.leftTrigger(0.1,loop).whileTrue(new SmartShoot());
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
