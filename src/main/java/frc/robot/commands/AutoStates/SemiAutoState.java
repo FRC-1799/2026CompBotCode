@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.SystemManager;
-import frc.robot.subsystems.GeneralManager;
 
 public class SemiAutoState extends SequentialCommandGroup{
     Command driveCommand;
