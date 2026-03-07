@@ -105,9 +105,10 @@ public abstract class Shooter extends SubsystemBase{
 
       
     private final FlyWheel topShooter = new FlyWheel(topShooterConfig);
-    private final FlyWheel bottomShooter = new FlyWheel(bottomShooterConfig);
+    //private final FlyWheel bottomShooter = new FlyWheel(bottomShooterConfig);
     
     private final TalonFX indexer = new TalonFX(shooterConstants.beltMotorID);
+    
         
 
 
@@ -120,13 +121,15 @@ public abstract class Shooter extends SubsystemBase{
         SmartDashboard.putNumber("Shooter/ShotDistance", SystemManager.getSwervePose().getTranslation().getDistance(FieldPosits.hubPose2d.getTranslation()));        
         
         topShooter.updateTelemetry();
-        bottomShooter.updateTelemetry();
+        //bottomShooter.updateTelemetry();
         
         if (state==shooterState.shooting){
             indexer.set(shooterConstants.indexerShootSpeed);
+            bottomShooterMotor.set(shooterConstants.indexerShootSpeed);
         }
         else{
             indexer.set(shooterConstants.indexerStopSpeed);
+            bottomShooterMotor.set(shooterConstants.indexerStopSpeed);
         }
 
     }
@@ -134,7 +137,7 @@ public abstract class Shooter extends SubsystemBase{
     @Override
     public void simulationPeriodic(){
         topShooter.simIterate();
-        bottomShooter.simIterate();
+        //bottomShooter.simIterate();
     }
     
 
@@ -142,7 +145,7 @@ public abstract class Shooter extends SubsystemBase{
         state = shooterState.rev;
         topShooter.set(topMotorConstants.shootingSpeedDutyCycle).schedule();
 
-        bottomShooter.set(bottomMotorConstants.shootingSpeedDutyCycle).schedule();
+        //bottomShooter.set(bottomMotorConstants.shootingSpeedDutyCycle).schedule();
 
 
     }
@@ -150,7 +153,7 @@ public abstract class Shooter extends SubsystemBase{
     public void startShooting(){
         state=shooterState.shooting;
         topShooter.set(topMotorConstants.shootingSpeedDutyCycle).schedule();
-        bottomShooter.set(bottomMotorConstants.shootingSpeedDutyCycle).schedule();
+        //bottomShooter.set(bottomMotorConstants.shootingSpeedDutyCycle).schedule();
     }
 
     public void stop(){
@@ -160,7 +163,7 @@ public abstract class Shooter extends SubsystemBase{
 
     public void rest(){
         state = shooterState.resting;
-        bottomShooter.set(0).schedule();
+        //bottomShooter.set(0).schedule();
         topShooter.set(0).schedule();
 
     }
@@ -170,7 +173,8 @@ public abstract class Shooter extends SubsystemBase{
     }
 
     public AngularVelocity getBottomFlywheelSpeed(){
-        return bottomShooter.getSpeed();
+        return RPM.of(0);
+        //return bottomShooter.getSpeed();
     }
 
     public Pose2d getClosestShootPoint(){

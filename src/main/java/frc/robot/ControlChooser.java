@@ -112,14 +112,16 @@ public class ControlChooser {
             return utilFunctions.pythagorean(xbox1.getRightY(), xbox1.getRightX())>=0.2? Math.atan2(-xbox1.getRightX(), xbox1.getRightY())/Math.PI: SystemManager.swerve.getHeading().getRadians()/Math.PI;})
            ,SystemManager.swerve, loop);
             
-        xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
-        xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
+        //xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
+        //xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
+        xbox1.rightTrigger(0.4, loop).onTrue(GeneralManager.startIntaking()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
+
+        xbox1.leftTrigger(0.4, loop).onTrue(GeneralManager.startShooting()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
         xbox1.a(loop).onTrue(GeneralManager.startPassing()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.passing)));
         xbox1.b(loop).onTrue(GeneralManager.startspitting()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.spitting)));
-        xbox1.x(loop).onTrue(new MidGrab());
 
 
 

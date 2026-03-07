@@ -152,13 +152,13 @@ public final class Constants
     public static final double shootRadius = 3.7;
     public static final Angle shotAngle = Degrees.of(65);
     public static final double SimRPMToMPS=0.0024;
-    public static final int beltMotorID=0;
-    public static final double indexerShootSpeed=0.2;
+    public static final int beltMotorID=6;
+    public static final double indexerShootSpeed=0.4;
     public static final double indexerStopSpeed=0;
 
 
     public static final class topMotorConstants{
-      public static final double shootingSpeedDutyCycle = 1;
+      public static final double shootingSpeedDutyCycle = 0.5;
       public static final double P = 5;
       public static final double I = 0;
       public static final double D = 0;
@@ -169,7 +169,7 @@ public final class Constants
       public static final int canID=2;
     }
     public static final class bottomMotorConstants{
-      public static final double shootingSpeedDutyCycle = 0.8;
+      public static final double shootingSpeedDutyCycle = 0;
       public static final double P = 5;
       public static final double I = 0;
       public static final double D = 0;
