@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.FieldPosits;
+import frc.robot.RobotPreferences;
 import frc.robot.SystemManager;
 import frc.robot.Utils.utilFunctions;
 import frc.robot.Constants.shooterConstants;
@@ -47,6 +48,8 @@ public abstract class Shooter extends SubsystemBase{
     }
         
     public shooterState state = shooterState.rev;
+
+    private final RobotPreferences pref = RobotPreferences.getInstance(); 
 
     private final TalonFX topShooterMotor = new TalonFX(topMotorConstants.canID);
     private final TalonFX bottomShooterMotor = new TalonFX(bottomMotorConstants.canID);
@@ -140,17 +143,17 @@ public abstract class Shooter extends SubsystemBase{
 
     public void startRevving(){
         state = shooterState.rev;
-        topShooter.set(topMotorConstants.shootingSpeedDutyCycle).schedule();
+        topShooter.set(pref.topShootingSpeedDutyCycle()).schedule();
 
-        bottomShooter.set(bottomMotorConstants.shootingSpeedDutyCycle).schedule();
+        bottomShooter.set(pref.bottomShootingSpeedDutyCycle()).schedule();
 
 
     }
 
     public void startShooting(){
         state=shooterState.shooting;
-        topShooter.set(topMotorConstants.shootingSpeedDutyCycle).schedule();
-        bottomShooter.set(bottomMotorConstants.shootingSpeedDutyCycle).schedule();
+        topShooter.set(pref.topShootingSpeedDutyCycle()).schedule();
+        bottomShooter.set(pref.bottomShootingSpeedDutyCycle()).schedule();
     }
 
     public void stop(){
