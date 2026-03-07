@@ -22,7 +22,7 @@ public class DepoAuto extends SequentialCommandGroup{
 
 
             //Grab from mid
-            GeneralManager.startIntaking(),
+            GeneralManager.intaking(),
             new DeferredCommand(
                 ()->{
                     return SystemManager.swerve.driveToPose(new Pose2d(FieldPosits.mid, new Rotation2d(
@@ -35,7 +35,7 @@ public class DepoAuto extends SequentialCommandGroup{
             new ShootHandoff(),
 
             //Grab from depo
-            GeneralManager.startIntaking(),
+            GeneralManager.intaking(),
             SystemManager.swerve.driveToPose(new Pose2d(FieldPosits.depo, new Rotation2d(
                 SystemManager.getSwervePose().getX()-FieldPosits.depo.getX(),
                 SystemManager.getSwervePose().getY()-FieldPosits.depo.getY()))
