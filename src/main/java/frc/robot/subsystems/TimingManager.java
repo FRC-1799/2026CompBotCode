@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.lang.StackWalker.Option;
 import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -51,8 +52,20 @@ public class TimingManager {
             case 'R':
                 return Optional.of(Alliance.Red);
             default:
-                return Optional.empty();
+                return Optional.of(Alliance.Blue);
         }
+    }
+
+    public static Optional<Alliance> getActiveAlliance(){
+        if (getCurrentShift().activeType==ActiveType.AUTO_WINNER||getCurrentShift().activeType==ActiveType.BOTH) {
+            return getAutoWinner();
+        }
+        else{
+            if (getAutoWinner().isEmpty()){ return Optional.empty();}
+            else if (getAutoWinner().get()==Alliance.Blue){return Optional.of(Alliance.Red);}
+            else {return Optional.of(Alliance.Blue);}
+        }
+
     }
 
     protected static double getMatchTime() {
@@ -97,10 +110,10 @@ public class TimingManager {
                     return true;
 
                 case AUTO_WINNER:
-                    return autoWinner.isPresent() && currentAlliance.isPresent() && autoWinner.get() == currentAlliance.get(); 
+                    return autoWinner.isPresent() && autoWinner.get() == (currentAlliance.isPresent()?currentAlliance.get():Alliance.Blue); 
 
                 case AUTO_LOSER:
-                    return autoWinner.isPresent() && currentAlliance.isPresent() && autoWinner.get() != currentAlliance.get();
+                    return autoWinner.isPresent() && autoWinner.get() != (currentAlliance.isPresent()?currentAlliance.get():Alliance.Blue);
                 
                 default:
                     // Will not run unless a new value is added to ActiveType
@@ -123,6 +136,7 @@ public class TimingManager {
     public static void periodic() {
         SmartDashboard.putBoolean("Timer/IsActive", isActive());
         SmartDashboard.putNumber("Timer/TimeRemainingInStep", timeRemaining());
+        SmartDashboard.putString("Timer/CurrentActiveAlliance", getActiveAlliance().toString());
     }
 }
 

@@ -97,6 +97,9 @@ public final class Constants
     public static final double distanceWithinPathplannerDontWork = 0.5;
 
     public static final int autoDriveCorrectCount = 3;
+
+    //This value is used by SmartShoot to determine whether the hub will still be active by the time a projectile lands.
+    public static final double predictedShotTime = 3; 
   }
 
   /**constants for the controls */
@@ -111,9 +114,6 @@ public final class Constants
 
   public static class IntakeConstants{
     public static final int intakeCanID = 1;
-    public static final double intakeSpeed=-1;
-
-    public static final double backRunSpeed=0.55;
   }
 
   /**Constants used for sim */
@@ -158,7 +158,7 @@ public final class Constants
 
 
     public static final class topMotorConstants{
-      public static final double shootingSpeedDutyCycle = 0.5;
+
       public static final double P = 5;
       public static final double I = 0;
       public static final double D = 0;
@@ -169,7 +169,7 @@ public final class Constants
       public static final int canID=2;
     }
     public static final class bottomMotorConstants{
-      public static final double shootingSpeedDutyCycle = 0;
+
       public static final double P = 5;
       public static final double I = 0;
       public static final double D = 0;
