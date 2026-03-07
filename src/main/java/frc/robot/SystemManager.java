@@ -130,7 +130,7 @@ public class SystemManager{
 
 
         GeneralManager.periodic();
-        TimingManager.periodic();
+        TimingManager.getInstance().periodic();
     }
 
     /** @return the current pose of the robot */

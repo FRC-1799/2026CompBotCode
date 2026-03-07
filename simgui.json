@@ -9,6 +9,7 @@
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/IMU": "Alerts",
       "/SmartDashboard/JSON": "Alerts",
+      "/SmartDashboard/Limelight Toggle": "String Chooser",
       "/SmartDashboard/Mechanisms/Commands//Live Tuning": "Command",
       "/SmartDashboard/Mechanisms/Commands/BottomShooterMotor/Down": "Command",
       "/SmartDashboard/Mechanisms/Commands/BottomShooterMotor/Up": "Command",
@@ -26,6 +27,16 @@
       "/SmartDashboard/TopFlywheelMech/mechanism": "Mechanism2d",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d",
       "/SmartDashboard/auto chooser": "String Chooser"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "Timer": {
+          "open": true
+        },
+        "open": true
+      }
     }
   },
   "NetworkTables Info": {
