@@ -1,12 +1,15 @@
 package frc.robot.subsystems.vision;
 
+import java.util.Objects;
 import java.util.Optional;
-
+import java.util.stream.IntStream;
 
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
@@ -23,15 +26,20 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 
 
 public class realVision implements aprilTagInterface{
-    Limelight limelightFront;
-    Limelight limelightBack;
-    LimelightPoseEstimator frontVisionEstimate;
-    LimelightPoseEstimator backVisionEstimate;
-    StructPublisher<Pose3d> frontPosePublisher;
-    StructPublisher<Pose3d> backPosePublisher;
-    Optional<PoseEstimate> estimatedFrontPose;
-    Optional<PoseEstimate> estimatedBackPose;
-  
+    Limelight limelight1;
+    Limelight limelight2;
+    LimelightPoseEstimator ll1Estimate;
+    LimelightPoseEstimator ll2Estimate;
+
+    StructPublisher<Pose3d> ll1PosePublisher;
+    StructPublisher<Pose3d> ll2PosePublisher;
+    Optional<PoseEstimate> ll1Pose;
+    Optional<PoseEstimate> ll2Pose;
+    String m_chooser_current;
+
+    Double ll1Timestamp = -1.0;
+    Double ll2Timestamp = -1.0;
+
 
 
     /**
@@ -42,33 +50,45 @@ public class realVision implements aprilTagInterface{
      */
     public realVision() {
 
-        limelightFront = new Limelight(Constants.limelightConstants.frontCameraName);
-        limelightBack = new Limelight(Constants.limelightConstants.backCameraName);
+        limelight1 = new Limelight(Constants.limelightConstants.limelight1Name);
+        limelight2 = new Limelight(Constants.limelightConstants.limelight2Name);
 
-        limelightFront.getSettings()
+        limelight1.getSettings()
          .withLimelightLEDMode(LEDMode.PipelineControl)
          .withCameraOffset(Constants.limelightConstants.frontCameraPose)
          .save();
         
-        limelightBack.getSettings()
+        limelight2.getSettings()
          .withLimelightLEDMode(LEDMode.PipelineControl)
          .withCameraOffset(Constants.limelightConstants.backCameraPose)
          .save();
 
 
-        frontVisionEstimate = limelightFront.createPoseEstimator(EstimationMode.MEGATAG2);
-        backVisionEstimate = limelightBack.createPoseEstimator(EstimationMode.MEGATAG2);
+        ll1Estimate = limelight1.createPoseEstimator(EstimationMode.MEGATAG2);
+        ll2Estimate = limelight2.createPoseEstimator(EstimationMode.MEGATAG2);
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        frontPosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("FrontPoseEstimation", Pose3d.struct).publish(PubSubOption.keepDuplicates(true));
-        backPosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("BackPoseEstimation", Pose3d.struct).publish(PubSubOption.keepDuplicates(true));
+        ll1PosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("Limelight 1 Pose Estimation", Pose3d.struct).publish(PubSubOption.keepDuplicates(true));
+        ll2PosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("Limelight 2 Pose Estimation", Pose3d.struct).publish(PubSubOption.keepDuplicates(true));
+        
+        SendableChooser<String> m_chooser = new SendableChooser<>();
 
+        m_chooser_current = Constants.limelightConstants.limelight1Name; // default option
+
+        m_chooser.addOption(Constants.limelightConstants.limelight1Name, Constants.limelightConstants.limelight1Name);
+        m_chooser.addOption(Constants.limelightConstants.limelight2Name, Constants.limelightConstants.limelight2Name);
+        
+        m_chooser.setDefaultOption(Constants.limelightConstants.limelight1Name, m_chooser_current);
+        m_chooser.onChange((String limelightName)->{limelightForwarding(limelightName);});
+        
+        SmartDashboard.putData("Vision/" + Constants.limelightConstants.limelightToggleName, m_chooser);
     }
+
 
     @Override
     public void periodic() {
         // These are called in periodic because they need to be according to YALL docs
-        limelightBack.getSettings().withRobotOrientation(
+        limelight2.getSettings().withRobotOrientation(
                 new Orientation3d(
                     SystemManager.swerve.getRotation3d(),
                     new AngularVelocity3d(
@@ -80,7 +100,7 @@ public class realVision implements aprilTagInterface{
             )
             .save();
 
-        limelightFront.getSettings().withRobotOrientation(
+        limelight1.getSettings().withRobotOrientation(
             new Orientation3d(
                 SystemManager.swerve.getRotation3d(),
                 new AngularVelocity3d(
@@ -103,18 +123,19 @@ public class realVision implements aprilTagInterface{
      */
     @Override
     public Pose3d getFrontPose() {
-        estimatedFrontPose = frontVisionEstimate.getPoseEstimate();
-        if (estimatedFrontPose.isEmpty()) {
-            SmartDashboard.putBoolean("Vision/FrontPoseReadCorrectly", false);
-            frontPosePublisher.set(null);
+        ll1Pose = ll1Estimate.getPoseEstimate();
+        if (ll1Pose.isEmpty()) {
+            SmartDashboard.putBoolean("Vision/Limelight 1 Read Correctly", false);
+            ll1PosePublisher.set(null);
             return null;
             
         }
-        SmartDashboard.putBoolean("Vision/FrontPoseReadCorrectly", true);
+        SmartDashboard.putBoolean("Vision/Limelight 1 Read Correctly", true);
         
-
-        frontPosePublisher.set(estimatedFrontPose.get().pose);
-        return estimatedFrontPose.get().pose;
+        PoseEstimate poseEstimate = ll1Pose.get();
+        ll1Timestamp = poseEstimate.timestampSeconds;
+        ll1PosePublisher.set(poseEstimate.pose);
+        return poseEstimate.pose;
     }
 
     /**
@@ -125,15 +146,15 @@ public class realVision implements aprilTagInterface{
     @Override
     public Double getFrontTimestamp() {
         Double timestamp;
-        if (!estimatedFrontPose.isEmpty()) {
-            timestamp = estimatedFrontPose.get().timestampSeconds;
-            SmartDashboard.putNumber("Vision/ReceivedFrontTimestamp", timestamp);
-            SmartDashboard.putBoolean("Vision/FrontTimestampConnected", true);
+        if (!ll1Pose.isEmpty()) {
+            timestamp = ll1Timestamp;
+            SmartDashboard.putNumber("Vision/Limelight 1 Timestamp", timestamp);
+            SmartDashboard.putBoolean("Vision/Limelight 1 Connected", true);
         }
         else {
             timestamp = -1.0;
-            SmartDashboard.putNumber("Vision/ReceivedFrontTimestamp", timestamp);
-            SmartDashboard.putBoolean("Vision/FrontTimestampConnected", false);
+            SmartDashboard.putNumber("Vision/Limelight 1 Timestamp", timestamp);
+            SmartDashboard.putBoolean("Vision/Limelight 1 Connected", false);
         }
 
 
@@ -148,19 +169,21 @@ public class realVision implements aprilTagInterface{
      */
     @Override
     public Pose3d getBackPose() {
-        estimatedBackPose = backVisionEstimate.getPoseEstimate();
+        ll2Pose = ll2Estimate.getPoseEstimate();
 
-        if (estimatedBackPose.isEmpty()) {
-            SmartDashboard.putBoolean("Vision/BackPoseReadCorrectly", false);
-            backPosePublisher.set(null);
+        if (ll2Pose.isEmpty()) {
+            SmartDashboard.putBoolean("Vision/Limelight 2 Read Correctly", false);
+            ll2PosePublisher.set(null);
             return null;
         }
 
-        SmartDashboard.putBoolean("Vision/BackPoseReadCorrectly", true);
+        SmartDashboard.putBoolean("Vision/Limelight 2 Read Correctly", true);
 
 
-        backPosePublisher.set(estimatedBackPose.get().pose);
-        return estimatedBackPose.get().pose;
+        PoseEstimate poseEstimate = ll2Pose.get();
+        ll2Timestamp = poseEstimate.timestampSeconds;
+        ll2PosePublisher.set(poseEstimate.pose);
+        return poseEstimate.pose;
     }
 
     /**
@@ -171,15 +194,15 @@ public class realVision implements aprilTagInterface{
     @Override
     public Double getBackTimestamp() {
         Double timestamp;
-        if (!estimatedBackPose.isEmpty()) {
-            timestamp = estimatedBackPose.get().timestampSeconds;
-            SmartDashboard.putNumber("Vision/ReceivedBackTimestamp", timestamp);
-            SmartDashboard.putBoolean("Vision/BackTimestampConnected", true);
+        if (!ll2Pose.isEmpty()) {
+            timestamp = ll2Timestamp;
+            SmartDashboard.putNumber("Vision/Limelight 2 Timestamp", timestamp);
+            SmartDashboard.putBoolean("Vision/Limelight 2 Connected", true);
         }
         else {
             timestamp = -1.0;
-            SmartDashboard.putNumber("Vision/ReceivedBackTimestamp", timestamp);
-            SmartDashboard.putBoolean("Vision/BackTimestampConnected", false);
+            SmartDashboard.putNumber("Vision/Limelight 2 Timestamp", timestamp);
+            SmartDashboard.putBoolean("Vision/Limelight 2 Connected", false);
         }
 
 
@@ -187,5 +210,17 @@ public class realVision implements aprilTagInterface{
     }
 
 
+    public void limelightForwarding(String limelightSetting) {
+      if(!Objects.equals(limelightSetting, m_chooser_current)) {
+
+          m_chooser_current = limelightSetting;
+
+          IntStream.range(5800, 5820).forEach(PortForwarder::remove);
+
+          IntStream.range(5800, 5810).forEach(port -> {
+              PortForwarder.add(port, Objects.equals(m_chooser_current, Constants.limelightConstants.limelight1Name) ? "172.29.0.1" : "172.29.1.1", port);
+          });
+      }
+    }
 
 }
