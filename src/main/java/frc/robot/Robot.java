@@ -37,6 +37,8 @@ import java.util.stream.IntStream;
 
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
+
+import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import swervelib.parser.SwerveParser;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
@@ -86,6 +88,7 @@ public class Robot extends TimedRobot{
 
         autoChooser.addOption("depo", new DepoAuto());
         autoChooser.addOption("outpost", new OutpostAuto());
+        autoChooser.addOption("SysID", SystemManager.shooter.sysId().andThen(new InstantCommand(()->SignalLogger.stop())));
         SmartDashboard.putData("auto chooser", autoChooser);
 
     
