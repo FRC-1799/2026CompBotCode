@@ -61,7 +61,7 @@ public class TimingManager {
     }
 
 
-    public  Optional<Alliance> getAutoWinner() {
+    public Optional<Alliance> getAutoWinner() {
         String msg = DriverStation.getGameSpecificMessage(); 
         char msgChar = msg.length() > 0 ? msg.charAt(0) : ' '; // the first charecter is the alliance that lost auto stage
         switch (msgChar) {
@@ -74,7 +74,7 @@ public class TimingManager {
         }
     }
 
-    public static Optional<Alliance> getActiveAlliance(){
+    public Optional<Alliance> getActiveAlliance(){
         if (getCurrentShift().activeType==ActiveType.AUTO_WINNER||getCurrentShift().activeType==ActiveType.BOTH) {
             return getAutoWinner();
         }

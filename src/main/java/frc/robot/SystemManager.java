@@ -48,7 +48,7 @@ public class SystemManager{
     public static simShooter shooter;
     public static Robot robot;
 
-    public static TimingManager clock = new TimingManager();
+    public static TimingManager clock = TimingManager.getInstance();
 
     public static Pose2d autoDriveGoal=new Pose2d();
     public static StructPublisher<Pose2d> autoDriveGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("SmartDashboard/AutoDrive/goal", Pose2d.struct).publish();
