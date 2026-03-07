@@ -10,15 +10,15 @@ This control scheme does literally nothing (auto will still run in autonomous mo
 
 ## Test Control (This control scheme changes often and so may not always be up to date)
 Field oriented drive with left stick for directional control and right stick for rotation
-Left Trigger: Smart shoot (Will only fire if the fuel is predicted to land within an active period)
+Left Trigger: Starts shooter with no autodrive
 Right Trigger: Intake
 A: Begins passing
 B: Outtakes game pieces through the intake 
 
 ## Rock Control
 Robot oriented drive with left stick for directional control and right stick x axis for rotation
-Left Trigger above 10%: AutoDrive and aimbot 
-Left Trigger above 50% : Smart shoot (Will only fire if the fuel is predicted to land within an active period)(If the robot is not in a correct position to shoot this input will auto aim before firing)
+Left Trigger: Starts shooter with no autodrive
+Right Trigger: Intake
 Right Trigger: begins intaking
 A: Starts passing
 
