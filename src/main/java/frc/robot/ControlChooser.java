@@ -120,7 +120,6 @@ public class ControlChooser {
         
         xbox1.a(loop).onTrue(GeneralManager.startPassing()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.passing)));
         xbox1.b(loop).onTrue(GeneralManager.startspitting()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.spitting)));
-        xbox1.x(loop).onTrue(new MidGrab());
 
 
 
@@ -134,12 +133,11 @@ public class ControlChooser {
            ,SystemManager.swerve, loop);
             
         xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
-        xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
+        xbox1.leftTrigger(0.1,loop).whileTrue(new SmartShoot(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
         xbox1.a(loop).onTrue(GeneralManager.startPassing()).onFalse(GeneralManager.startResting());
-        xbox1.b(loop).onTrue(new InstantCommand(()->((Arena2026Rebuilt)SimulatedArena.getInstance()).outpostThrowForGoal(false)));
 
 
 

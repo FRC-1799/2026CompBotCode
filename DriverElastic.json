@@ -5,7 +5,66 @@
     {
       "name": "Teleoperated",
       "grid_layout": {
-        "layouts": [],
+        "layouts": [
+          {
+            "title": "Timer",
+            "x": 384.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "CurrentActiveAlliance",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Timer/CurrentActiveAlliance",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "IsActive",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Boolean Box",
+                "properties": {
+                  "topic": "/SmartDashboard/Timer/IsActive",
+                  "period": 0.06,
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
+                }
+              },
+              {
+                "title": "TimeRemainingInStep",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Timer/TimeRemainingInStep",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          }
+        ],
         "containers": [
           {
             "title": "fuelCount",
@@ -22,23 +81,6 @@
             }
           },
           {
-            "title": "Blue is active",
-            "x": 384.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "/SmartDashboard/MapleSim/MatchData/Breakdown/blue Alliance/Blue is active",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
-            }
-          },
-          {
             "title": "TotalScore",
             "x": 896.0,
             "y": 0.0,
@@ -47,20 +89,6 @@
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/MapleSim/MatchData/Breakdown/blue Alliance/TotalScore",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Time left in current phase",
-            "x": 512.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/MapleSim/MatchData/Breakdown/Time left in current phase",
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false
@@ -89,7 +117,6 @@
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/general state",
-              
               "period": 0.06,
               "data_type": "string",
               "show_submit_button": false
@@ -97,13 +124,26 @@
           },
           {
             "title": "Control chooser",
-            "x": 1024.0,
+            "x": 0.0,
             "y": 0.0,
             "width": 256.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
             "properties": {
               "topic": "/SmartDashboard/Control chooser",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "auto chooser",
+            "x": 0.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/auto chooser",
               "period": 0.06,
               "sort_options": false
             }
