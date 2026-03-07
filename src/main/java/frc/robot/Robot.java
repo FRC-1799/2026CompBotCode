@@ -29,6 +29,7 @@ import frc.robot.commands.auto.MidGrab;
 import frc.robot.commands.auto.OutpostAuto;
 import frc.robot.commands.swervedrive.spin;
 import frc.robot.subsystems.GeneralManager;
+import frc.robot.subsystems.TimingManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -189,7 +190,7 @@ public class Robot extends TimedRobot{
     @Override
     public void autonomousInit()
     {
-
+      TimingManager.getInstance().resetAuto();
       autoChooser.getSelected().schedule();
 
     }
@@ -206,6 +207,7 @@ public class Robot extends TimedRobot{
     public void teleopInit()
     {
      
+      TimingManager.getInstance().resetTeleop();
 
       controlChooser.restart();
       if (!RobotBase.isReal()){

@@ -17,6 +17,6 @@ public class SmartShoot extends ShootHandoff{
 
     public static boolean shouldShoot(){
 
-        return TimingManager.isActive()==!(TimingManager.timeRemaining()<AutonConstants.predictedShotTime);
+        return TimingManager.getInstance().isActive()==!(TimingManager.getInstance().timeRemaining()<AutonConstants.predictedShotTime);
     }
 }
