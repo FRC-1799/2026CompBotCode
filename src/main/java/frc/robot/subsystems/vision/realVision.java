@@ -130,6 +130,7 @@ public class realVision implements aprilTagInterface{
             return null;
             
         }
+
         SmartDashboard.putBoolean("Vision/Limelight 1 Read Correctly", true);
         
         PoseEstimate poseEstimate = ll1Pose.get();
@@ -211,7 +212,7 @@ public class realVision implements aprilTagInterface{
 
 
     public void limelightForwarding(String limelightSetting) {
-      if(!Objects.equals(limelightSetting, m_chooser_current)) {
+      if (!Objects.equals(limelightSetting, m_chooser_current)) {
 
           m_chooser_current = limelightSetting;
 
@@ -224,3 +225,4 @@ public class realVision implements aprilTagInterface{
     }
 
 }
+    

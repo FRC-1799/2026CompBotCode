@@ -140,6 +140,12 @@ public class SystemManager{
         return swerve.getPose();
     }
 
+    public static void initialPortForward() {
+        if (Constants.simConfigs.aprilTagShouldBeSim) {
+            realVisTemp.limelightForwarding(Constants.limelightConstants.limelight1Name);
+        } 
+    }
+
     /** @return the pose of the simulated maplesim drive. If the drivetrain is real, then the function will just return the pose estimator's pose */
     public static Pose2d getRealPoseMaple(){
         if (RobotBase.isReal()){
