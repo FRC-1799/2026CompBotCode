@@ -29,7 +29,7 @@ public class MidGrab extends SequentialCommandGroup{
             ),
             new ShootHandoff(),
      
-            GeneralManager.startIntaking(),
+            GeneralManager.intaking(),
             new DeferredCommand(
                 ()->{
                     return SystemManager.swerve.driveToPose(new Pose2d(FieldPosits.mid, new Rotation2d(

@@ -50,7 +50,7 @@ public class GeneralManager{
     
     /**initializes the general manager. Should be called before any other general manager actions are taken*/
     public static void generalManagerInit(){
-      resting();
+      startResting();
       subsystems.add(SystemManager.intake);
       subsystems.add(SystemManager.shooter);
 
@@ -67,7 +67,7 @@ public class GeneralManager{
         }
 
         if (state==null){
-            resting();
+            startResting();
         }
         
         SmartDashboard.putString("general state", state.state.getName());
@@ -78,7 +78,7 @@ public class GeneralManager{
 
 
     /**<h2>Changes the current state to the resting state</h2>*/
-    public static void resting(){
+    public static void startResting(){
         startState(generalState.resting);
     }
 
@@ -86,12 +86,12 @@ public class GeneralManager{
      * <h2>Creates a command that will start the resting state when called</h2>
      * @return A command too start resting state
      */
-    public static InstantCommand startResting(){
-        return new InstantCommand(()->{resting();});
+    public static Command resting(){
+        return getStartStateCommand(generalState.resting);
     }
 
     /**<h2>Changes the current state to the shooting state</h2>*/
-    public static void shooting(){
+    public static void startShooting(){
         startState(generalState.shooting);
     }
 
@@ -99,12 +99,12 @@ public class GeneralManager{
      * <h2>Creates a command that will start the shooting state when called</h2>
      * @return A command too start resting state
      */
-    public static InstantCommand startShooting(){
-                return new InstantCommand(()->{shooting();});
+    public static Command shooting(){
+        return getStartStateCommand(generalState.shooting);
     }
 
         /**<h2>Changes the current state to the shooting state</h2>*/
-    public static void spitting(){
+    public static void startSpitting(){
         startState(generalState.spitting);
     }
 
@@ -112,12 +112,12 @@ public class GeneralManager{
      * <h2>Creates a command that will start the shooting state when called</h2>
      * @return A command to start resting state
      */
-    public static InstantCommand startspitting(){
-                return new InstantCommand(()->{spitting();});
+    public static Command spitting(){
+        return getStartStateCommand(generalState.spitting);
     }
 
     /**<h2>Changes the current state to the intaking state</h2>*/
-    public static void intaking(){
+    public static void startIntaking(){
         startState(generalState.intaking);
     }
 
@@ -125,12 +125,12 @@ public class GeneralManager{
      * <h2>Creates a command that will start the intaking state when called</h2>
      * @return A command too start resting state
      */
-    public static InstantCommand startIntaking(){
-                return new InstantCommand(()->{intaking();});
+    public static Command intaking(){
+        return getStartStateCommand(generalState.intaking);
     }
 
     /**<h2>Changes the current state to the passing state</h2>*/
-    public static void passing(){
+    public static void startPassing(){
         startState(generalState.passing);
     }
 
@@ -138,8 +138,8 @@ public class GeneralManager{
      * <h2>Creates a command that will start the passing state when called</h2>
      * @return A command too start resting state
      */
-    public static InstantCommand startPassing(){
-                return new InstantCommand(()->{passing();});
+    public static Command passing(){
+        return getStartStateCommand(generalState.passing);
     }
 
 
@@ -159,6 +159,10 @@ public class GeneralManager{
         CommandScheduler.getInstance().schedule(state.state);
     }
 
+    public static Command getStartStateCommand(generalState state){
+        return new stateBuddyCommand(state);
+    }
+
     /**
      * @return the command managing the current state
      */
@@ -173,9 +177,9 @@ public class GeneralManager{
         return state;
     }
 
-    public static void cancelSpesificState(generalState state){
+    public static void cancelSpecificState(generalState state){
         if (GeneralManager.state==state){
-            resting();
+            startResting();
         }
     }
 

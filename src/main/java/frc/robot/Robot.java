@@ -172,7 +172,7 @@ public class Robot extends TimedRobot{
     public void disabledInit(){
       disabledTimer.reset();
       disabledTimer.start();
-      GeneralManager.resting();
+      GeneralManager.startResting();
 
     }
 
