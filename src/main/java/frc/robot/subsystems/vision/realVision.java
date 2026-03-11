@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -31,8 +32,8 @@ public class realVision implements aprilTagInterface{
     LimelightPoseEstimator ll1Estimate;
     LimelightPoseEstimator ll2Estimate;
 
-    StructPublisher<Pose3d> ll1PosePublisher;
-    StructPublisher<Pose3d> ll2PosePublisher;
+    StructPublisher<Pose2d> ll1PosePublisher;
+    StructPublisher<Pose2d> ll2PosePublisher;
     Optional<PoseEstimate> ll1Pose;
     Optional<PoseEstimate> ll2Pose;
     String m_chooser_current;
@@ -68,8 +69,8 @@ public class realVision implements aprilTagInterface{
         ll2Estimate = limelight2.createPoseEstimator(EstimationMode.MEGATAG2);
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        ll1PosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("Limelight 1 Pose Estimation", Pose3d.struct).publish(PubSubOption.keepDuplicates(true));
-        ll2PosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("Limelight 2 Pose Estimation", Pose3d.struct).publish(PubSubOption.keepDuplicates(true));
+        ll1PosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("Limelight 1 Pose Estimation", Pose2d.struct).publish(PubSubOption.keepDuplicates(true));
+        ll2PosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("Limelight 2 Pose Estimation", Pose2d.struct).publish(PubSubOption.keepDuplicates(true));
         
         SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -135,7 +136,7 @@ public class realVision implements aprilTagInterface{
         
         PoseEstimate poseEstimate = ll1Pose.get();
         ll1Timestamp = poseEstimate.timestampSeconds;
-        ll1PosePublisher.set(poseEstimate.pose);
+        ll1PosePublisher.set(poseEstimate.pose.toPose2d());
         return poseEstimate.pose;
     }
 
@@ -183,7 +184,7 @@ public class realVision implements aprilTagInterface{
 
         PoseEstimate poseEstimate = ll2Pose.get();
         ll2Timestamp = poseEstimate.timestampSeconds;
-        ll2PosePublisher.set(poseEstimate.pose);
+        ll2PosePublisher.set(poseEstimate.pose.toPose2d());
         return poseEstimate.pose;
     }
 
@@ -212,16 +213,18 @@ public class realVision implements aprilTagInterface{
 
 
     public void limelightForwarding(String limelightSetting) {
-      if (!Objects.equals(limelightSetting, m_chooser_current)) {
+        IntStream.range(5800, 5820).forEach(PortForwarder::remove);
 
-          m_chooser_current = limelightSetting;
+        IntStream.range(5800, 5810).forEach(port -> {
+            PortForwarder.add(port, Objects.equals(limelightSetting, Constants.limelightConstants.limelight1Name) ? "172.29.0.1" : "172.29.1.1", port);
+        });
 
-          IntStream.range(5800, 5820).forEach(PortForwarder::remove);
+    }
 
-          IntStream.range(5800, 5810).forEach(port -> {
-              PortForwarder.add(port, Objects.equals(m_chooser_current, Constants.limelightConstants.limelight1Name) ? "172.29.0.1" : "172.29.1.1", port);
-          });
-      }
+    public void initLimelightForwarding() {
+        IntStream.range(5800, 5810).forEach(port -> {
+            PortForwarder.add(port, "172.29.0.1", port);
+        });
     }
 
 }

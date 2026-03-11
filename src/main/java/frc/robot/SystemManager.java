@@ -82,6 +82,7 @@ public class SystemManager{
             aprilTag = new photonSim();
         } else {
             realVisTemp = new realVision();
+            realVisTemp.initLimelightForwarding();
             aprilTag = realVisTemp;
         }
 

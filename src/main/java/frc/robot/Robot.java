@@ -120,8 +120,6 @@ public class Robot extends TimedRobot{
             DataLogManager.log("\nVersion: Unknown (error getting values)\n");
         }
 
-      
-
 
     }
 
