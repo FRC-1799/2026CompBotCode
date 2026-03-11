@@ -15,7 +15,9 @@ public class stateBuddyCommand extends Command{
         GeneralManager.startState(buddyState);
     }
 
+
     @Override
+
     public boolean isFinished(){
         return GeneralManager.getState()!=buddyState;
     }
