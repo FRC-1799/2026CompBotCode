@@ -149,7 +149,9 @@ public abstract class Shooter extends SubsystemBase{
 
     public void startRevving(){
         state = shooterState.rev;
-        topShooter.set(pref.topShootingSpeedDutyCycle()).schedule();
+        topShooter.setSpeed(RPM.of(pref.shootingSpeedRPM())).schedule();
+
+        //topShooter.set(pref.topShootingSpeedDutyCycle()).schedule();
 
 
         //bottomShooter.set(pref.bottomShootingSpeedDutyCycle()).schedule();
@@ -161,7 +163,9 @@ public abstract class Shooter extends SubsystemBase{
     public void startShooting(){
         state=shooterState.shooting;
 
-        topShooter.set(pref.topShootingSpeedDutyCycle()).schedule();
+        //topShooter.set(pref.topShootingSpeedDutyCycle()).schedule();
+        topShooter.setSpeed(RPM.of(pref.shootingSpeedRPM())).schedule();
+
         //bottomShooter.set(pref.bottomShootingSpeedDutyCycle()).schedule();
     }
 
