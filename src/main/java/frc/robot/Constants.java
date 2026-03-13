@@ -131,6 +131,8 @@ public final class Constants
     public static final boolean intakeShouldBeSim=false||!RobotBase.isReal();
 
     public static final boolean aprilTagShouldBeSim=false||!RobotBase.isReal();
+    public static final boolean shooterShouldBeSim=false||!RobotBase.isReal();
+
 
     public static final boolean lidarShouldBeSim=false||!RobotBase.isReal();
 
@@ -155,6 +157,11 @@ public final class Constants
     public static final int beltMotorID=0;
     public static final double indexerShootSpeed=0.2;
     public static final double indexerStopSpeed=0;
+
+    public static final int beambreakPort = 0;
+    public static final boolean shouldBeambreak=true;
+    public static final int countsWithoutBallToBeEmpty=25;
+
 
 
     public static final class topMotorConstants{

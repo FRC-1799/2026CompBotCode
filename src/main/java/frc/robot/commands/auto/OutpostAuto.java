@@ -35,7 +35,7 @@ public class OutpostAuto extends SequentialCommandGroup{
             ),
 
             new ShootHandoff(),
-            new WaitUntilCommand(()->SystemManager.intake.getPieceCount()==0),
+            new WaitUntilCommand(()->!SystemManager.shooter.hasPiecesRemaining()),
 
                         
             GeneralManager.intaking(),

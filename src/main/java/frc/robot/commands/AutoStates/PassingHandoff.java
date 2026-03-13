@@ -25,6 +25,6 @@ public class PassingHandoff extends SemiAutoState{
                     );
                 },
                 Set.of(SystemManager.swerve)),
-            new SequentialCommandGroup(GeneralManager.shooting(), new WaitUntilCommand(()->SystemManager.intake.getPieceCount()==0)));
+            new SequentialCommandGroup(GeneralManager.shooting(), new WaitUntilCommand(()->!SystemManager.shooter.hasPiecesRemaining())));
     }
 }

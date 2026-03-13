@@ -202,4 +202,8 @@ public abstract class Shooter extends SubsystemBase{
             utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.hubPose2d));
     }
 
+    public boolean hasPiecesRemaining(){
+        return false; 
+    }
+
 }

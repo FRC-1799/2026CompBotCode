@@ -22,6 +22,8 @@ import frc.robot.subsystems.TimingManager;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.realIntake;
 import frc.robot.subsystems.Intake.simIntake;
+import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Shooter.realShooter;
 import frc.robot.subsystems.Shooter.simShooter;
 import frc.robot.subsystems.lidar.lidarInterface;
 import frc.robot.subsystems.lidar.realLidar;
@@ -45,7 +47,7 @@ public class SystemManager{
     public static realSimulatedDriveTrain simButRealTrain = null;
     public static realVision realVisTemp = null;
     public static Intake intake;
-    public static simShooter shooter;
+    public static Shooter shooter;
     public static Robot robot;
 
     public static TimingManager clock = TimingManager.getInstance();
@@ -80,27 +82,12 @@ public class SystemManager{
         // April tags
         if (Constants.simConfigs.aprilTagShouldBeSim){
             aprilTag = new photonSim();
-        } else {
+        } 
+        else {
             realVisTemp = new realVision();
             aprilTag = realVisTemp;
         }
 
-        // Elevator
-
-        
-
-
-
-        
-        
-
-
-        // Blinkin
-        // if(Constants.simConfigs.blinkinShouldBeSim){
-        //     blinkin = new simBlinkin();
-        // } else {
-        //     blinkin = new realBlinkin();
-        // }
 
         // Create an imaginary robot
         if (!RobotBase.isReal()){
@@ -111,11 +98,23 @@ public class SystemManager{
         else{
             simButRealTrain = new realSimulatedDriveTrain();
         }
-        if (simConfigs.intakeShouldBeSim) intake = new simIntake();
-        else intake = new realIntake();
 
-        shooter = new simShooter();
 
+
+        if (simConfigs.intakeShouldBeSim){
+            intake = new simIntake();
+        }
+        else{
+            intake = new realIntake();
+        }
+
+       
+        if (simConfigs.shooterShouldBeSim){
+            shooter = new simShooter();
+        }
+        else {
+            shooter = new realShooter();
+        }
 
 
         //initializes and distributes the managers
