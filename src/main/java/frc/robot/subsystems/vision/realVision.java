@@ -25,7 +25,6 @@ import limelight.networktables.PoseEstimate;
 
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 
-
 public class realVision implements aprilTagInterface{
     Limelight limelight1;
     Limelight limelight2;
@@ -51,8 +50,8 @@ public class realVision implements aprilTagInterface{
      */
     public realVision() {
 
-        limelight1 = new Limelight(Constants.limelightConstants.limelight1Name);
         limelight2 = new Limelight(Constants.limelightConstants.limelight2Name);
+        limelight1 = new Limelight(Constants.limelightConstants.limelight1Name);
 
         limelight1.getSettings()
          .withLimelightLEDMode(LEDMode.PipelineControl)
@@ -62,6 +61,7 @@ public class realVision implements aprilTagInterface{
         limelight2.getSettings()
          .withLimelightLEDMode(LEDMode.PipelineControl)
          .withCameraOffset(Constants.limelightConstants.backCameraPose)
+
          .save();
 
 
@@ -83,6 +83,8 @@ public class realVision implements aprilTagInterface{
         m_chooser.onChange((String limelightName)->{limelightForwarding(limelightName);});
         
         SmartDashboard.putData("Vision/" + Constants.limelightConstants.limelightToggleName, m_chooser);
+
+        initLimelightForwarding();
     }
 
 
