@@ -146,7 +146,7 @@ public final class Constants
     public static final int commandXboxController2ID=1;
   }
 
-  public static class   shooterConstants{
+  public static class shooterConstants{
 
     public static final Distance shooterHeight = Inches.of(21);
     public static final double shootRadius = 3.7;
