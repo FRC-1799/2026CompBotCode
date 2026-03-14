@@ -166,14 +166,14 @@ public final class Constants
 
     public static final class topMotorConstants{
 
-      public static final double P = 882600000;
+      public static final double P = 17;
       public static final double I = 0;
       public static final double D = 0;
       public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0.18519, 0.22546, 0.029585);
       public static final AngularVelocity shootingSpeedRPM = RPM.of(3000);
       public static final Distance wheelRadius = Inches.of(4);
       public static final double gearReduction = 1;
-      public static final int canID=22;
+      public static final int canID=2;
     }
     public static final class bottomMotorConstants{
 
