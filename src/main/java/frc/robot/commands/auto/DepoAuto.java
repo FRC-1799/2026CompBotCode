@@ -41,7 +41,7 @@ public class DepoAuto extends SequentialCommandGroup{
                 SystemManager.getSwervePose().getY()-FieldPosits.depo.getY()))
             ),
             new ShootHandoff(),
-            new WaitUntilCommand(()->SystemManager.intake.getPieceCount()==0)
+            new WaitUntilCommand(()->!SystemManager.shooter.hasPiecesRemaining())
 
 
 
