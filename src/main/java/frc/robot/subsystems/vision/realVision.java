@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.RobotPreferences;
 import frc.robot.SystemManager;
 import limelight.Limelight;
 import limelight.networktables.AngularVelocity3d;
@@ -40,7 +41,8 @@ public class realVision implements aprilTagInterface{
     Double ll1Timestamp = -1.0;
     Double ll2Timestamp = -1.0;
 
-
+    Pose3d limelight1PoseCache;
+    Pose3d limelight2PoseCache;
 
     /**
      * Creates limelights using the YALL library.
@@ -53,14 +55,19 @@ public class realVision implements aprilTagInterface{
         limelight2 = new Limelight(Constants.limelightConstants.limelight2Name);
         limelight1 = new Limelight(Constants.limelightConstants.limelight1Name);
 
+        limelight1PoseCache = RobotPreferences.getInstance().getLimelight1Pose();
+        limelight2PoseCache = RobotPreferences.getInstance().getLimelight2Pose();
+
+
+
         limelight1.getSettings()
          .withLimelightLEDMode(LEDMode.PipelineControl)
-         .withCameraOffset(Constants.limelightConstants.frontCameraPose)
+         .withCameraOffset(RobotPreferences.getInstance().getLimelight1Pose())
          .save();
         
         limelight2.getSettings()
          .withLimelightLEDMode(LEDMode.PipelineControl)
-         .withCameraOffset(Constants.limelightConstants.backCameraPose)
+         .withCameraOffset(RobotPreferences.getInstance().getLimelight2Pose())
 
          .save();
 
@@ -90,6 +97,19 @@ public class realVision implements aprilTagInterface{
 
     @Override
     public void periodic() {
+        if (!limelight1PoseCache.equals(RobotPreferences.getInstance().getLimelight1Pose())){
+            limelight1.getSettings().withCameraOffset(RobotPreferences.getInstance().getLimelight1Pose()).save();
+            limelight1PoseCache = RobotPreferences.getInstance().getLimelight1Pose();
+        }
+
+        if (!limelight2PoseCache.equals(RobotPreferences.getInstance().getLimelight2Pose())){
+            limelight2.getSettings().withCameraOffset(RobotPreferences.getInstance().getLimelight2Pose()).save();
+            limelight2PoseCache = RobotPreferences.getInstance().getLimelight2Pose();
+
+
+        }
+
+        limelight1.getData().getCamera2Robot();
         // These are called in periodic because they need to be according to YALL docs
         limelight2.getSettings().withRobotOrientation(
                 new Orientation3d(

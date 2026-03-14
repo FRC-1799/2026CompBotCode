@@ -131,6 +131,8 @@ public class SystemManager{
 
         GeneralManager.periodic();
         TimingManager.getInstance().periodic();
+        aprilTag.periodic();
+        
     }
 
     /** @return the current pose of the robot */
