@@ -197,8 +197,8 @@ public final class Constants
   public static class limelightConstants {
 
     // Camera pose relative to robot center (x forward, y left, z up, degrees)
-    public static final Pose3d frontCameraPose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
-    public static final Pose3d backCameraPose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
+    public static final Pose3d limelight1Pose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
+    public static final Pose3d limelight2Pose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
 
     public static final String limelight1Name = "limelight-one";
     public static final String limelight2Name = "limelight-two";
