@@ -84,5 +84,10 @@ public class simShooter extends Shooter{
         }
     }
 
+    @Override
+    public boolean hasPiecesRemaining(){
+        return SystemManager.intake.getPieceCount()!=0;
+    }
+
 
 }

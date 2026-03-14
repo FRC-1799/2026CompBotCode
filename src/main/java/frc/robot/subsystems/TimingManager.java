@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * based on the time elapsed in the match. 
 */
 public class TimingManager {
-
-
     public enum Shift {
         AUTO(0, 20, ActiveType.BOTH),
         TRANSITION(20, 30, ActiveType.BOTH),
@@ -42,8 +40,28 @@ public class TimingManager {
         AUTO_WINNER,
         AUTO_LOSER
     }
+    
+    public double timeOffset = 0;
+    
+    private static TimingManager instance = null;
+    
+    private TimingManager() {
+        
+        SmartDashboard.putBoolean("Timer/ResetAuto", false);
+        SmartDashboard.putBoolean("Timer/ResetTeleop", false);
 
-    public static Optional<Alliance> getAutoWinner() {
+    }
+
+    public static TimingManager getInstance() {
+        if (instance == null) {
+            instance = new TimingManager();
+        }
+
+        return instance;
+    }
+
+
+    public Optional<Alliance> getAutoWinner() {
         String msg = DriverStation.getGameSpecificMessage(); 
         char msgChar = msg.length() > 0 ? msg.charAt(0) : ' '; // the first charecter is the alliance that lost auto stage
         switch (msgChar) {
@@ -56,7 +74,7 @@ public class TimingManager {
         }
     }
 
-    public static Optional<Alliance> getActiveAlliance(){
+    public Optional<Alliance> getActiveAlliance(){
         if (getCurrentShift().activeType==ActiveType.AUTO_WINNER||getCurrentShift().activeType==ActiveType.BOTH) {
             return getAutoWinner();
         }
@@ -68,7 +86,7 @@ public class TimingManager {
 
     }
 
-    protected static double getMatchTime() {
+    protected double getMatchTime() {
         if (DriverStation.isFMSAttached()){
             if (DriverStation.isAutonomous()) {
                 if (DriverStation.getMatchTime() < 0) return DriverStation.getMatchTime();
@@ -81,12 +99,12 @@ public class TimingManager {
             return -1;
         }
         else {
-            return Timer.getFPGATimestamp();
+            return Timer.getFPGATimestamp() - timeOffset;
         }
         
     }
 
-    public static Shift getCurrentShift() {
+    public Shift getCurrentShift() {
         double matchTime = getMatchTime();
         if (matchTime < 0) return Shift.NA;
 
@@ -98,9 +116,15 @@ public class TimingManager {
         return Shift.NA;
     }
 
+    public void resetTeleop(){
+        timeOffset = Timer.getFPGATimestamp()-20;
+    }
 
+    public void resetAuto(){
+        timeOffset = Timer.getFPGATimestamp();
+    }
 
-    public static boolean isActive() {
+    public boolean isActive() {
         Optional<Alliance> autoWinner = getAutoWinner();
         Shift currentShift = getCurrentShift();
         Optional<Alliance> currentAlliance = DriverStation.getAlliance();
@@ -121,7 +145,7 @@ public class TimingManager {
             }
     }
 
-    public static double timeRemaining() {
+    public double timeRemaining() {
         double time = getCurrentShift().endTime;
         if (time > 0) {
             return time - getMatchTime();
@@ -133,9 +157,21 @@ public class TimingManager {
 
     }
 
-    public static void periodic() {
+
+    public void periodic() {
         SmartDashboard.putBoolean("Timer/IsActive", isActive());
         SmartDashboard.putNumber("Timer/TimeRemainingInStep", timeRemaining());
+        
+        // Reset button handling
+        if (SmartDashboard.getBoolean("Timer/ResetAuto", false)) {
+            resetAuto();
+            SmartDashboard.putBoolean("Timer/ResetAuto", false);
+        }
+
+        if (SmartDashboard.getBoolean("Timer/ResetTeleop", false)) {
+            resetTeleop();
+            SmartDashboard.putBoolean("Timer/ResetTeleop", false);
+        }
         SmartDashboard.putString("Timer/CurrentActiveAlliance", getActiveAlliance().toString());
     }
 }

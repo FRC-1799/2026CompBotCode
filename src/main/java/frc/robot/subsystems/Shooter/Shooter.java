@@ -57,6 +57,9 @@ public abstract class Shooter extends SubsystemBase{
     private final TalonFX topShooterMotor = new TalonFX(topMotorConstants.canID);
     private final TalonFX bottomShooterMotor = new TalonFX(bottomMotorConstants.canID);
 
+    int count  = 10;
+    boolean indexerShouldBeOn=true;
+
 
     private final SmartMotorControllerConfig topMotorConfig = new SmartMotorControllerConfig(this)
       .withClosedLoopController(topMotorConstants.P, topMotorConstants.I, topMotorConstants.D, RPM.of(10000), RPM.per(Second).of(1000))
@@ -130,8 +133,22 @@ public abstract class Shooter extends SubsystemBase{
         //bottomShooter.updateTelemetry();
         
         if (state==shooterState.shooting){
-            indexer.set(shooterConstants.indexerShootSpeed);
-            bottomShooterMotor.set(shooterConstants.indexerShootSpeed);
+
+            count--;
+            if (count==0){
+                count=10;
+                indexerShouldBeOn=!indexerShouldBeOn;
+            }
+            if (indexerShouldBeOn){
+                indexer.set(shooterConstants.indexerShootSpeed);
+                bottomShooterMotor.set(shooterConstants.indexerShootSpeed);
+
+            }
+
+            else{
+                indexer.set(0);
+                bottomShooterMotor.set(0);
+            }
         }
         else{
             indexer.set(shooterConstants.indexerStopSpeed);
@@ -202,6 +219,10 @@ public abstract class Shooter extends SubsystemBase{
         return new Pose2d(
             goalPose.plus(dif.div(Math.hypot(dif.getX(), dif.getY())).times(shooterConstants.shootRadius)).getTranslation(),
             utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.hubPose2d));
+    }
+
+    public boolean hasPiecesRemaining(){
+        return false; 
     }
 
 }

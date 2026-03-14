@@ -131,6 +131,8 @@ public final class Constants
     public static final boolean intakeShouldBeSim=false||!RobotBase.isReal();
 
     public static final boolean aprilTagShouldBeSim=false||!RobotBase.isReal();
+    public static final boolean shooterShouldBeSim=false||!RobotBase.isReal();
+
 
     public static final boolean lidarShouldBeSim=false||!RobotBase.isReal();
 
@@ -155,6 +157,11 @@ public final class Constants
     public static final int beltMotorID=6;
     public static final double indexerShootSpeed=0.4;
     public static final double indexerStopSpeed=0;
+
+    public static final int beambreakPort = 9;
+    public static final boolean shouldBeambreak=true;
+    public static final int countsWithoutBallToBeEmpty=25;
+
 
 
     public static final class topMotorConstants{
@@ -193,11 +200,13 @@ public final class Constants
     public static final Pose3d frontCameraPose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
     public static final Pose3d backCameraPose = new Pose3d(Meters.of(0), Meters.of(0), Meters.of(0), new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(0)));
 
-    public static final String frontCameraName = "limelight-one";
-    public static final String backCameraName = "limelight-two";
+    public static final String limelight1Name = "limelight-one";
+    public static final String limelight2Name = "limelight-two";
 
     public static final Boolean readLimelight1 = true;
     public static final Boolean readLimelight2 = true;
+
+    public static final String limelightToggleName = "Limelight Toggle";
 
   }
 

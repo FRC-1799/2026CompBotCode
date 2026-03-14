@@ -24,7 +24,7 @@ public class OutpostAuto extends SequentialCommandGroup{
     public OutpostAuto(){
         super(
 
-            GeneralManager.startIntaking(),
+            GeneralManager.intaking(),
             SystemManager.swerve.driveToPose(FieldPosits.outpost),
             new ConditionalCommand(
                 new InstantCommand(()->{
@@ -35,10 +35,10 @@ public class OutpostAuto extends SequentialCommandGroup{
             ),
 
             new ShootHandoff(),
-            new WaitUntilCommand(()->SystemManager.intake.getPieceCount()==0),
+            new WaitUntilCommand(()->!SystemManager.shooter.hasPiecesRemaining()),
 
                         
-            GeneralManager.startIntaking(),
+            GeneralManager.intaking(),
 
             new DeferredCommand(
                 ()->{

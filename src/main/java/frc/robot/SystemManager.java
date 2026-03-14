@@ -22,6 +22,8 @@ import frc.robot.subsystems.TimingManager;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.realIntake;
 import frc.robot.subsystems.Intake.simIntake;
+import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Shooter.realShooter;
 import frc.robot.subsystems.Shooter.simShooter;
 import frc.robot.subsystems.lidar.lidarInterface;
 import frc.robot.subsystems.lidar.realLidar;
@@ -43,12 +45,11 @@ public class SystemManager{
     public static aprilTagInterface aprilTag;
 
     public static realSimulatedDriveTrain simButRealTrain = null;
-    public static realVision realVisTemp = null;
     public static Intake intake;
-    public static simShooter shooter;
+    public static Shooter shooter;
     public static Robot robot;
 
-    public static TimingManager clock = new TimingManager();
+    public static TimingManager clock = TimingManager.getInstance();
 
     public static Pose2d autoDriveGoal=new Pose2d();
     public static StructPublisher<Pose2d> autoDriveGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("SmartDashboard/AutoDrive/goal", Pose2d.struct).publish();
@@ -80,27 +81,12 @@ public class SystemManager{
         // April tags
         if (Constants.simConfigs.aprilTagShouldBeSim){
             aprilTag = new photonSim();
+
         } else {
-            realVisTemp = new realVision();
-            aprilTag = realVisTemp;
+            aprilTag = new realVision();
+            //((realVision)aprilTag).initLimelightForwarding();
         }
 
-        // Elevator
-
-        
-
-
-
-        
-        
-
-
-        // Blinkin
-        // if(Constants.simConfigs.blinkinShouldBeSim){
-        //     blinkin = new simBlinkin();
-        // } else {
-        //     blinkin = new realBlinkin();
-        // }
 
         // Create an imaginary robot
         if (!RobotBase.isReal()){
@@ -111,11 +97,23 @@ public class SystemManager{
         else{
             simButRealTrain = new realSimulatedDriveTrain();
         }
-        if (simConfigs.intakeShouldBeSim) intake = new simIntake();
-        else intake = new realIntake();
 
-        shooter = new simShooter();
 
+
+        if (simConfigs.intakeShouldBeSim){
+            intake = new simIntake();
+        }
+        else{
+            intake = new realIntake();
+        }
+
+       
+        if (simConfigs.shooterShouldBeSim){
+            shooter = new simShooter();
+        }
+        else {
+            shooter = new realShooter();
+        }
 
 
         //initializes and distributes the managers
@@ -132,13 +130,19 @@ public class SystemManager{
 
 
         GeneralManager.periodic();
-        TimingManager.periodic();
+        TimingManager.getInstance().periodic();
     }
 
     /** @return the current pose of the robot */
     public static Pose2d getSwervePose(){
         return swerve.getPose();
     }
+
+    // public static void initialPortForward() {
+    //     if (Constants.simConfigs.aprilTagShouldBeSim) {
+    //         ((realVision)aprilTag) .limelightForwarding(Constants.limelightConstants.limelight1Name);
+    //     } 
+    // }
 
     /** @return the pose of the simulated maplesim drive. If the drivetrain is real, then the function will just return the pose estimator's pose */
     public static Pose2d getRealPoseMaple(){

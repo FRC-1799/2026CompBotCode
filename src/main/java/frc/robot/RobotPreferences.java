@@ -14,23 +14,26 @@ public class RobotPreferences {
     public static final String intakeIngestSpeed = "Intake Ingest Speed";
     public static final String intakeBackwardSpeed = "Intake Backward Speed";
 
-    public static final String beltFeedSpeed = "Bottom Shooting Speed Duty Cycle";
+    public static final String beltFeedSpeed = "Belt Feed Speed";
 
     public static final String shooterSpeedRPM = "top Shooting Speed RPM";
 
 
 
+    private static void registerDoublePreference(String key, double val){
+        if (!Preferences.containsKey(key)) Preferences.initDouble(key, val);
 
+    }
 
 
     private RobotPreferences() {
-        if (!Preferences.containsKey(bottomShootingSpeedDutyCycle)) Preferences.initDouble(bottomShootingSpeedDutyCycle, 0.6);
-        if (!Preferences.containsKey(topShootingSpeedDutyCycle)) Preferences.initDouble(topShootingSpeedDutyCycle, 0.7);
-        if (!Preferences.containsKey(intakeIngestSpeed)) Preferences.initDouble(intakeIngestSpeed, -0.2);
-        if (!Preferences.containsKey(intakeBackwardSpeed)) Preferences.initDouble(intakeBackwardSpeed, 0.2);
-        if (!Preferences.containsKey(beltFeedSpeed)) Preferences.initDouble(beltFeedSpeed, 0.2);
-        if (!Preferences.containsKey(shooterSpeedRPM)) Preferences.initDouble(shooterSpeedRPM, 3000);
 
+        registerDoublePreference(bottomShootingSpeedDutyCycle, 0.6);
+        registerDoublePreference(topShootingSpeedDutyCycle, 0.7);
+        registerDoublePreference(intakeIngestSpeed, -0.2);
+        registerDoublePreference(intakeBackwardSpeed, 0.2);
+        registerDoublePreference(beltFeedSpeed, 0.2);
+        registerDoublePreference(shooterSpeedRPM, 3000);
     }
 
     public double bottomShootingSpeedDutyCycle() {
