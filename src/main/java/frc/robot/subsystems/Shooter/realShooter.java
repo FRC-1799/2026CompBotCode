@@ -15,7 +15,7 @@ public class realShooter extends Shooter{
     public void periodic(){
         super.periodic();
 
-        if (beamBreak.get()){
+        if (!beamBreak.get()){
             cyclesWithoutBall=0;
         }
         else{
@@ -23,12 +23,13 @@ public class realShooter extends Shooter{
         }
 
         SmartDashboard.putBoolean("Shooter/hasBalls", hasPiecesRemaining());
+        SmartDashboard.putBoolean("Shooter/Beambreak raw", beamBreak.get());
 
 
     }
 
     @Override
     public boolean hasPiecesRemaining(){
-        return shooterConstants.shouldBeambreak && cyclesWithoutBall>shooterConstants.countsWithoutBallToBeEmpty;
+        return shooterConstants.shouldBeambreak && cyclesWithoutBall<shooterConstants.countsWithoutBallToBeEmpty;
     }
 }

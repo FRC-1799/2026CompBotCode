@@ -158,7 +158,7 @@ public final class Constants
     public static final double indexerShootSpeed=0.2;
     public static final double indexerStopSpeed=0;
 
-    public static final int beambreakPort = 0;
+    public static final int beambreakPort = 9;
     public static final boolean shouldBeambreak=true;
     public static final int countsWithoutBallToBeEmpty=25;
 
