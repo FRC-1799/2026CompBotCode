@@ -45,7 +45,6 @@ public class SystemManager{
     public static aprilTagInterface aprilTag;
 
     public static realSimulatedDriveTrain simButRealTrain = null;
-    public static realVision realVisTemp = null;
     public static Intake intake;
     public static Shooter shooter;
     public static Robot robot;
@@ -82,10 +81,10 @@ public class SystemManager{
         // April tags
         if (Constants.simConfigs.aprilTagShouldBeSim){
             aprilTag = new photonSim();
-        } 
-        else {
-            realVisTemp = new realVision();
-            aprilTag = realVisTemp;
+
+        } else {
+            aprilTag = new realVision();
+            //((realVision)aprilTag).initLimelightForwarding();
         }
 
 
@@ -138,6 +137,12 @@ public class SystemManager{
     public static Pose2d getSwervePose(){
         return swerve.getPose();
     }
+
+    // public static void initialPortForward() {
+    //     if (Constants.simConfigs.aprilTagShouldBeSim) {
+    //         ((realVision)aprilTag) .limelightForwarding(Constants.limelightConstants.limelight1Name);
+    //     } 
+    // }
 
     /** @return the pose of the simulated maplesim drive. If the drivetrain is real, then the function will just return the pose estimator's pose */
     public static Pose2d getRealPoseMaple(){

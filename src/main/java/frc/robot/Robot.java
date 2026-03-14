@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,13 +62,11 @@ public class Robot extends TimedRobot{
     int swaps = 0;
     boolean blueIsActive;
 
-    private final String LIMELIGHT_TOGGLE_NAME = "Limelight Toggle";
+    // private final SendableChooser<String> m_chooser = new SendableChooser<>();
+    // private final String m_chooser_ll1 = "Limelight 01";
+    // private final String m_chooser_ll2 = "Limelight 02";
 
-    private final SendableChooser<String> m_chooser = new SendableChooser<>();
-    private final String m_chooser_ll1 = "Limelight 01";
-    private final String m_chooser_ll2 = "Limelight 02";
-
-    private String m_chooser_current = m_chooser_ll2;
+    // private String m_chooser_current = m_chooser_ll1;
 
     StructArrayPublisher<Pose3d> fuelPublisher = NetworkTableInstance.getDefault().getStructArrayTopic("Fuel", Pose3d.struct).publish();
     
@@ -92,9 +91,6 @@ public class Robot extends TimedRobot{
     
         SmartDashboard.putData("Starting chooser", poseChooser);
 
-        m_chooser.setDefaultOption("Limelightt 01", m_chooser_ll1);
-        m_chooser.addOption("Limelightt 02", m_chooser_ll2);
-        SmartDashboard.putData(LIMELIGHT_TOGGLE_NAME, m_chooser);
     }
 
     public static Robot getInstance(){
@@ -124,6 +120,7 @@ public class Robot extends TimedRobot{
             DataLogManager.log("\nVersion: Unknown (error getting values)\n");
         }
 
+
     }
 
     /**
@@ -149,20 +146,6 @@ public class Robot extends TimedRobot{
       heartBeat++;
       SmartDashboard.putNumber("heartbeat", heartBeat);  
 
-      //System.out.println(CommandScheduler.getInstance().requiring(SystemManager.swerve));
-
-        var m_limelight_setting = m_chooser.getSelected();
-
-        if(!Objects.equals(m_limelight_setting, m_chooser_current)) {
-
-            m_chooser_current = m_limelight_setting;
-
-            IntStream.range(5800, 5820).forEach(PortForwarder::remove);
-
-            IntStream.range(5800, 5810).forEach(port -> {
-                PortForwarder.add(port, Objects.equals(m_chooser_current, m_chooser_ll1) ? "172.29.0.1" : "172.29.1.1", port);
-            });
-        }
     }
 
     /**
