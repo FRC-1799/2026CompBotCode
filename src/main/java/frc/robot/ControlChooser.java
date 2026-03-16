@@ -22,9 +22,11 @@ import frc.robot.commands.AutoStates.ShootHandoff;
 import frc.robot.commands.AutoStates.SmartShoot;
 import frc.robot.commands.auto.DepoAuto;
 import frc.robot.commands.auto.MidGrab;
+import frc.robot.commands.states.intaking;
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
 import frc.robot.subsystems.GeneralManager.generalState;
+import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.GeneralManager;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
@@ -56,6 +58,7 @@ public class ControlChooser {
 
         chooser.addOption("testControl", getTestControl());
         chooser.addOption("rock control", getRockControl());
+        chooser.addOption("drive team control", getDriveTeamControl());
 
         
         
@@ -139,6 +142,22 @@ public class ControlChooser {
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
         xbox1.a(loop).onTrue(GeneralManager.passing()).onFalse(GeneralManager.resting());
+
+
+
+        return loop;
+    }
+
+    private EventLoop getDriveTeamControl(){
+        EventLoop loop = new EventLoop();
+        setDefaultCommand(SystemManager.swerve.driveRobotOrientedCommand(()->MathUtil.applyDeadband(-xbox1.getLeftY(), 0.1), ()->MathUtil.applyDeadband(-xbox1.getLeftX(), 0.1),  ()->MathUtil.applyDeadband(xbox1.getRightX(),0.1))
+           ,SystemManager.swerve, loop);
+            
+        xbox2.leftTrigger(0.1,loop).whileTrue(new SmartShoot(()->xbox2.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpecificState(generalState.shooting)));
+        
+        xbox2.a(loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpecificState(generalState.resting)));
+
+        xbox2.rightTrigger(0.4,loop).whileTrue(new intaking()).onFalse(new InstantCommand(()->GeneralManager.cancelSpecificState(generalState.intaking)));
 
 
 
