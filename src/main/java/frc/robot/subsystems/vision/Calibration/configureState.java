@@ -9,6 +9,11 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructPublisher;
@@ -16,6 +21,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.SystemManager;
+import frc.robot.subsystems.vision.Calibration.LimelightHelpers.RawFiducial;
+import limelight.Limelight;
 
 public class configureState extends Command{
 
@@ -28,10 +35,32 @@ public class configureState extends Command{
         ll1CalPose = inst.getTable("SmartDashboard/LimelightCal").getStructTopic("ll1CalPose", Pose2d.struct).publish(PubSubOption.keepDuplicates(true));
         ll2CalPose = inst.getTable("SmartDashboard/LimelightCal").getStructTopic("ll2CalPose", Pose2d.struct).publish(PubSubOption.keepDuplicates(true));
 
+         
+
     }
 
     @Override
     public void execute() {
+        var ids = new String[] {Constants.limelightConstants.limelight1Name, Constants.limelightConstants.limelight2Name};
+        int tagCount = 3;
+        LimelightCal calData = new LimelightCal(ids, tagCount, 3, 0.25, 0.10);
+        List<LimelightCalData> llData = calData.GetLimelightCalData();
+
+        List<Pose3d> llAprilTagLocations = new ArrayList<Pose3d>();
+
+        
+
+        for (int i = 0; i <= 1; i++) {
+            LimelightCalData llIndividuelData = llData.get(i);
+            RawFiducial[] llFid = LimelightHelpers.getRawFiducials(llIndividuelData.id);
+
+             
+            for (int tagIndex = 0; tagIndex < tagCount; tagIndex++) {
+                llAprilTagLocations.add(new Pose3d(new Translation3d(llFid[tagIndex].distToCamera, Math.tan(llFid[tagIndex].txnc) / llFid[tagIndex].distToCamera, 0.10), new Rotation3d(llFid[tagIndex].txnc, llFid[tagIndex].tync,0)));
+            }
+        }
+
+
         double[] ll1TargetPose = LimelightHelpers.getTargetPose_CameraSpace(Constants.limelightConstants.limelight1Name);
         double[] ll2TargetPose = LimelightHelpers.getTargetPose_CameraSpace(Constants.limelightConstants.limelight2Name);
 
