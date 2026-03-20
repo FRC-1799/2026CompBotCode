@@ -114,6 +114,7 @@ public final class Constants
 
   public static class IntakeConstants{
     public static final int intakeCanID = 1;
+    public static final double intakeIndexerSpeed=0.4;
   }
 
   /**Constants used for sim */

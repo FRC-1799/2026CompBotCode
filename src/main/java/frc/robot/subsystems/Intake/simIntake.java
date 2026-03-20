@@ -55,6 +55,7 @@ public class simIntake extends Intake{
         intakeSim.stopIntake();
     }
 
+
     public void removePiece(){
         intakeSim.obtainGamePieceFromIntake();
     }
@@ -89,6 +90,11 @@ public class simIntake extends Intake{
             backRunState--;
         }
             
+    }
+
+
+    @Override
+    protected void indexing() {
     }
 
 }

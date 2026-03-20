@@ -24,7 +24,8 @@ public abstract class Intake extends SubsystemBase{
     public static enum intakeState{
         intaking,
         resting,
-        backRun;
+        backRun,
+        indexing;
 
     }
     
@@ -45,9 +46,13 @@ public abstract class Intake extends SubsystemBase{
         else if (state==intakeState.backRun){
             backRun();
         }
+        else if (state==intakeState.indexing){
+            indexing();
+        }
         else{
             shutDown();
         }
+        
         
 
         SmartDashboard.putNumber("fuelCount", getPieceCount());
@@ -80,6 +85,8 @@ public abstract class Intake extends SubsystemBase{
     protected abstract void shutDown();
 
     protected abstract void backRun();
+
+    protected abstract void indexing();
 
     /**Removes an game piece from a simulated intake if aplicable. This method will do nothing on a real intake*/
     public void removePiece(){

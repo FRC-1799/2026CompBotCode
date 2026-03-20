@@ -14,8 +14,12 @@ import frc.robot.RobotPreferences;
 
 public class realIntake extends Intake{
 
-  private RobotPreferences pref = RobotPreferences.getInstance();
-  private final SparkFlex intakeMotor = new SparkFlex(IntakeConstants.intakeCanID, MotorType.kBrushless);
+  protected RobotPreferences pref = RobotPreferences.getInstance();
+  protected final SparkFlex intakeMotor = new SparkFlex(IntakeConstants.intakeCanID, MotorType.kBrushless);
+ 
+  protected int indexerCount = 0;
+  protected boolean indexerRun=true;
+
 
   @Override
   public int getPieceCount() {
@@ -35,6 +39,17 @@ public class realIntake extends Intake{
   @Override
   protected void backRun() {
     intakeMotor.set(pref.intakeBackwardSpeed());
+  }
+
+  @Override
+  protected void indexing(){
+     indexerCount--;
+     if (indexerCount==0){
+        indexerCount=10;
+        indexerRun=!indexerRun;
+     }
+
+     intakeMotor.set(indexerRun? IntakeConstants.intakeIndexerSpeed: 0);
   }
  
 
