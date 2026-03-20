@@ -148,6 +148,9 @@ public class ControlChooser {
         xbox1.a(loop).onTrue(GeneralManager.passing()).onFalse(GeneralManager.resting());
 
 
+        xbox2.rightTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
+        xbox2.leftTrigger(0.4, loop).toggleOnTrue(GeneralManager.intaking());
+
 
         return loop;
     }
