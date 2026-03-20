@@ -55,7 +55,6 @@ public abstract class Shooter extends SubsystemBase{
     private final RobotPreferences pref = RobotPreferences.getInstance(); 
 
     private final TalonFX topShooterMotor = new TalonFX(topMotorConstants.canID);
-    private final TalonFX bottomShooterMotor = new TalonFX(bottomMotorConstants.canID);
 
     int count  = 10;
     boolean indexerShouldBeOn=true;
@@ -74,26 +73,10 @@ public abstract class Shooter extends SubsystemBase{
       .withSimFeedforward(topMotorConstants.shooterFeedForward)
       .withControlMode(ControlMode.CLOSED_LOOP);
 
-    private final SmartMotorControllerConfig bottomMotorConfig = new SmartMotorControllerConfig(new Subsystem() {
-        
-    })
-      .withClosedLoopController(bottomMotorConstants.P, bottomMotorConstants.I, bottomMotorConstants.D, RPM.of(10000), RPM.per(Second).of(1000))
-      .withIdleMode(MotorMode.COAST)
-      .withGearing(bottomMotorConstants.gearReduction)
-      .withTelemetry("BottomShooterMotor", TelemetryVerbosity.HIGH)
-      .withStatorCurrentLimit(Amps.of(60))
-      .withMotorInverted(false)
-      .withClosedLoopRampRate(Seconds.of(0.25))
-      .withOpenLoopRampRate(Seconds.of(0.25))
-      .withFeedforward(bottomMotorConstants.shooterFeedForward)
-      .withSimFeedforward(bottomMotorConstants.shooterFeedForward)
-      .withControlMode(ControlMode.CLOSED_LOOP);
-  
   
 
 
     private final SmartMotorController topMotor = new TalonFXWrapper(topShooterMotor, DCMotor.getKrakenX60(1), topMotorConfig);
-    private final SmartMotorController bottomMotor = new TalonFXWrapper(bottomShooterMotor, DCMotor.getKrakenX60(1), bottomMotorConfig);
 
 
     private final FlyWheelConfig topShooterConfig = new FlyWheelConfig(topMotor)
@@ -104,19 +87,14 @@ public abstract class Shooter extends SubsystemBase{
       
       .withSpeedometerSimulation(RPM.of(7500));
 
-    private final FlyWheelConfig bottomShooterConfig = new FlyWheelConfig(bottomMotor)
-      .withDiameter(Inches.of(4))
-      .withMass(Pounds.of(1))
-      .withTelemetry("TopFlywheelMech", TelemetryVerbosity.HIGH)
-      .withSoftLimit(RPM.of(-6600), RPM.of(6600))
       
-      .withSpeedometerSimulation(RPM.of(7500));
-
-      
-    private final FlyWheel topShooter = new FlyWheel(topShooterConfig);
-    //private final FlyWheel bottomShooter = new FlyWheel(bottomShooterConfig);
+    private final FlyWheel topShooter = new FlyWheel(topShooterConfig);    
     
-    private final TalonFX indexer = new TalonFX(shooterConstants.beltMotorID);
+    
+    
+    private final TalonFX beltIndexer = new TalonFX(shooterConstants.beltMotorID);
+    private final TalonFX wheelIndexer = new TalonFX(bottomMotorConstants.canID);
+
     
         
 
@@ -140,19 +118,19 @@ public abstract class Shooter extends SubsystemBase{
                 indexerShouldBeOn=!indexerShouldBeOn;
             }
             if (indexerShouldBeOn){
-                indexer.set(shooterConstants.indexerShootSpeed);
-                bottomShooterMotor.set(shooterConstants.indexerShootSpeed);
+                beltIndexer.set(shooterConstants.indexerShootSpeed);
+                wheelIndexer.set(shooterConstants.indexerShootSpeed);
 
             }
 
             else{
-                indexer.set(0);
-                bottomShooterMotor.set(0);
+                beltIndexer.set(0);
+                wheelIndexer.set(0);
             }
         }
         else{
-            indexer.set(shooterConstants.indexerStopSpeed);
-            bottomShooterMotor.set(shooterConstants.indexerStopSpeed);
+            beltIndexer.set(shooterConstants.indexerStopSpeed);
+            wheelIndexer.set(shooterConstants.indexerStopSpeed);
         }
 
     }
@@ -160,30 +138,17 @@ public abstract class Shooter extends SubsystemBase{
     @Override
     public void simulationPeriodic(){
         topShooter.simIterate();
-        //bottomShooter.simIterate();
     }
     
 
     public void startRevving(){
         state = shooterState.rev;
         topShooter.setSpeed(RPM.of(pref.shootingSpeedRPM())).schedule();
-
-        //topShooter.set(pref.topShootingSpeedDutyCycle()).schedule();
-
-
-        //bottomShooter.set(pref.bottomShootingSpeedDutyCycle()).schedule();
-
-
-
     }
 
     public void startShooting(){
         state=shooterState.shooting;
-
-        //topShooter.set(pref.topShootingSpeedDutyCycle()).schedule();
         topShooter.setSpeed(RPM.of(pref.shootingSpeedRPM())).schedule();
-
-        //bottomShooter.set(pref.bottomShootingSpeedDutyCycle()).schedule();
     }
 
     public void stop(){
@@ -193,9 +158,7 @@ public abstract class Shooter extends SubsystemBase{
 
     public void rest(){
         state = shooterState.resting;
-        //bottomShooter.set(0).schedule();
         topShooter.set(0).schedule();
-
     }
 
     public AngularVelocity getTopFlywheelSpeed(){
@@ -204,7 +167,6 @@ public abstract class Shooter extends SubsystemBase{
 
     public AngularVelocity getBottomFlywheelSpeed(){
         return RPM.of(0);
-        //return bottomShooter.getSpeed();
     }
 
     public Command sysId() {return topShooter.sysId(Volts.of(10), Volts.of(1).per(Second), Seconds.of(5));}
