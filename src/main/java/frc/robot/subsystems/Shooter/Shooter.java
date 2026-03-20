@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -17,7 +18,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.FieldPosits;
@@ -52,7 +55,6 @@ public abstract class Shooter extends SubsystemBase{
     private final RobotPreferences pref = RobotPreferences.getInstance(); 
 
     private final TalonFX topShooterMotor = new TalonFX(topMotorConstants.canID);
-    private final TalonFX bottomShooterMotor = new TalonFX(bottomMotorConstants.canID);
 
     int count  = 10;
     boolean indexerShouldBeOn=true;
@@ -71,26 +73,10 @@ public abstract class Shooter extends SubsystemBase{
       .withSimFeedforward(topMotorConstants.shooterFeedForward)
       .withControlMode(ControlMode.CLOSED_LOOP);
 
-    private final SmartMotorControllerConfig bottomMotorConfig = new SmartMotorControllerConfig(new Subsystem() {
-        
-    })
-      .withClosedLoopController(bottomMotorConstants.P, bottomMotorConstants.I, bottomMotorConstants.D, RPM.of(10000), RPM.per(Second).of(1000))
-      .withIdleMode(MotorMode.COAST)
-      .withGearing(bottomMotorConstants.gearReduction)
-      .withTelemetry("BottomShooterMotor", TelemetryVerbosity.HIGH)
-      .withStatorCurrentLimit(Amps.of(60))
-      .withMotorInverted(false)
-      .withClosedLoopRampRate(Seconds.of(0.25))
-      .withOpenLoopRampRate(Seconds.of(0.25))
-      .withFeedforward(bottomMotorConstants.shooterFeedForward)
-      .withSimFeedforward(bottomMotorConstants.shooterFeedForward)
-      .withControlMode(ControlMode.CLOSED_LOOP);
-  
   
 
 
     private final SmartMotorController topMotor = new TalonFXWrapper(topShooterMotor, DCMotor.getKrakenX60(1), topMotorConfig);
-    private final SmartMotorController bottomMotor = new TalonFXWrapper(bottomShooterMotor, DCMotor.getKrakenX60(1), bottomMotorConfig);
 
 
     private final FlyWheelConfig topShooterConfig = new FlyWheelConfig(topMotor)
@@ -101,19 +87,15 @@ public abstract class Shooter extends SubsystemBase{
       
       .withSpeedometerSimulation(RPM.of(7500));
 
-    private final FlyWheelConfig bottomShooterConfig = new FlyWheelConfig(bottomMotor)
-      .withDiameter(Inches.of(4))
-      .withMass(Pounds.of(1))
-      .withTelemetry("TopFlywheelMech", TelemetryVerbosity.HIGH)
-      .withSoftLimit(RPM.of(-6600), RPM.of(6600))
       
-      .withSpeedometerSimulation(RPM.of(7500));
-
-      
-    private final FlyWheel topShooter = new FlyWheel(topShooterConfig);
-    private final FlyWheel bottomShooter = new FlyWheel(bottomShooterConfig);
+    private final FlyWheel topShooter = new FlyWheel(topShooterConfig);    
     
-    private final TalonFX indexer = new TalonFX(shooterConstants.beltMotorID);
+    
+    
+    private final TalonFX beltIndexer = new TalonFX(shooterConstants.beltMotorID);
+    private final TalonFX wheelIndexer = new TalonFX(bottomMotorConstants.canID);
+
+    
         
 
 
@@ -126,24 +108,29 @@ public abstract class Shooter extends SubsystemBase{
         SmartDashboard.putNumber("Shooter/ShotDistance", SystemManager.getSwervePose().getTranslation().getDistance(FieldPosits.hubPose2d.getTranslation()));        
         
         topShooter.updateTelemetry();
-        bottomShooter.updateTelemetry();
+        //bottomShooter.updateTelemetry();
         
         if (state==shooterState.shooting){
+
             count--;
             if (count==0){
                 count=10;
                 indexerShouldBeOn=!indexerShouldBeOn;
             }
             if (indexerShouldBeOn){
-                indexer.set(shooterConstants.indexerShootSpeed);
+                beltIndexer.set(RobotPreferences.getInstance().beltFeedSpeed());
+                wheelIndexer.set(RobotPreferences.getInstance().beltFeedSpeed());
+
             }
 
             else{
-                indexer.set(0);
+                beltIndexer.set(0);
+                wheelIndexer.set(0);
             }
         }
         else{
-            indexer.set(shooterConstants.indexerStopSpeed);
+            beltIndexer.set(RobotPreferences.getInstance().beltFeedSpeed());
+            wheelIndexer.set(RobotPreferences.getInstance().beltFeedSpeed());
         }
 
     }
@@ -151,23 +138,17 @@ public abstract class Shooter extends SubsystemBase{
     @Override
     public void simulationPeriodic(){
         topShooter.simIterate();
-        bottomShooter.simIterate();
     }
     
 
     public void startRevving(){
         state = shooterState.rev;
-        topShooter.set(pref.topShootingSpeedDutyCycle()).schedule();
-
-        bottomShooter.set(pref.bottomShootingSpeedDutyCycle()).schedule();
-
-
+        topShooter.setSpeed(RPM.of(pref.shootingSpeedRPM())).schedule();
     }
 
     public void startShooting(){
         state=shooterState.shooting;
-        topShooter.set(pref.topShootingSpeedDutyCycle()).schedule();
-        bottomShooter.set(pref.bottomShootingSpeedDutyCycle()).schedule();
+        topShooter.setSpeed(RPM.of(pref.shootingSpeedRPM())).schedule();
     }
 
     public void stop(){
@@ -177,9 +158,7 @@ public abstract class Shooter extends SubsystemBase{
 
     public void rest(){
         state = shooterState.resting;
-        bottomShooter.set(0).schedule();
         topShooter.set(0).schedule();
-
     }
 
     public AngularVelocity getTopFlywheelSpeed(){
@@ -187,8 +166,10 @@ public abstract class Shooter extends SubsystemBase{
     }
 
     public AngularVelocity getBottomFlywheelSpeed(){
-        return bottomShooter.getSpeed();
+        return RPM.of(0);
     }
+
+    public Command sysId() {return topShooter.sysId(Volts.of(10), Volts.of(1).per(Second), Seconds.of(5));}
 
     public Pose2d getClosestShootPoint(){
         Pose2d robotPose = SystemManager.getSwervePose();
