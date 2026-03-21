@@ -115,8 +115,8 @@ public class ControlChooser {
             
         //xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
         //xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
-        xbox1.rightTrigger(0.4, loop).onTrue(GeneralManager.intaking());
-        xbox1.leftTrigger(0.4, loop).onTrue(GeneralManager.shooting());
+        xbox1.rightTrigger(0.4, loop).whileTrue(GeneralManager.intaking());
+        xbox1.leftTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
 
 
 
