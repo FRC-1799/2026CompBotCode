@@ -80,6 +80,10 @@ public abstract class Intake extends SubsystemBase{
         state=intakeState.backRun;
     }
 
+    public void startIndex(){
+        state = intakeState.indexing;
+    }
+
     protected abstract void intake();
 
     protected abstract void shutDown();

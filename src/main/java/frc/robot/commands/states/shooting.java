@@ -29,6 +29,7 @@ public class shooting extends Command{
     public void initialize(){
 
         SystemManager.shooter.startShooting();
+        SystemManager.intake.startIndex();
 
     }
 
@@ -36,6 +37,7 @@ public class shooting extends Command{
     @Override
     public void end(boolean wasCanceled){
         SystemManager.shooter.stop();
+        SystemManager.intake.startIndex();
         GeneralManager.endCallback(wasCanceled);
     }
 }

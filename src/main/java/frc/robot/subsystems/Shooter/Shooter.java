@@ -114,8 +114,8 @@ public abstract class Shooter extends SubsystemBase{
 
             count--;
             if (count==0){
-                count=10;
                 indexerShouldBeOn=!indexerShouldBeOn;
+                count = indexerShouldBeOn? 10: 2;
             }
             if (indexerShouldBeOn){
                 beltIndexer.set(RobotPreferences.getInstance().beltFeedSpeed());
@@ -124,13 +124,14 @@ public abstract class Shooter extends SubsystemBase{
             }
 
             else{
+                
                 beltIndexer.set(0);
                 wheelIndexer.set(0);
             }
         }
         else{
-            beltIndexer.set(RobotPreferences.getInstance().beltFeedSpeed());
-            wheelIndexer.set(RobotPreferences.getInstance().beltFeedSpeed());
+            beltIndexer.set(0);
+            wheelIndexer.set(0);
         }
 
     }
