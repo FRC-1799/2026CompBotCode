@@ -4,9 +4,12 @@ import java.lang.StackWalker.Option;
 import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
 
 /**
  * Timing Manager that is able to return whether our alliance's hub is 
@@ -173,6 +176,10 @@ public class TimingManager {
             SmartDashboard.putBoolean("Timer/ResetTeleop", false);
         }
         SmartDashboard.putString("Timer/CurrentActiveAlliance", getActiveAlliance().toString());
+
+        if (!RobotBase.isReal()){
+            ((Arena2026Rebuilt)SimulatedArena.getInstance()).setActiveOverride(DriverStation.getAlliance().equals(Alliance.Blue), isActive());
+        }
     }
 }
 
