@@ -21,7 +21,6 @@ public class GeneralManager{
         resting(new resting()),
         shooting(new shooting()),
         intaking(new intaking()),
-        passing(new passing()),
         spitting(new spitting());
 
         Command state;
@@ -129,18 +128,7 @@ public class GeneralManager{
         return getStartStateCommand(generalState.intaking);
     }
 
-    /**<h2>Changes the current state to the passing state</h2>*/
-    public static void startPassing(){
-        startState(generalState.passing);
-    }
 
-    /**
-     * <h2>Creates a command that will start the passing state when called</h2>
-     * @return A command too start resting state
-     */
-    public static Command passing(){
-        return getStartStateCommand(generalState.passing);
-    }
 
 
 

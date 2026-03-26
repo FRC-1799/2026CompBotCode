@@ -122,7 +122,7 @@ public class ControlChooser {
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
-        xbox1.a(loop).whileTrue(GeneralManager.passing());
+        xbox1.a(loop).whileTrue(GeneralManager.shooting());
         xbox1.b(loop).whileTrue(GeneralManager.spitting());
 
 
@@ -145,7 +145,7 @@ public class ControlChooser {
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
-        xbox1.a(loop).onTrue(GeneralManager.passing()).onFalse(GeneralManager.resting());
+        xbox1.a(loop).onTrue(GeneralManager.shooting()).onFalse(GeneralManager.resting());
 
 
         xbox2.rightTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
