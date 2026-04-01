@@ -31,7 +31,6 @@ import frc.robot.commands.auto.OutpostAuto;
 import frc.robot.commands.swervedrive.spin;
 import frc.robot.subsystems.GeneralManager;
 import frc.robot.subsystems.TimingManager;
-import frc.robot.subsystems.vision.Calibration.configureState;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,7 +86,6 @@ public class Robot extends TimedRobot{
 
         autoChooser.addOption("depo", new DepoAuto());
         autoChooser.addOption("outpost", new OutpostAuto());
-        autoChooser.addOption("Calibrate Limelights", new configureState());
         SmartDashboard.putData("auto chooser", autoChooser);
 
     

@@ -25,6 +25,7 @@ import frc.robot.commands.auto.MidGrab;
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
 import frc.robot.subsystems.GeneralManager.generalState;
+import frc.robot.subsystems.vision.calibration.calibrationCommand;
 import frc.robot.subsystems.GeneralManager;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
@@ -56,6 +57,7 @@ public class ControlChooser {
 
         chooser.addOption("testControl", getTestControl());
         chooser.addOption("rock control", getRockControl());
+        chooser.addOption("calibrateCameras", calibrateCameras());
 
         
         
@@ -141,6 +143,14 @@ public class ControlChooser {
         xbox1.a(loop).onTrue(GeneralManager.passing()).onFalse(GeneralManager.resting());
 
 
+
+        return loop;
+    }
+
+    private EventLoop calibrateCameras () {
+        EventLoop loop = new EventLoop();
+
+        xbox1.a(loop).whileTrue(new calibrationCommand());
 
         return loop;
     }
