@@ -58,6 +58,7 @@ public class calibrationCommand extends Command{
     @Override
     public void execute() {
         limelightCalibration.update();
+        SmartDashboard.putBoolean("Calibrate/SeesCam1", Camera)
     }
 
 
