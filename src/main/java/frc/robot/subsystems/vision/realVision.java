@@ -12,9 +12,11 @@ import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
 import frc.robot.RobotPreferences;
 import frc.robot.SystemManager;
+import frc.robot.subsystems.vision.calibration.calibrationCommand;
 import limelight.Limelight;
 import limelight.networktables.AngularVelocity3d;
 import limelight.networktables.LimelightPoseEstimator;
@@ -97,6 +99,7 @@ public class realVision implements aprilTagInterface{
 
     @Override
     public void periodic() {
+
         if (!limelight1PoseCache.equals(RobotPreferences.getInstance().getLimelight1Pose())){
             limelight1.getSettings().withCameraOffset(RobotPreferences.getInstance().getLimelight1Pose()).save();
             limelight1PoseCache = RobotPreferences.getInstance().getLimelight1Pose();

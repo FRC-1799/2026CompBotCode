@@ -150,7 +150,7 @@ public class ControlChooser {
     private EventLoop calibrateCameras () {
         EventLoop loop = new EventLoop();
 
-        xbox1.a(loop).whileTrue(new calibrationCommand());
+        xbox1.a(loop).toggleOnTrue(new calibrationCommand());
 
         return loop;
     }

@@ -73,7 +73,7 @@ public class CameraCal {
         ));
     }
 
-    public void PublishData() {
+    public void update() {
         if (!publishSetupDone) {
             PublishDataSetup();
             publishSetupDone = true;
