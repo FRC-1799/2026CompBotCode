@@ -114,6 +114,7 @@ public final class Constants
 
   public static class IntakeConstants{
     public static final int intakeCanID = 1;
+    public static final double intakeIndexerSpeed=-0.4;
   }
 
   /**Constants used for sim */
@@ -154,8 +155,8 @@ public final class Constants
     public static final double shootRadius = 3.7;
     public static final Angle shotAngle = Degrees.of(65);
     public static final double SimRPMToMPS=0.0024;
-    public static final int beltMotorID=0;
-    public static final double indexerShootSpeed=0.2;
+    public static final int beltMotorID=6;
+    public static final double indexerShootSpeed=0.4;
     public static final double indexerStopSpeed=0;
 
     public static final int beambreakPort = 9;
@@ -165,18 +166,18 @@ public final class Constants
 
 
     public static final class topMotorConstants{
-      //public static final double shootingSpeedDutyCycle = 1;
-      public static final double P = 5;
+
+      public static final double P = 17;
       public static final double I = 0;
       public static final double D = 0;
-      public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0, 0, 0);
+      public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0.18519, 0.22546, 0.029585);
       public static final AngularVelocity shootingSpeedRPM = RPM.of(3000);
       public static final Distance wheelRadius = Inches.of(4);
-      public static final double gearReduction = 2;
+      public static final double gearReduction = 1;
       public static final int canID=2;
     }
     public static final class bottomMotorConstants{
-      //public static final double shootingSpeedDutyCycle = 0.8;
+
       public static final double P = 5;
       public static final double I = 0;
       public static final double D = 0;

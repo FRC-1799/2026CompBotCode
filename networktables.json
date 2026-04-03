@@ -40,6 +40,15 @@
     }
   },
   {
+    "name": "/Preferences/top Shooting Speed RPM",
+    "type": "double",
+    "value": 3000.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+
     "name": "/Preferences/Limelight 1 Pose/Roll",
     "type": "double",
     "value": 0.0,

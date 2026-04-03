@@ -21,7 +21,7 @@ public class RobotPreferences {
     public static final String intakeBackwardSpeed = "Intake Backward Speed";
 
     public static final String beltFeedSpeed = "Belt Feed Speed";
-
+    public static final String shooterSpeedRPM = "top Shooting Speed RPM";
     public static final String limelight1Pose = "Limelight 1 Pose";
     public static final String limelight2Pose = "Limelight 2 Pose";
 
@@ -59,11 +59,13 @@ public class RobotPreferences {
 
 
     private RobotPreferences() {
+
         registerDoublePreference(bottomShootingSpeedDutyCycle, 0.6);
         registerDoublePreference(topShootingSpeedDutyCycle, 0.7);
         registerDoublePreference(intakeIngestSpeed, -0.2);
         registerDoublePreference(intakeBackwardSpeed, 0.2);
         registerDoublePreference(beltFeedSpeed, 0.2);
+        registerDoublePreference(shooterSpeedRPM, 3000);
         registerPose3dPreference(limelight1Pose, limelightConstants.limelight1Pose);
         registerPose3dPreference(limelight2Pose, limelightConstants.limelight2Pose);
     }
@@ -78,6 +80,10 @@ public class RobotPreferences {
 
     public double intakeIngestSpeed() {
         return utilFunctions.clamp(Preferences.getDouble(intakeIngestSpeed, 0.2), -1.0, 1.0);
+    }
+
+    public double shootingSpeedRPM() {
+        return Preferences.getDouble(shooterSpeedRPM, 3000);
     }
 
     public double intakeBackwardSpeed() {
