@@ -72,8 +72,8 @@ public class realVision implements aprilTagInterface{
          .save();
 
 
-        ll1Estimate = limelight1.createPoseEstimator(EstimationMode.MEGATAG1);
-        ll2Estimate = limelight2.createPoseEstimator(EstimationMode.MEGATAG1);
+        ll1Estimate = limelight1.createPoseEstimator(EstimationMode.MEGATAG2);
+        ll2Estimate = limelight2.createPoseEstimator(EstimationMode.MEGATAG2);
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         ll1PosePublisher = inst.getTable("SmartDashboard/Vision").getStructTopic("Limelight 1 Pose Estimation", Pose2d.struct).publish(PubSubOption.keepDuplicates(true));
@@ -146,7 +146,7 @@ public class realVision implements aprilTagInterface{
      */
     @Override
     public Pose3d getFrontPose() {
-        ll1Pose = ll1Estimate.getPoseEstimate();
+        ll1Pose = ll1Estimate.getAlliancePoseEstimate();
         if (ll1Pose.isEmpty()||ll1Pose.get().pose.equals(new Pose3d())) {
             SmartDashboard.putBoolean("Vision/Limelight 1 Read Correctly", false);
             ll1PosePublisher.set(new Pose2d());
@@ -193,7 +193,7 @@ public class realVision implements aprilTagInterface{
      */
     @Override
     public Pose3d getBackPose() {
-        ll2Pose = ll2Estimate.getPoseEstimate();
+        ll2Pose = ll2Estimate.getAlliancePoseEstimate();
 
         if (ll2Pose.isEmpty()||ll2Pose.get().pose.equals(new Pose3d())) {
             SmartDashboard.putBoolean("Vision/Limelight 2 Read Correctly", false);

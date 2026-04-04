@@ -51,6 +51,9 @@ public class FieldPosits {
     // public static final Pose2d topScorePoseAuto = new Pose2d(3.646, 4, new Rotation2d());
     public static final Collection<Pose2d> scoringPoses= List.of(bottomScorePoseAuto, topScorePoseAuto);
 
+    public static final Pose2d leftSideAutoHandoff= new Pose2d(6.6, 7, new Rotation2d());
+    public static final Pose2d rightSideAutoHandoff= new Pose2d(6.6, 1, new Rotation2d());;
+
     public static final Pose2d topIntakePassoffMid = new Pose2d(5.67, 7.5, new Rotation2d());
     public static final Pose2d bottomIntakePassoffMid = new Pose2d(5.67, 0.5, new Rotation2d());
     public static final Collection<Pose2d> intakingHandoffPoses= List.of(topIntakePassoffMid, bottomIntakePassoffMid);
