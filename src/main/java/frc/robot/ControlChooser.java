@@ -4,6 +4,8 @@ package frc.robot;
 import java.util.function.Consumer;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -119,6 +121,8 @@ public class ControlChooser {
         //xbox1.leftTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
         xbox1.leftTrigger(0.4, loop).whileTrue(new SmartShoot());
 
+
+        xbox1.rightTrigger(0.4, loop).whileTrue(SystemManager.swerve.driveToPose(new Pose2d(13.1, 8, new Rotation2d())));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         

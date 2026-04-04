@@ -145,7 +145,7 @@ public class Robot extends TimedRobot{
       SystemManager.periodic();
       posePublisher.set(SystemManager.getSwervePose());
 
-
+      //System.out.println(DriverStation.getAlliance().get());
       heartBeat++;
       SmartDashboard.putNumber("heartbeat", heartBeat);  
 

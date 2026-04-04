@@ -128,7 +128,7 @@ public class SystemManager{
     public static void periodic(){
         SmartDashboard.putNumber("Score", score);
 
-
+        autoDriveGoalPublisher.set(autoDriveGoal);
         GeneralManager.periodic();
         TimingManager.getInstance().periodic();
         aprilTag.periodic();
