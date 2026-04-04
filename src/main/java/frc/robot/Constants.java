@@ -91,7 +91,7 @@ public final class Constants
 
     public static final LinearVelocity intakeHandoffSpeed = MetersPerSecond.of(3);
 
-    public static final double autoDriveScoreTolerance  = 0.03;
+    public static final double autoDriveScoreTolerance  = 0.1;
     public static final double autoDriveIntakeTolerance = 0.1;
     public static final double angleTolerance = 3;
     public static final double distanceWithinPathplannerDontWork = 0.5;
@@ -165,7 +165,7 @@ public final class Constants
 
     public static final int beambreakPort = 9;
     public static final boolean shouldBeambreak=true;
-    public static final int countsWithoutBallToBeEmpty=25;
+    public static final int countsWithoutBallToBeEmpty=50;
 
 
 
