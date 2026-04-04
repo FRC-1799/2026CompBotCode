@@ -10,15 +10,27 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants;
 import frc.robot.RobotPreferences;
 
 public class realIntake extends Intake{
 
   protected RobotPreferences pref = RobotPreferences.getInstance();
   protected final SparkFlex intakeMotor = new SparkFlex(IntakeConstants.intakeCanID, MotorType.kBrushless);
- 
+  protected final SparkMax intakeSlapDown = new SparkMax(getPieceCount(), MotorType.kBrushed);
+  public double slapDownTimer = IntakeConstants.intakeSlapDownTime;
+
   protected int indexerCount = 0;
   protected boolean indexerRun=true;
+
+  @Override
+  public void periodic(){
+    super.periodic();
+    if (slapDownTimer>0){
+      slapDownTimer-=0.02;
+      intakeMotor.set(IntakeConstants.intakeSlapDownSpeed);
+    }
+  }
 
 
   @Override
