@@ -122,7 +122,6 @@ public class ControlChooser {
         xbox1.leftTrigger(0.4, loop).whileTrue(new SmartShoot());
 
 
-        xbox1.rightTrigger(0.4, loop).whileTrue(SystemManager.swerve.driveToPose(new Pose2d(13.1, 8, new Rotation2d())));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
