@@ -1,5 +1,6 @@
 package frc.robot.subsystems.Intake;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
@@ -17,7 +18,7 @@ public class realIntake extends Intake{
 
   protected RobotPreferences pref = RobotPreferences.getInstance();
   protected final SparkFlex intakeMotor = new SparkFlex(IntakeConstants.intakeCanID, MotorType.kBrushless);
-  protected final SparkMax intakeSlapDown = new SparkMax(getPieceCount(), MotorType.kBrushed);
+  protected final TalonFX intakeSlapDown = new TalonFX(IntakeConstants.intakeSlapDownMotorID);
   public double slapDownTimer = IntakeConstants.intakeSlapDownTime;
 
   protected int indexerCount = 0;
@@ -55,13 +56,16 @@ public class realIntake extends Intake{
 
   @Override
   protected void indexing(){
-     indexerCount--;
-     if (indexerCount==0){
-        indexerCount=10;
-        indexerRun=!indexerRun;
-     }
+    indexerCount--;
+    if (indexerCount==0){
+      indexerCount=10;
+      indexerRun=!indexerRun;
+    }
 
-     intakeMotor.set(indexerRun? IntakeConstants.intakeIndexerSpeed: 0);
+
+    intakeMotor.set(indexerRun? IntakeConstants.intakeIndexerSpeed: 0);
+    intakeSlapDown.set(indexerRun? 0.01: -0.01);
+
   }
  
 
