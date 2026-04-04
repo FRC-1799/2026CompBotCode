@@ -82,6 +82,8 @@ public class SemiAutoState extends Command{
             }
         }
 
+        System.out.println(state.toString());
+
         
     }
 

@@ -8,7 +8,9 @@ import frc.robot.subsystems.TimingManager;
 
 public class SmartShoot extends ShootHandoff{
     public SmartShoot(){
-        super(SmartShoot::shouldShoot);
+        
+        super(()->true);
+        //super(SmartShoot::shouldShoot);
     }
 
     public SmartShoot(BooleanSupplier canHandoff){

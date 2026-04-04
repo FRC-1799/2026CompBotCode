@@ -32,4 +32,10 @@ public class realShooter extends Shooter{
     public boolean hasPiecesRemaining(){
         return shooterConstants.shouldBeambreak && cyclesWithoutBall<shooterConstants.countsWithoutBallToBeEmpty;
     }
+
+    @Override
+    public void startShooting(){
+        super.startShooting();
+        cyclesWithoutBall=0;
+    }
 }

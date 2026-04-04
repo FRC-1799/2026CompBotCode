@@ -161,7 +161,7 @@ public final class Constants
 
     public static final int beambreakPort = 9;
     public static final boolean shouldBeambreak=true;
-    public static final int countsWithoutBallToBeEmpty=25;
+    public static final int countsWithoutBallToBeEmpty=50;
 
 
 
