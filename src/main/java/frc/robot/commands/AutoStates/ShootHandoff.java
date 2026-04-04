@@ -39,7 +39,7 @@ public class ShootHandoff extends SemiAutoState{
                 );},
                 Set.of(SystemManager.swerve)
             ).until(SystemManager::swerveIsAtGoal),
-            new SequentialCommandGroup(GeneralManager.shooting(), new WaitUntilCommand(()->!SystemManager.shooter.hasPiecesRemaining())),
+            (GeneralManager.shooting().until(()->{return !SystemManager.shooter.hasPiecesRemaining();})),
             canHandoff
         );
     }
