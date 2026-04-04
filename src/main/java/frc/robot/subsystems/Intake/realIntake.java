@@ -64,7 +64,6 @@ public class realIntake extends Intake{
 
 
     intakeMotor.set(indexerRun? IntakeConstants.intakeIndexerSpeed: 0);
-    intakeSlapDown.set(indexerRun? 0.01: -0.01);
 
   }
  
