@@ -87,7 +87,6 @@ public class SemiAutoState extends Command{
         if (!currentCommand.isFinished()){
             currentCommand.execute();
         }
-        System.out.println(currentCommand.getName());
 
 
         
