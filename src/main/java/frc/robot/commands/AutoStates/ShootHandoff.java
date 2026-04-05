@@ -23,45 +23,15 @@ public class ShootHandoff extends SemiAutoState{
     }
 
     public ShootHandoff(BooleanSupplier canHandoff){
-        super(
-
-            new DeferredCommand(
-                ()->{return new ConditionalCommand(
-                    SystemManager.swerve.driveToPose(new Pose2d(
-                        SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses).getTranslation(),
-                        utilFunctions.getAngleBetweenTwoPoints(
-                            new Pose2d(SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses).getTranslation(), new Rotation2d()),
-                            FieldPosits.hubPose2d)
-
-                    )),
-                    SystemManager.swerve.driveToPose(SystemManager.shooter.getClosestShootPoint()),
-                    ()->!FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
-                );},
-                Set.of(SystemManager.swerve)
-            ).until(SystemManager::swerveIsAtGoal),
-            (GeneralManager.shooting().until(()->{return !SystemManager.shooter.hasPiecesRemaining();})),
-            canHandoff
-        );
+        this(canHandoff, false);
     }
 
 
     public ShootHandoff(BooleanSupplier canHandoff, boolean midShootCancel){
         super(
 
-            new DeferredCommand(
-                ()->{return new ConditionalCommand(
-                    SystemManager.swerve.driveToPose(new Pose2d(
-                        SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses).getTranslation(),
-                        utilFunctions.getAngleBetweenTwoPoints(
-                            new Pose2d(SystemManager.getSwervePose().nearest(FieldPosits.scoringPoses).getTranslation(), new Rotation2d()),
-                            FieldPosits.hubPose2d)
-
-                    )),
-                    SystemManager.swerve.driveToPose(SystemManager.shooter.getClosestShootPoint()),
-                    ()->!FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())
-                );},
-                Set.of(SystemManager.swerve)
-            ).until(SystemManager::swerveIsAtGoal),
+            new DeferredCommand(()->{return SystemManager.swerve.driveToPose(SystemManager.shooter.getClosestShootPoint());},
+                Set.of(SystemManager.swerve)),
             new SequentialCommandGroup(GeneralManager.shooting(), new WaitUntilCommand(()->!SystemManager.shooter.hasPiecesRemaining())),
             canHandoff
         );
