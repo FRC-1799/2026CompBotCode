@@ -1,5 +1,8 @@
 package frc.robot.commands.auto;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import java.util.Set;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -13,16 +16,33 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.FieldPosits;
 import frc.robot.SystemManager;
+import frc.robot.Utils.utilFunctions;
 import frc.robot.commands.AutoStates.ShootHandoff;
 import frc.robot.subsystems.GeneralManager;
 
 public class DepoAuto extends SequentialCommandGroup{
+    protected static boolean leftSide;
     public DepoAuto(){
         super(
 
 
-            //Grab from mid
-            GeneralManager.intaking(),
+            new DeferredCommand(
+                ()->{
+                    return new InstantCommand(
+                        ()->{
+                            System.out.println(SystemManager.getSwervePose());
+                            leftSide = 
+                            utilFunctions.getDistanceBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.leftSideAutoHandoff).in(Meters) <
+                            utilFunctions.getDistanceBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.rightSideAutoHandoff).in(Meters);
+                            System.out.println(leftSide);
+                        }
+                    );
+                }, 
+                Set.of()
+            ),
+
+            new InstantCommand(GeneralManager::startIntaking),
+
             new DeferredCommand(
                 ()->{
                     return SystemManager.swerve.driveToPose(new Pose2d(FieldPosits.mid, new Rotation2d(
@@ -32,19 +52,22 @@ public class DepoAuto extends SequentialCommandGroup{
                 },
                 Set.of(SystemManager.swerve)
             ),
+
+            new DeferredCommand(
+                ()->{return SystemManager.swerve.driveToPose(leftSide? FieldPosits.leftSideAutoHandoff : FieldPosits.rightSideAutoHandoff, MetersPerSecond.of(2));},
+                Set.of(SystemManager.swerve)
+            ),
+            
             new ShootHandoff(),
 
             //Grab from depo
-            GeneralManager.intaking(),
+            new InstantCommand(GeneralManager::startIntaking),
             SystemManager.swerve.driveToPose(new Pose2d(FieldPosits.depo, new Rotation2d(
                 SystemManager.getSwervePose().getX()-FieldPosits.depo.getX(),
                 SystemManager.getSwervePose().getY()-FieldPosits.depo.getY()))
             ),
-            new ShootHandoff(),
-            new WaitUntilCommand(()->!SystemManager.shooter.hasPiecesRemaining())
-
-
-
+            new ShootHandoff()
+           
         );
     }
 }

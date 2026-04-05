@@ -40,6 +40,9 @@ public class MidGrab extends SequentialCommandGroup{
                 }, 
                 Set.of()
             ),
+
+            new InstantCommand(GeneralManager::startIntaking),
+
             new DeferredCommand(
                 ()->{
                     return SystemManager.swerve.driveToPose(new Pose2d(FieldPosits.mid, new Rotation2d(
@@ -50,10 +53,15 @@ public class MidGrab extends SequentialCommandGroup{
                 Set.of(SystemManager.swerve)
             ),
 
-            SystemManager.swerve.driveToPose(leftSide? FieldPosits.leftSideAutoHandoff : FieldPosits.rightSideAutoHandoff, MetersPerSecond.of(2)),
+            new DeferredCommand(
+                ()->{return SystemManager.swerve.driveToPose(leftSide? FieldPosits.leftSideAutoHandoff : FieldPosits.rightSideAutoHandoff, MetersPerSecond.of(2));},
+                Set.of(SystemManager.swerve)
+            ),
+                        
+            
             new ShootHandoff(),
      
-            GeneralManager.intaking(),
+            new InstantCommand(GeneralManager::startIntaking),
             new DeferredCommand(
                 ()->{
                     return SystemManager.swerve.driveToPose(new Pose2d(FieldPosits.mid, new Rotation2d(
@@ -63,7 +71,11 @@ public class MidGrab extends SequentialCommandGroup{
                 },
                 Set.of(SystemManager.swerve)
             ),
-            SystemManager.swerve.driveToPose(leftSide? FieldPosits.leftSideAutoHandoff : FieldPosits.rightSideAutoHandoff, MetersPerSecond.of(2)),
+
+            new DeferredCommand(
+                ()->{return SystemManager.swerve.driveToPose(leftSide? FieldPosits.leftSideAutoHandoff : FieldPosits.rightSideAutoHandoff, MetersPerSecond.of(2));},
+                Set.of(SystemManager.swerve)
+            ),
 
             new ShootHandoff()
         );
