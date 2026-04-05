@@ -32,7 +32,7 @@ public class ShootHandoff extends SemiAutoState{
 
             new DeferredCommand(()->{return SystemManager.swerve.driveToPose(SystemManager.shooter.getClosestShootPoint());},
                 Set.of(SystemManager.swerve)),
-            new SequentialCommandGroup(GeneralManager.shooting(), new WaitUntilCommand(()->!SystemManager.shooter.hasPiecesRemaining())),
+            new SequentialCommandGroup(GeneralManager.shooting().until(()->!SystemManager.shooter.hasPiecesRemaining())),
             canHandoff
         );
     }

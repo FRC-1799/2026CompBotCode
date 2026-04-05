@@ -17,6 +17,8 @@ public class SemiAutoState extends Command{
 
     Command firstCommand;
     Command secondCommand;
+
+    Command currentCommand = firstCommand;
     BooleanSupplier canHandoff;
     boolean cancelHandoff;
     semiAutoStateState state = semiAutoStateState.firstCommand;
@@ -40,13 +42,17 @@ public class SemiAutoState extends Command{
         this.secondCommand=handoffCommand;
         this.canHandoff=canHandoff;
         this.cancelHandoff=cancelHandoff;
+        currentCommand = firstCommand;
+        addRequirements(firstCommand.getRequirements());
+        addRequirements(secondCommand.getRequirements());
 
     }
 
     @Override
     public void initialize(){
         state = semiAutoStateState.firstCommand;
-        firstCommand.schedule();
+        currentCommand = firstCommand;
+        currentCommand.initialize();
     }
 
     @Override
@@ -63,14 +69,18 @@ public class SemiAutoState extends Command{
                 }
             }
             if (!firstCommand.isScheduled()){
-                firstCommand.schedule();
+                currentCommand = firstCommand;
+                currentCommand.initialize();
             }
         }
 
         if (state == semiAutoStateState.handoff){
             if (canHandoff.getAsBoolean()){
                 state=semiAutoStateState.secondCommand;
-                secondCommand.schedule();
+
+                currentCommand = secondCommand;
+                currentCommand.initialize();
+
                 canFinishFlag=false;
             }
         }
@@ -81,6 +91,8 @@ public class SemiAutoState extends Command{
                 state = semiAutoStateState.handoff;
             }
         }
+
+        currentCommand.execute();
 
 
         
@@ -93,12 +105,7 @@ public class SemiAutoState extends Command{
 
     @Override
     public void end(boolean wasInterrupted){
-        if (state==semiAutoStateState.firstCommand){
-            firstCommand.cancel();
-        }
-        else if (state==semiAutoStateState.secondCommand){
-            secondCommand.cancel();
-        }
+        currentCommand.end(wasInterrupted);
     }
 
 }

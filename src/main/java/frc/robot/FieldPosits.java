@@ -47,8 +47,8 @@ public class FieldPosits {
     public static final Pose2d bottomScorePoseAuto = new Pose2d(4, 0.5, new Rotation2d());
     public static final Pose2d topScorePoseAuto = new Pose2d(4, 7.5, new Rotation2d());
 
-    public static final Pose2d bottomTrench = new Pose2d(3, 0.5, new Rotation2d());
-    public static final Pose2d topTrench = new Pose2d(3, 7.5, new Rotation2d());
+    public static final Pose2d bottomTrench = new Pose2d(3, 0.5, new Rotation2d(-Math.PI/2));
+    public static final Pose2d topTrench = new Pose2d(3, 7.5, new Rotation2d(-Math.PI/2));
     public static final Collection<Pose2d> trenches = List.of(bottomTrench, topTrench);
 
 
