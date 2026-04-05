@@ -64,13 +64,14 @@ public class SemiAutoState extends Command{
             if (SystemManager.swerveIsAtGoal()){
                 state=semiAutoStateState.handoff;
                 if (!canHandoff.getAsBoolean()){
-                    new InstantCommand(()->SystemManager.swerve.lock()).until(canHandoff::getAsBoolean).schedule();
+                    currentCommand = new InstantCommand(()->SystemManager.swerve.lock()).until(canHandoff::getAsBoolean);
 
                 }
             }
-            if (!firstCommand.isScheduled()){
+            if (firstCommand.isFinished()){
                 currentCommand = firstCommand;
                 currentCommand.initialize();
+                System.out.println(":3");
             }
         }
 
@@ -92,7 +93,10 @@ public class SemiAutoState extends Command{
             }
         }
 
-        currentCommand.execute();
+        if (!currentCommand.isFinished()){
+            currentCommand.execute();
+        }
+        System.out.println(currentCommand.getName());
 
 
         
@@ -100,7 +104,7 @@ public class SemiAutoState extends Command{
 
     @Override
     public boolean isFinished(){
-        return state==semiAutoStateState.secondCommand && !secondCommand.isScheduled() && canFinishFlag;
+        return state==semiAutoStateState.secondCommand && secondCommand.isFinished() && canFinishFlag;
     }
 
     @Override
