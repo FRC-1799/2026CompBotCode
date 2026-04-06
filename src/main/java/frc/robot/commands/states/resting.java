@@ -14,6 +14,7 @@ public class resting extends Command{
     @Override
     public void initialize(){
         SystemManager.shooter.stop();
+        SystemManager.intake.stop();
 
     }
 
