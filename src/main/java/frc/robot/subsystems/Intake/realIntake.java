@@ -30,10 +30,10 @@ public class realIntake extends Intake{
     super.periodic();
     if (slapDownTimer>0&&DriverStation.isEnabled()){
       slapDownTimer-=0.02;
-      intakeMotor.set(IntakeConstants.intakeSlapDownSpeed);
+      intakeSlapDown.set(IntakeConstants.intakeSlapDownSpeed);
     }
     else{
-      intakeMotor.set(0);
+      intakeSlapDown.set(0);
     }
   }
 
