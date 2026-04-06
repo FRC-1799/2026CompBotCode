@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.Constants.IntakeConstants;
@@ -27,9 +28,12 @@ public class realIntake extends Intake{
   @Override
   public void periodic(){
     super.periodic();
-    if (slapDownTimer>0){
+    if (slapDownTimer>0&&DriverStation.isEnabled()){
       slapDownTimer-=0.02;
       intakeMotor.set(IntakeConstants.intakeSlapDownSpeed);
+    }
+    else{
+      intakeMotor.set(0);
     }
   }
 
