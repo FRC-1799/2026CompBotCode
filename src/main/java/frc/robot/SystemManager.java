@@ -127,8 +127,9 @@ public class SystemManager{
     /** Calls periodic on all the systems that do not inherit subsystem base. This function should be called in robot periodic */
     public static void periodic(){
         SmartDashboard.putNumber("Score", score);
+        SmartDashboard.putBoolean("AutoDrive/atGoal", swerveIsAtGoal());
 
-
+        autoDriveGoalPublisher.set(autoDriveGoal);
         GeneralManager.periodic();
         TimingManager.getInstance().periodic();
         aprilTag.periodic();

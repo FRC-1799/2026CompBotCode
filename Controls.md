@@ -16,9 +16,16 @@ A: Begins passing
 B: Outtakes game pieces through the intake 
 
 ## Rock Control
-Robot oriented drive with left stick for directional control and right stick x axis for rotation
-Left Trigger above 10%: AutoDrive and aimbot 
-Left Trigger above 50% : Smart shoot (Will only fire if the fuel is predicted to land within an active period)(If the robot is not in a correct position to shoot this input will auto aim before firing)
-Right Trigger: begins intaking
-A: Starts passing
 
+**controller 1**
+Robot oriented drive with left stick for directional control and right stick x axis for rotation
+Left Trigger above 40%: AutoDrive to mid followed by intake step, 
+Left Trigger above 80% : Smart shoot (Will only fire if the fuel is predicted to land within an active period)(If the robot is not in a correct position to shoot this input will auto aim before firing)
+Right Trigger: begins intaking
+A: Starts firing without running any aimbot 
+
+**controller 2**
+
+
+Right Trigger above 40%: Begins firing without running any aimbot.
+Left Trigger above 40%: Toggles the intake on and off. 

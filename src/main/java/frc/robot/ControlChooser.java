@@ -4,6 +4,8 @@ package frc.robot;
 import java.util.function.Consumer;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -116,7 +118,8 @@ public class ControlChooser {
         //xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
         //xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
         xbox1.rightTrigger(0.4, loop).whileTrue(GeneralManager.intaking());
-        xbox1.leftTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
+        //xbox1.leftTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
+        xbox1.leftTrigger(0.4, loop).whileTrue(new SmartShoot());
 
 
 
@@ -140,16 +143,16 @@ public class ControlChooser {
         // xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpecificState(generalState.intaking)));
         // xbox1.leftTrigger(0.1,loop).whileTrue(new SmartShoot(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpecificState(generalState.shooting)));
 
-        xbox1.rightTrigger(0.4, loop).onTrue(GeneralManager.intaking());
-        xbox1.leftTrigger(0.4, loop).onTrue(GeneralManager.shooting());
+        // xbox1.rightTrigger(0.4, loop).whileTrue(GeneralManager.intaking());
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
         
-        xbox1.a(loop).onTrue(GeneralManager.shooting()).onFalse(GeneralManager.resting());
+        // xbox1.a(loop).whileTrue(GeneralManager.shooting());
 
 
         xbox2.rightTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
-        xbox2.leftTrigger(0.4, loop).toggleOnTrue(GeneralManager.intaking());
+        xbox2.leftTrigger(0.4, loop).whileTrue(GeneralManager.intaking());
+        xbox2.rightBumper(loop).whileTrue(new SmartShoot());
 
 
         return loop;

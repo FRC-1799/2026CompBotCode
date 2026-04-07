@@ -1,5 +1,8 @@
 package frc.robot.commands.auto;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import java.util.Set;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,30 +18,31 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.FieldPosits;
 import frc.robot.SystemManager;
+import frc.robot.Utils.utilFunctions;
 import frc.robot.commands.AutoStates.ShootHandoff;
 import frc.robot.subsystems.GeneralManager;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
 
 public class OutpostAuto extends SequentialCommandGroup{
+    protected static boolean leftSide;
     public OutpostAuto(){
         super(
 
-            GeneralManager.intaking(),
-            SystemManager.swerve.driveToPose(FieldPosits.outpost),
-            new ConditionalCommand(
-                new InstantCommand(()->{
-                    ((Arena2026Rebuilt)SimulatedArena.getInstance()).outpostDump(DriverStation.getAlliance().isPresent()&&DriverStation.getAlliance().get()!=Alliance.Blue);
-                }),
-                new InstantCommand(),
-                RobotBase::isSimulation
+                       new DeferredCommand(
+                ()->{
+                    return new InstantCommand(
+                        ()->{
+                            leftSide = 
+                            utilFunctions.getDistanceBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.leftSideAutoHandoff).in(Meters) <
+                            utilFunctions.getDistanceBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.rightSideAutoHandoff).in(Meters);
+                        }
+                    );
+                }, 
+                Set.of()
             ),
 
-            new ShootHandoff(),
-            new WaitUntilCommand(()->!SystemManager.shooter.hasPiecesRemaining()),
-
-                        
-            GeneralManager.intaking(),
+            new InstantCommand(GeneralManager::startIntaking),
 
             new DeferredCommand(
                 ()->{
@@ -49,6 +53,24 @@ public class OutpostAuto extends SequentialCommandGroup{
                 },
                 Set.of(SystemManager.swerve)
             ),
+
+            new DeferredCommand(
+                ()->{return SystemManager.swerve.driveToPose(leftSide? FieldPosits.leftSideAutoHandoff : FieldPosits.rightSideAutoHandoff, MetersPerSecond.of(2));},
+                Set.of(SystemManager.swerve)
+            ),            
+            new ShootHandoff(),
+  
+            new InstantCommand(GeneralManager::startIntaking),
+
+            SystemManager.swerve.driveToPose(FieldPosits.outpost),
+            new ConditionalCommand(
+                new InstantCommand(()->{
+                    ((Arena2026Rebuilt)SimulatedArena.getInstance()).outpostDump(DriverStation.getAlliance().isPresent()&&DriverStation.getAlliance().get()!=Alliance.Blue);
+                }),
+                new InstantCommand(),
+                RobotBase::isSimulation
+            ),
+                        
             new ShootHandoff()
         );
     }

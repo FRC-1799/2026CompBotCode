@@ -5,21 +5,24 @@ import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.SystemManager;
 
 public class SemiAutoState extends Command{
     public enum semiAutoStateState{
-        firstCommand,
+        inFirstCommand,
         handoff,
-        secondCommand
+        inSecondCommand
     }
 
     Command firstCommand;
     Command secondCommand;
+
+    Command currentCommand = firstCommand;
     BooleanSupplier canHandoff;
     boolean cancelHandoff;
-    semiAutoStateState state = semiAutoStateState.firstCommand;
+    semiAutoStateState state = semiAutoStateState.inFirstCommand;
 
     boolean canFinishFlag = true;
 
@@ -40,64 +43,63 @@ public class SemiAutoState extends Command{
         this.secondCommand=handoffCommand;
         this.canHandoff=canHandoff;
         this.cancelHandoff=cancelHandoff;
+        currentCommand = firstCommand;
+        addRequirements(firstCommand.getRequirements());
+        addRequirements(secondCommand.getRequirements());
 
     }
 
     @Override
     public void initialize(){
-        state = semiAutoStateState.firstCommand;
-        firstCommand.schedule();
+        state = semiAutoStateState.inFirstCommand;
+        currentCommand = firstCommand;
+        currentCommand.initialize();
     }
 
     @Override
     public void execute(){
         canFinishFlag=true;
 
-
-        if (state == semiAutoStateState.firstCommand){
-            if (SystemManager.swerveIsAtGoal()){
-                state=semiAutoStateState.handoff;
+        if (currentCommand.isFinished()){
+            if (state==semiAutoStateState.inFirstCommand){
                 if (!canHandoff.getAsBoolean()){
-                    new InstantCommand(()->SystemManager.swerve.lock()).until(canHandoff::getAsBoolean).schedule();
-
+                    state = semiAutoStateState.handoff;
+                    currentCommand = new WaitUntilCommand(canHandoff);
                 }
+
+                else{
+                    state = semiAutoStateState.inSecondCommand;
+                    currentCommand = secondCommand;
+                    currentCommand.initialize();
+                }
+                SystemManager.swerve.lock();
             }
-            if (!firstCommand.isScheduled()){
-                firstCommand.schedule();
+
+            else if (state == semiAutoStateState.handoff){
+                currentCommand = secondCommand;
+                currentCommand.initialize();
             }
+            
         }
 
-        if (state == semiAutoStateState.handoff){
-            if (canHandoff.getAsBoolean()){
-                state=semiAutoStateState.secondCommand;
-                secondCommand.schedule();
-                canFinishFlag=false;
-            }
+
+
+        if (!currentCommand.isFinished()){
+            currentCommand.execute();
         }
 
-        if (state == semiAutoStateState.secondCommand){
-            if (cancelHandoff&&!canHandoff.getAsBoolean()){
-                secondCommand.cancel();
-                state = semiAutoStateState.handoff;
-            }
-        }
 
         
     }
 
     @Override
     public boolean isFinished(){
-        return state==semiAutoStateState.secondCommand && !secondCommand.isScheduled() && canFinishFlag;
+        return state==semiAutoStateState.inSecondCommand && secondCommand.isFinished() && canFinishFlag;
     }
 
     @Override
     public void end(boolean wasInterrupted){
-        if (state==semiAutoStateState.firstCommand){
-            firstCommand.cancel();
-        }
-        else if (state==semiAutoStateState.secondCommand){
-            secondCommand.cancel();
-        }
+        currentCommand.end(wasInterrupted);
     }
 
 }

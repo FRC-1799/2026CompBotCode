@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Preferences;
 import frc.robot.Constants.limelightConstants;
+import frc.robot.Constants.shooterConstants;
 import frc.robot.Utils.utilFunctions;
 
 /** 
@@ -24,6 +25,7 @@ public class RobotPreferences {
     public static final String shooterSpeedRPM = "top Shooting Speed RPM";
     public static final String limelight1Pose = "Limelight 1 Pose";
     public static final String limelight2Pose = "Limelight 2 Pose";
+    public static final String aimbotRadius = "Aimbot Radius";
 
 
     public static void registerPose3dPreference(String key, Pose3d val){
@@ -68,6 +70,7 @@ public class RobotPreferences {
         registerDoublePreference(shooterSpeedRPM, 3000);
         registerPose3dPreference(limelight1Pose, limelightConstants.limelight1Pose);
         registerPose3dPreference(limelight2Pose, limelightConstants.limelight2Pose);
+        registerDoublePreference(aimbotRadius, shooterConstants.shootRadius);
     }
 
     public double bottomShootingSpeedDutyCycle() {
@@ -94,6 +97,10 @@ public class RobotPreferences {
         return utilFunctions.clamp(Preferences.getDouble(beltFeedSpeed, 0.2), -1.0, 1.0);
     }
 
+    public double aimbotRadius(){
+        return Preferences.getDouble(aimbotRadius, shooterConstants.shootRadius);
+    }
+
     public Pose3d getLimelight1Pose(){
         return getPose3dPreference(limelight1Pose);
     }
@@ -101,6 +108,7 @@ public class RobotPreferences {
     public Pose3d getLimelight2Pose(){
         return getPose3dPreference(limelight2Pose);
     }
+    
 
     /** 
      * Call this to get an instance of the preferences 

@@ -173,15 +173,25 @@ public abstract class Shooter extends SubsystemBase{
     public Command sysId() {return topShooter.sysId(Volts.of(10), Volts.of(1).per(Second), Seconds.of(5));}
 
     public Pose2d getClosestShootPoint(){
-        Pose2d robotPose = SystemManager.getSwervePose();
+
+        Pose2d robotPose;
+
+
+        if (!FieldPosits.alianceZone.contains(SystemManager.getSwervePose().getTranslation())){
+            robotPose = SystemManager.getSwervePose().nearest(FieldPosits.trenches);
+        }
+        else{
+            robotPose = SystemManager.getSwervePose();
+        }
+
         Pose2d goalPose = FieldPosits.hubPose2d;
 
         Transform2d dif = robotPose.minus(goalPose);
 
         
         return new Pose2d(
-            goalPose.plus(dif.div(Math.hypot(dif.getX(), dif.getY())).times(shooterConstants.shootRadius)).getTranslation(),
-            utilFunctions.getAngleBetweenTwoPoints(SystemManager.getSwervePose(), FieldPosits.hubPose2d));
+            goalPose.plus(dif.div(Math.hypot(dif.getX(), dif.getY())).times(RobotPreferences.getInstance().aimbotRadius())).getTranslation(),
+            utilFunctions.getAngleBetweenTwoPoints(robotPose, FieldPosits.hubPose2d));
     }
 
     public boolean hasPiecesRemaining(){

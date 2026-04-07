@@ -24,7 +24,7 @@ public class IntakeHandoff extends SemiAutoState{
                         );
                     },
                 Set.of(SystemManager.swerve)),
-                GeneralManager.intaking()
+                new InstantCommand(GeneralManager::startIntaking)
         );
     }
 }

@@ -146,10 +146,10 @@ public class realVision implements aprilTagInterface{
      */
     @Override
     public Pose3d getFrontPose() {
-        ll1Pose = ll1Estimate.getPoseEstimate();
-        if (ll1Pose.isEmpty()) {
+        ll1Pose = ll1Estimate.getAlliancePoseEstimate();
+        if (ll1Pose.isEmpty()||ll1Pose.get().pose.equals(new Pose3d())) {
             SmartDashboard.putBoolean("Vision/Limelight 1 Read Correctly", false);
-            ll1PosePublisher.set(null);
+            ll1PosePublisher.set(new Pose2d());
             return null;
             
         }
@@ -193,11 +193,11 @@ public class realVision implements aprilTagInterface{
      */
     @Override
     public Pose3d getBackPose() {
-        ll2Pose = ll2Estimate.getPoseEstimate();
+        ll2Pose = ll2Estimate.getAlliancePoseEstimate();
 
-        if (ll2Pose.isEmpty()) {
+        if (ll2Pose.isEmpty()||ll2Pose.get().pose.equals(new Pose3d())) {
             SmartDashboard.putBoolean("Vision/Limelight 2 Read Correctly", false);
-            ll2PosePublisher.set(null);
+            ll2PosePublisher.set(new Pose2d());
             return null;
         }
 

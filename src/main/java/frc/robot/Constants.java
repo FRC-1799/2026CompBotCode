@@ -75,7 +75,7 @@ public final class Constants
       public static final double maxSpeed  = 4.6;
       public static final Matter chassis    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(3)), robotMass);
       public static final double MOI = 6.884;
-      public static final Pose2d startingPosit =  new Pose2d(7.182, 7.601, Rotation2d.fromDegrees(0));
+      public static final Pose2d startingPosit = new Pose2d(4, 7.5, new Rotation2d());
       public static final double wheelLockTime = 10;
   }
    
@@ -91,7 +91,7 @@ public final class Constants
 
     public static final LinearVelocity intakeHandoffSpeed = MetersPerSecond.of(3);
 
-    public static final double autoDriveScoreTolerance  = 0.03;
+    public static final double autoDriveScoreTolerance  = 0.1;
     public static final double autoDriveIntakeTolerance = 0.1;
     public static final double angleTolerance = 3;
     public static final double distanceWithinPathplannerDontWork = 0.5;
@@ -114,6 +114,10 @@ public final class Constants
 
   public static class IntakeConstants{
     public static final int intakeCanID = 1;
+    public static final int intakeSlapDownMotorID=5;
+    public static final double intakeSlapDownSpeed=-0.2;
+    public static final double intakeSlapDownTime=1.5;
+    
     public static final double intakeIndexerSpeed=-0.4;
   }
 
@@ -161,7 +165,7 @@ public final class Constants
 
     public static final int beambreakPort = 9;
     public static final boolean shouldBeambreak=true;
-    public static final int countsWithoutBallToBeEmpty=25;
+    public static final int countsWithoutBallToBeEmpty=50;
 
 
 

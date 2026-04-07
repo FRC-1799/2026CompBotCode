@@ -38,6 +38,7 @@ public class simIntake extends Intake{
         else{
             intakeSim= IntakeSimulation.InTheFrameIntake("Fuel", SystemManager.swerve.getMapleSimDrive().get(), Meters.of(0.7), IntakeSimulation.IntakeSide.BACK, 40);
         }
+        intakeSim.addGamePiecesToIntake(8);
 
     }
 
