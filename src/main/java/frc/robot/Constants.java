@@ -115,7 +115,7 @@ public final class Constants
   public static class IntakeConstants{
     public static final int intakeCanID = 1;
     public static final int intakeSlapDownMotorID=5;
-    public static final double intakeSlapDownSpeed=-0.2;
+    public static final double intakeSlapDownSpeed=-0.3;
     public static final double intakeSlapDownTime=1.5;
     
     public static final double intakeIndexerSpeed=-0.4;
