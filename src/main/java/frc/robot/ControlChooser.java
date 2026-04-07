@@ -154,7 +154,7 @@ public class ControlChooser {
         xbox2.rightTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
         xbox2.leftTrigger(0.4, loop).toggleOnTrue(GeneralManager.intaking());
         xbox2.rightBumper(loop).whileTrue(new SmartShoot());
-        xbox2.a(loop).whileFalse(new spitting());
+        xbox2.a(loop).toggleOnTrue(new spitting());
 
 
         return loop;
