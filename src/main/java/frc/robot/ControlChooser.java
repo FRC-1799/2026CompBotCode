@@ -24,6 +24,7 @@ import frc.robot.commands.AutoStates.ShootHandoff;
 import frc.robot.commands.AutoStates.SmartShoot;
 import frc.robot.commands.auto.DepoAuto;
 import frc.robot.commands.auto.MidGrab;
+import frc.robot.commands.states.spitting;
 import frc.robot.commands.swervedrive.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.AbsoluteFieldDrive;
 import frc.robot.subsystems.GeneralManager.generalState;
@@ -153,6 +154,7 @@ public class ControlChooser {
         xbox2.rightTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
         xbox2.leftTrigger(0.4, loop).whileTrue(GeneralManager.intaking());
         xbox2.rightBumper(loop).whileTrue(new SmartShoot());
+        xbox2.a(loop).whileFalse(new spitting());
 
 
         return loop;
