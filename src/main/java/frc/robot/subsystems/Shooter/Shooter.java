@@ -8,30 +8,22 @@ import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.math.Pair;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.shooterConstants;
+import frc.robot.Constants.shooterConstants.bottomMotorConstants;
+import frc.robot.Constants.shooterConstants.topMotorConstants;
 import frc.robot.FieldPosits;
 import frc.robot.RobotPreferences;
 import frc.robot.SystemManager;
 import frc.robot.Utils.utilFunctions;
-import frc.robot.Constants.shooterConstants;
-import frc.robot.Constants.shooterConstants.bottomMotorConstants;
-import frc.robot.Constants.shooterConstants.topMotorConstants;
-import yams.gearing.GearBox;
-import yams.gearing.MechanismGearing;
 import yams.mechanisms.config.FlyWheelConfig;
 import yams.mechanisms.velocity.FlyWheel;
 import yams.motorcontrollers.SmartMotorController;
@@ -39,8 +31,6 @@ import yams.motorcontrollers.SmartMotorControllerConfig;
 import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
-import yams.motorcontrollers.local.SparkWrapper;
-import yams.motorcontrollers.remote.TalonFXSWrapper;
 import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public abstract class Shooter extends SubsystemBase{
@@ -145,12 +135,16 @@ public abstract class Shooter extends SubsystemBase{
     
 
     public void startRevving(){
+        
         state = shooterState.rev;
+        topMotorConfig.withControlMode(ControlMode.CLOSED_LOOP);
         topShooter.setSpeed(RPM.of(pref.shootingSpeedRPM())).schedule();
     }
 
     public void startShooting(){
+        
         state=shooterState.shooting;
+        topMotorConfig.withControlMode(ControlMode.CLOSED_LOOP);
         topShooter.setSpeed(RPM.of(pref.shootingSpeedRPM())).schedule();
     }
 
@@ -160,7 +154,10 @@ public abstract class Shooter extends SubsystemBase{
     }
 
     public void rest(){
+        
         state = shooterState.resting;
+        
+        topMotorConfig.withControlMode(ControlMode.OPEN_LOOP);
         topShooter.set(0).schedule();
     }
 
