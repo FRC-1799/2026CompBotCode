@@ -4,12 +4,17 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -23,7 +28,7 @@ import limelight.networktables.LimelightSettings.LEDMode;
 import limelight.networktables.Orientation3d;
 import limelight.networktables.PoseEstimate;
 
-
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 
 public class realVision implements aprilTagInterface{
@@ -97,6 +102,8 @@ public class realVision implements aprilTagInterface{
 
     @Override
     public void periodic() {
+        boolean isRed = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get()==Alliance.Red;
+
         if (!limelight1PoseCache.equals(RobotPreferences.getInstance().getLimelight1Pose())){
             limelight1.getSettings().withCameraOffset(RobotPreferences.getInstance().getLimelight1Pose()).save();
             limelight1PoseCache = RobotPreferences.getInstance().getLimelight1Pose();
@@ -113,7 +120,7 @@ public class realVision implements aprilTagInterface{
         // These are called in periodic because they need to be according to YALL docs
         limelight2.getSettings().withRobotOrientation(
                 new Orientation3d(
-                    SystemManager.swerve.getRotation3d(),
+                    SystemManager.swerve.getRotation3d().plus(new Rotation3d(new Rotation2d(Degrees.of(isRed? 0: Math.PI)))),
                     new AngularVelocity3d(
                         DegreesPerSecond.of(0), // Roll, our robot will not be front flipping
                         DegreesPerSecond.of(0), // Pitch, our robot will not be rolling around in mud
@@ -125,7 +132,7 @@ public class realVision implements aprilTagInterface{
 
         limelight1.getSettings().withRobotOrientation(
             new Orientation3d(
-                SystemManager.swerve.getRotation3d(),
+                SystemManager.swerve.getRotation3d().plus(new Rotation3d(new Rotation2d(Degrees.of(isRed? 0: Math.PI)))),
                 new AngularVelocity3d(
                     DegreesPerSecond.of(0), // Roll, our robot will not be front flipping
                     DegreesPerSecond.of(0), // Pitch, our robot will not be rolling around in mud

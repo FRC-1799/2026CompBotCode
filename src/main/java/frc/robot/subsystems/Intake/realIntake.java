@@ -11,6 +11,7 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants;
 import frc.robot.RobotPreferences;
@@ -28,6 +29,7 @@ public class realIntake extends Intake{
   @Override
   public void periodic(){
     super.periodic();
+    SmartDashboard.putNumber("Intake/IntakeSpeed", intakeMotor.get());
     if (slapDownTimer>0&&DriverStation.isEnabled()){
       slapDownTimer-=0.02;
       intakeSlapDown.set(IntakeConstants.intakeSlapDownSpeed);

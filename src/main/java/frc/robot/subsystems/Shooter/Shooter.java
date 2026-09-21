@@ -106,7 +106,8 @@ public abstract class Shooter extends SubsystemBase{
         SmartDashboard.putNumber("Shooter/ShooterBottomSpeed", getBottomFlywheelSpeed().in(RPM));
         SmartDashboard.putString("Shooter/ShooterState", state.toString());
         SmartDashboard.putNumber("Shooter/ShotDistance", SystemManager.getSwervePose().getTranslation().getDistance(FieldPosits.hubPose2d.getTranslation()));        
-        
+        SmartDashboard.putNumber("Shooter/BeltSpeed", beltIndexer.get());
+
         topShooter.updateTelemetry();
         //bottomShooter.updateTelemetry();
         
@@ -133,6 +134,7 @@ public abstract class Shooter extends SubsystemBase{
             beltIndexer.set(0);
             wheelIndexer.set(0);
         }
+
 
     }
     
