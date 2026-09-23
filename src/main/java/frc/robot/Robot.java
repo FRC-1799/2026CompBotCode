@@ -177,7 +177,11 @@ public class Robot extends TimedRobot{
     public void autonomousInit()
     {
       TimingManager.getInstance().resetAuto();
-      autoChooser.getSelected().schedule();
+
+      if (SystemManager.aprilTag.getBackPose() != null && SystemManager.aprilTag.getFrontPose() != null) {
+        autoChooser.getSelected().schedule();
+      }
+      
 
     }
 
