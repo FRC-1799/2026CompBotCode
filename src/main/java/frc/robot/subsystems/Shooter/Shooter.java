@@ -135,30 +135,23 @@ public abstract class Shooter extends SubsystemBase{
     
 
     public void startRevving(){
-        
         state = shooterState.rev;
-        topMotorConfig.withControlMode(ControlMode.CLOSED_LOOP);
-        topShooter.setSpeed(RPM.of(pref.shootingSpeedRPM())).schedule();
+        topShooter.setMechanismVelocitySetpoint(RPM.of(pref.shootingSpeedRPM()));
     }
 
     public void startShooting(){
-        
         state=shooterState.shooting;
-        topMotorConfig.withControlMode(ControlMode.CLOSED_LOOP);
-        topShooter.setSpeed(RPM.of(pref.shootingSpeedRPM())).schedule();
+        topShooter.setMechanismVelocitySetpoint(RPM.of(pref.shootingSpeedRPM()));
     }
 
     public void stop(){
         if (state==shooterState.resting) rest();
-        else startRevving();;
+        else startRevving();
     }
 
     public void rest(){
-        
         state = shooterState.resting;
-        
-        topMotorConfig.withControlMode(ControlMode.OPEN_LOOP);
-        topShooter.set(0).schedule();
+        topShooter.setDutyCycleSetpoint(0.0);
     }
 
     public AngularVelocity getTopFlywheelSpeed(){
