@@ -133,17 +133,25 @@ public abstract class Shooter extends SubsystemBase{
         topShooter.simIterate();
     }
     
+    public void setVelocity() {
+        if (pref.shootingSpeedRPM()<0.01) {
+            topShooter.setDutyCycleSetpoint(0.0);
+        } else {
+            topShooter.setMechanismVelocitySetpoint(RPM.of(pref.shootingSpeedRPM()));
+        }
+    }
 
     public void startRevving(){
         state = shooterState.rev;
-        topShooter.setMechanismVelocitySetpoint(RPM.of(pref.shootingSpeedRPM()));
+        setVelocity();
     }
 
     public void startShooting(){
         state=shooterState.shooting;
-        topShooter.setMechanismVelocitySetpoint(RPM.of(pref.shootingSpeedRPM()));
+        setVelocity();
     }
 
+    //TODO: This function needs to be fixed
     public void stop(){
         if (state==shooterState.resting) rest();
         else startRevving();
