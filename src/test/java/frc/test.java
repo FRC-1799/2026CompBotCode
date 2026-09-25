@@ -120,6 +120,6 @@ public class test {
 	@AfterAll
 	public void after() {
 		MockHardwareExtension.afterAll();
-		robotThread.stop();
+		robotThread.interrupt();
 	}
 }
