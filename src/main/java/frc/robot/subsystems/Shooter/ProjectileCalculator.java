@@ -1,14 +1,58 @@
 package frc.robot.subsystems.Shooter;
 
-import edu.wpi.first.units.measure.*;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Time;
 
 import static edu.wpi.first.units.Units.*;
 
 public class ProjectileCalculator {
 
     private static final double GRAVITY_METERS_SECOND = 9.80665;
-    private static final double AIR_DENSITY_KG_M3 = 1.225; // Standard sea-level air density
-    private static final double TIME_STEP_SECONDS = 0.001; // 1 millisecond step size for integration precision
+
+    /**
+     * Calculates the required launch velocity using WPILib unit types.
+     *
+     * @param launchHeight    The initial height from which the object is launched.
+     * @param landingHeight   The final height where the object lands.
+     * @param launchAngle     The launch angle relative to the horizontal.
+     * @param landingDistance The horizontal distance traveled to the landing point.
+     * @return The required initial launch velocity, or null if the target is physically unreachable.
+     */
+    public static LinearVelocity calculateLaunch(
+            Distance launchHeight,
+            Distance landingHeight,
+            Angle launchAngle,
+            Distance landingDistance) {
+
+        // Convert all measurements to standard base units (Meters and Radians)
+        double x = landingDistance.in(Meters);
+        double deltaY = landingHeight.in(Meters) - launchHeight.in(Meters);
+        double theta = launchAngle.in(Radians);
+
+        // Pre-calculate trigonometric values
+        double cosTheta = Math.cos(theta);
+        double tanTheta = Math.tan(theta);
+
+        // Calculate the denominator inside the square root
+        double denominator = 2 * Math.pow(cosTheta, 2) * (x * tanTheta - deltaY);
+
+        // If the denominator is less than or equal to 0, the target is physically unreachable
+        if (denominator <= 0) {
+            return null;
+        }
+
+        // Calculate the numerator
+        double numerator = GRAVITY_METERS_SECOND * Math.pow(x, 2);
+
+        // Compute velocity in meters per second
+        double velocityValue = Math.sqrt(numerator / denominator);
+
+        // Return as a WPILib LinearVelocity type
+        return MetersPerSecond.of(velocityValue);
+    }
 
     /**
      * Calculates where a projectile will land given independent launch and landing heights.
@@ -50,84 +94,17 @@ public class ProjectileCalculator {
     }
 
     /**
-     * Calculates where a projectile will land, accounting for quadratic air friction.
-     *
-     * @param v             Initial velocity.
-     * @param angle         Launch angle relative to the horizon.
-     * @param launchHeight  Starting height above reference ground level.
-     * @param landingHeight Target landing plane height above reference ground level.
-     * @param mass          Mass of the projectile object.
-     * @param crossArea     Cross-sectional area of the projectile (m²).
-     * @param dragCoeff     Drag coefficient (Cd) based on shape (e.g., ~0.47 for a sphere, ~0.3 for a sleek note).
-     * @return A ProjectileResult containing flight time and horizontal range, or null if it immediately falls below landing plane.
+     * @param launchVelocity Relative muzzle speed needed (m/s)
+     * @param yaw            Target robot-relative field orientation angle
      */
-    public static ProjectileResult calculateLandingWithDrag(
-            LinearVelocity v,
-            Angle angle,
-            Distance launchHeight,
-            Distance landingHeight,
-            Mass mass,
-            double crossArea,
-            double dragCoeff) {
+    public record LaunchResult(double launchVelocity, Rotation2d yaw) {
 
-        double v0 = v.in(MetersPerSecond);
-        double angleRadians = angle.in(Radians);
-        double m = mass.in(Kilograms);
-
-        // Initial positions and velocities
-        double x = 0.0;
-        double y = launchHeight.in(Meters);
-        double targetY = landingHeight.in(Meters);
-
-        double vx = v0 * Math.cos(angleRadians);
-        double vy = v0 * Math.sin(angleRadians);
-
-        double totalTime = 0.0;
-
-        // Base exit constraint if it starts below or on the landing plane moving down
-        if (y < targetY || (y == targetY && vy <= 0)) {
-            return null;
-        }
-
-        // Drag constant multiplier factor: 0.5 * rho * Cd * A
-        double dragFactor = 0.5 * AIR_DENSITY_KG_M3 * dragCoeff * crossArea;
-
-        // Numerical Integration loop (runs until projectile crosses the target height moving downward)
-        while (y > targetY || vy > 0) {
-            double speed = Math.hypot(vx, vy);
-
-            // Drag force magnitude: Fd = dragFactor * v²
-            double forceDrag = dragFactor * speed * speed;
-
-            // Deconstruct drag forces opposite to the velocity vectors
-            double dragForceX = -forceDrag * (vx / speed);
-            double dragForceY = -forceDrag * (vy / speed);
-
-            // Compute net acceleration: a = F_net / m
-            double ax = dragForceX / m;
-            double ay = -GRAVITY_METERS_SECOND + (dragForceY / m);
-
-            // Update positions using current velocity (Euler-Cromer)
-            x += vx * TIME_STEP_SECONDS;
-            y += vy * TIME_STEP_SECONDS;
-
-            // Update velocities using calculated acceleration
-            vx += ax * TIME_STEP_SECONDS;
-            vy += ay * TIME_STEP_SECONDS;
-
-            totalTime += TIME_STEP_SECONDS;
-
-            // Safety timeout to prevent infinite loop if conditions become unresolvable
-            if (totalTime > 15.0) {
-                return null;
+        @Override
+            public String toString() {
+                return String.format("Required Muzzle Velocity: %.3f m/s\nYaw Target: %.2f°",
+                        launchVelocity, yaw.getDegrees());
             }
         }
-
-        return new ProjectileResult(
-                Time.ofBaseUnits(totalTime, Seconds),
-                Distance.ofBaseUnits(x, Meter)
-        );
-    }
 
     public record ProjectileResult(Time timeInAir, Distance landingDistance) {
     }
