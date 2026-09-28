@@ -47,6 +47,14 @@
     }
   },
   "NetworkTables": {
+    "persistent": {
+      "Preferences": {
+        "Shooter": {
+          "open": true
+        },
+        "open": true
+      }
+    },
     "transitory": {
       "SmartDashboard": {
         "Timer": {

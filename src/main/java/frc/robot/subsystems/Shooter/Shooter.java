@@ -1,22 +1,21 @@
 package frc.robot.subsystems.Shooter;
 
-import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Pounds;
-import static edu.wpi.first.units.Units.RPM;
-import static edu.wpi.first.units.Units.Second;
-import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.Units.*;
+import static frc.robot.Constants.shooterConstants.topMotorConstants.WHEEL_DIAMETER;
+import static frc.robot.Constants.shooterConstants.topMotorConstants.WHEEL_MASS;
+import static frc.robot.subsystems.Shooter.ProjectileCalculatorExt.calculateLaunch;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.shooterConstants;
 import frc.robot.Constants.shooterConstants.bottomMotorConstants;
 import frc.robot.Constants.shooterConstants.topMotorConstants;
@@ -70,8 +69,8 @@ public abstract class Shooter extends SubsystemBase{
 
 
     private final FlyWheelConfig topShooterConfig = new FlyWheelConfig(topMotor)
-      .withDiameter(Inches.of(4))
-      .withMass(Pounds.of(1))
+      .withDiameter(WHEEL_DIAMETER)
+      .withMass(WHEEL_MASS)
       .withTelemetry("TopFlywheelMech", TelemetryVerbosity.HIGH)
       .withSoftLimit(RPM.of(-6600), RPM.of(6600))
       
@@ -137,7 +136,7 @@ public abstract class Shooter extends SubsystemBase{
         if (pref.shootingSpeedRPM()<0.01) {
             topShooter.setDutyCycleSetpoint(0.0);
         } else {
-            topShooter.setMechanismVelocitySetpoint(RPM.of(pref.shootingSpeedRPM()));
+            topShooter.setMechanismVelocitySetpoint(calculateTopSpinnerRpm());
         }
     }
 
@@ -196,6 +195,41 @@ public abstract class Shooter extends SubsystemBase{
 
     public boolean hasPiecesRemaining(){
         return false; 
+    }
+
+    public AngularVelocity calculateTopSpinnerRpm() {
+        var rpmPref = RobotPreferences.getInstance().shootingSpeedRPM();
+
+        AngularVelocity launchAngularVelocity;
+
+        if(rpmPref < 0) {
+            var robotVelocity = SystemManager.swerve.getRobotVelocity();
+            var robotPose3d = new Pose3d(SystemManager.getSwervePose());
+            var shooterPoseRel = pref.shooterPose();
+            var pitchAngle = shooterPoseRel.getRotation().getMeasureY();
+            var targetPoseRel = pref.targetRelativePose();
+
+            var shooterPoseTransform = new Transform3d(shooterPoseRel.getTranslation(), shooterPoseRel.getRotation());
+            var targetPoseTransform = new Transform3d(targetPoseRel.getTranslation(), targetPoseRel.getRotation());
+
+            var shooterPose = robotPose3d.plus(shooterPoseTransform);
+            var targetPose = shooterPose.plus(targetPoseTransform);
+
+            var launchResult = calculateLaunch(
+                    shooterPose,
+                    targetPose.getTranslation(),
+                    new Translation2d(robotVelocity.vxMetersPerSecond, robotVelocity.vyMetersPerSecond),
+                    pitchAngle,
+                    Constants.fieldConstants.FUEL_BALL_MASS,
+                    Constants.fieldConstants.FUEL_BALL_DIAMETER
+            );
+
+            launchAngularVelocity = launchResult.launchAngularVelocity(WHEEL_DIAMETER);
+        } else {
+            launchAngularVelocity = RevolutionsPerSecond.of(pref.shootingSpeedRPM());
+        }
+
+        return launchAngularVelocity;
     }
 
 }
