@@ -1,14 +1,12 @@
 package frc.robot.subsystems.Shooter;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.Constants.shooterConstants;
+import frc.robot.FieldPosits;
 import frc.robot.RobotPreferences;
 import frc.robot.SystemManager;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
@@ -38,10 +36,7 @@ public class simShooter extends Shooter {
                 cooldown = 0.2;
             }
         }
-
-
     }
-
 
     public void shootInternal() {
 
@@ -49,19 +44,21 @@ public class simShooter extends Shooter {
             SystemManager.intake.removePiece();
 
             var wheelRpm = calculateLinearVelocity(calculateTopSpinnerRpm(), WHEEL_DIAMETER);
+            var robotPose = SystemManager.getRealPoseMaple().getTranslation();
+            var shooterPoseRel = pref.shooterPose();
 
             SimulatedArena.getInstance()
                     .addGamePieceProjectile(new RebuiltFuelOnFly(
                             // Obtain robot position from drive simulation
-                            SystemManager.getRealPoseMaple().getTranslation(),
+                            robotPose,
                             // The scoring mechanism is installed at (0.46, 0) (meters) on the robot
-                            new Translation2d(),
+                            shooterPoseRel.toPose2d().getTranslation(),
                             // Obtain robot speed from drive simulation
                             SystemManager.swerve.getFieldVelocity(),
                             // Obtain robot facing from drive simulation
                             SystemManager.getRealPoseMaple().getRotation(),
                             // The height at which the fuel is ejected
-                            shooterConstants.shooterHeight,
+                            shooterPoseRel.getMeasureZ(),
                             // The initial speed of the fuel
                             //MetersPerSecond.of(getTopFlywheelSpeed().in(RPM) * shooterConstants.SimRPMToMPS),
                             wheelRpm,
@@ -83,7 +80,7 @@ public class simShooter extends Shooter {
 
         AngularVelocity launchAngularVelocity;
 
-        if (rpmPref < 0) {
+        if (rpmPref <= 1) {
             var robotVelocity = SystemManager.swerve.getFieldVelocity();
             var robotPose3d = new Pose3d(SystemManager.getRealPoseMaple());
             var shooterPoseRel = pref.shooterPose();
@@ -94,7 +91,7 @@ public class simShooter extends Shooter {
             var targetPoseTransform = new Transform3d(targetPoseRel.getTranslation(), targetPoseRel.getRotation());
 
             var shooterPose = robotPose3d.plus(shooterPoseTransform);
-            var targetPose = shooterPose.plus(targetPoseTransform);
+            var targetPose = getHubPose();
 
             var launchResult = calculateLaunch(
                     shooterPose,

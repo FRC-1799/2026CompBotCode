@@ -50,6 +50,9 @@
     "persistent": {
       "Preferences": {
         "Shooter": {
+          "Relative Location and angle of shooter": {
+            "open": true
+          },
           "open": true
         },
         "open": true

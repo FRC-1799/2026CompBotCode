@@ -234,7 +234,6 @@ public final class Constants
   //constants used for the simulated camera
   public static class cameraConstants{
     public static Transform3d frontAprilTagCameraTrans = new Transform3d();
-
   }
 
   public static final class fieldConstants{

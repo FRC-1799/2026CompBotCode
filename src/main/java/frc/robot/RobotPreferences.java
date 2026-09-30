@@ -9,6 +9,7 @@ import frc.robot.Constants.shooterConstants;
 import frc.robot.Utils.utilFunctions;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static frc.robot.Constants.shooterConstants.shooterRobotRelativePose;
 import static frc.robot.subsystems.Shooter.ProjectileCalculatorExt.calculateLaunch;
 
 /**
@@ -39,7 +40,7 @@ public class RobotPreferences {
         registerDoublePreference(intakeBackwardSpeed, 0.2);
         registerDoublePreference(beltFeedSpeed, 0.2);
         registerDoublePreference(shooterSpeedRPM, 3000);
-        registerPose3dPreference(shooterPose);
+        registerPose3dPreference(shooterPose, shooterRobotRelativePose);
         registerPose3dPreference(targetRelativePose);
         registerPose3dPreference(limelight1Pose, limelightConstants.limelight1Pose);
         registerPose3dPreference(limelight2Pose, limelightConstants.limelight2Pose);

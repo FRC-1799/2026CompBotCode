@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -197,13 +198,26 @@ public abstract class Shooter extends SubsystemBase{
         return false; 
     }
 
+    public Pose3d getHubPose() {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            if (alliance.get() == DriverStation.Alliance.Red) {
+                return FieldPosits.toRedAllicance(FieldPosits.hubPose3d);
+            } else {
+                return FieldPosits.hubPose3d;
+            }
+        }
+
+        return FieldPosits.hubPose3d;
+    }
+
     public AngularVelocity calculateTopSpinnerRpm() {
         var rpmPref = RobotPreferences.getInstance().shootingSpeedRPM();
 
         AngularVelocity launchAngularVelocity;
 
-        if(rpmPref < 0) {
-            var robotVelocity = SystemManager.swerve.getRobotVelocity();
+        if (rpmPref <= 1) {
+            var robotVelocity = SystemManager.swerve.getFieldVelocity();
             var robotPose3d = new Pose3d(SystemManager.getSwervePose());
             var shooterPoseRel = pref.shooterPose();
             var pitchAngle = shooterPoseRel.getRotation().getMeasureY();
@@ -213,7 +227,7 @@ public abstract class Shooter extends SubsystemBase{
             var targetPoseTransform = new Transform3d(targetPoseRel.getTranslation(), targetPoseRel.getRotation());
 
             var shooterPose = robotPose3d.plus(shooterPoseTransform);
-            var targetPose = shooterPose.plus(targetPoseTransform);
+            var targetPose = getHubPose();
 
             var launchResult = calculateLaunch(
                     shooterPose,

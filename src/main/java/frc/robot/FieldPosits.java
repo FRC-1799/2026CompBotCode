@@ -123,7 +123,19 @@ public class FieldPosits {
     public static final Rectangle2d alianceZone = new Rectangle2d(bottomAllianceDSCorner.getTranslation(), topAllianceMidCorner.getTranslation());
 
 
+    public static Pose3d toRedAllicance(Pose3d blueAlliancePose) {
+        final Rotation3d rot = new Rotation3d(
+                Degrees.of(0.0),
+                Degrees.of(0.0),
+                Degrees.of(180.0)
+        );
 
+        return blueAlliancePose.rotateAround(new Translation3d(FieldPosits.mid), rot);
+    }
 
+    public static Pose2d toRedAllicance(Pose2d blueAlliancePose) {
+        final Rotation2d rot = Rotation2d.fromDegrees(180);
+        return blueAlliancePose.rotateAround(FieldPosits.mid, rot);
+    }
     
 }
