@@ -30,6 +30,7 @@ public class RobotPreferences {
     public static final String limelight1Pose = "Limelight 1 Pose";
     public static final String limelight2Pose = "Limelight 2 Pose";
     public static final String aimbotRadius = "Aimbot Radius";
+    public static final String gameControllerAxisMag = "Game Controller Axis Magnitude";
     private static RobotPreferences instance = null;
 
 
@@ -47,6 +48,8 @@ public class RobotPreferences {
         registerPose3dPreference(limelight1Pose, limelightConstants.limelight1Pose);
         registerPose3dPreference(limelight2Pose, limelightConstants.limelight2Pose);
         registerDoublePreference(aimbotRadius, shooterConstants.shootRadius);
+        registerDoublePreference(aimbotRadius, shooterConstants.shootRadius);
+        registerDoublePreference(gameControllerAxisMag, 4.0);
     }
 
     public static void registerPose3dPreference(String key, Pose3d val) {
@@ -140,6 +143,10 @@ public class RobotPreferences {
 
     public Pose3d getLimelight2Pose() {
         return getPose3dPreference(limelight2Pose);
+    }
+
+    public double gameControllerAxisMag() {
+        return utilFunctions.clamp(Preferences.getDouble(gameControllerAxisMag, 4.0), 1.0, 10.0);
     }
 
 }

@@ -20,7 +20,7 @@ public class AbsoluteFieldDrive extends Command
 {
 
   private final SwerveSubsystem swerve;
-  private final DoubleSupplier  vX, vY, heading;
+  private final DoubleSupplier  vX, vY, headingRadians;
 
   /**
    * Used to drive a swerve robot in full field-centric mode.  vX and vY supply translation inputs, where x is
@@ -34,15 +34,18 @@ public class AbsoluteFieldDrive extends Command
    * @param vY      DoubleSupplier that supplies the y-translation joystick input.  Should be in the range -1 to 1 with
    *                deadband already accounted for.  Positive Y is towards the left wall when looking through the driver
    *                station glass.
-   * @param heading DoubleSupplier that supplies the robot's heading angle.
+   * @param headingRadians DoubleSupplier that supplies the robot's heading angle.
    */
-  public AbsoluteFieldDrive(SwerveSubsystem swerve, DoubleSupplier vX, DoubleSupplier vY,
-                            DoubleSupplier heading)
-  {
+  public AbsoluteFieldDrive(
+          SwerveSubsystem swerve,
+          DoubleSupplier vX,
+          DoubleSupplier vY,
+          DoubleSupplier headingRadians
+  ) {
     this.swerve = swerve;
     this.vX = vX;
     this.vY = vY;
-    this.heading = heading;
+    this.headingRadians = headingRadians;
 
     addRequirements(swerve);
   }
@@ -60,7 +63,7 @@ public class AbsoluteFieldDrive extends Command
     // Get the desired chassis speeds based on a 2 joystick module.
 
     ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(vX.getAsDouble(), vY.getAsDouble(),
-                                                         new Rotation2d(heading.getAsDouble() * Math.PI));
+                                                         new Rotation2d(headingRadians.getAsDouble()));
 
     // Limit velocity to prevent tippy
     Translation2d translation = SwerveController.getTranslation2d(desiredSpeeds);

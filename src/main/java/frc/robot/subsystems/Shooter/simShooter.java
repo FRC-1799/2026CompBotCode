@@ -1,21 +1,13 @@
 package frc.robot.subsystems.Shooter;
 
 import edu.wpi.first.math.geometry.*;
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants;
 import frc.robot.Constants.shooterConstants;
-import frc.robot.FieldPosits;
 import frc.robot.RobotPreferences;
 import frc.robot.SystemManager;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnFly;
-
-import static edu.wpi.first.units.Units.*;
-import static frc.robot.Constants.shooterConstants.topMotorConstants.WHEEL_DIAMETER;
-import static frc.robot.subsystems.Shooter.ProjectileCalculatorCommon.calculateLinearVelocity;
-import static frc.robot.subsystems.Shooter.ProjectileCalculatorExt.calculateLaunch;
 
 public class simShooter extends Shooter {
 
@@ -36,6 +28,10 @@ public class simShooter extends Shooter {
                 cooldown = 0.2;
             }
         }
+
+        launchPrediiton = calculateLaunchParameters(
+                new Pose3d(SystemManager.getRealPoseMaple()),
+                SystemManager.swerve.getFieldVelocity());
     }
 
     public void shootInternal() {
@@ -43,7 +39,12 @@ public class simShooter extends Shooter {
         if (SystemManager.intake.getPieceCount() > 0) {
             SystemManager.intake.removePiece();
 
-            var wheelRpm = calculateLinearVelocity(calculateTopSpinnerRpm(), WHEEL_DIAMETER);
+            var launchResult = calculateLaunchParameters(
+                    new Pose3d(SystemManager.getRealPoseMaple()),
+                    SystemManager.swerve.getFieldVelocity());
+
+            var launchVelocity = launchResult.launchVelocity();
+
             var robotPose = SystemManager.getRealPoseMaple().getTranslation();
             var shooterPoseRel = pref.shooterPose();
 
@@ -61,12 +62,10 @@ public class simShooter extends Shooter {
                             shooterPoseRel.getMeasureZ(),
                             // The initial speed of the fuel
                             //MetersPerSecond.of(getTopFlywheelSpeed().in(RPM) * shooterConstants.SimRPMToMPS),
-                            wheelRpm,
+                            launchVelocity,
                             // The fuel is ejected at a 35-degree slope
                             shooterConstants.shotAngle
                     ));
-
-
         }
     }
 
@@ -74,40 +73,4 @@ public class simShooter extends Shooter {
     public boolean hasPiecesRemaining() {
         return SystemManager.intake.getPieceCount() != 0;
     }
-
-    public AngularVelocity calculateTopSpinnerRpm() {
-        var rpmPref = RobotPreferences.getInstance().shootingSpeedRPM();
-
-        AngularVelocity launchAngularVelocity;
-
-        if (rpmPref <= 1) {
-            var robotVelocity = SystemManager.swerve.getFieldVelocity();
-            var robotPose3d = new Pose3d(SystemManager.getRealPoseMaple());
-            var shooterPoseRel = pref.shooterPose();
-            var pitchAngle = shooterPoseRel.getRotation().getMeasureY();
-            var targetPoseRel = pref.targetRelativePose();
-
-            var shooterPoseTransform = new Transform3d(shooterPoseRel.getTranslation(), shooterPoseRel.getRotation());
-            var targetPoseTransform = new Transform3d(targetPoseRel.getTranslation(), targetPoseRel.getRotation());
-
-            var shooterPose = robotPose3d.plus(shooterPoseTransform);
-            var targetPose = getHubPose();
-
-            var launchResult = calculateLaunch(
-                    shooterPose,
-                    targetPose.getTranslation(),
-                    new Translation2d(robotVelocity.vxMetersPerSecond, robotVelocity.vyMetersPerSecond),
-                    pitchAngle,
-                    Constants.fieldConstants.FUEL_BALL_MASS,
-                    Constants.fieldConstants.FUEL_BALL_DIAMETER
-            );
-
-            launchAngularVelocity = launchResult.launchAngularVelocity(WHEEL_DIAMETER);
-        } else {
-            launchAngularVelocity = RevolutionsPerSecond.of(pref.shootingSpeedRPM());
-        }
-
-        return launchAngularVelocity;
-    }
-
 }
