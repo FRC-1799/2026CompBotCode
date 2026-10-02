@@ -23,6 +23,7 @@ public class RobotPreferences {
     public static final String intakeIngestSpeed = "Intake Ingest Speed";
     public static final String intakeBackwardSpeed = "Intake Backward Speed";
     public static final String beltFeedSpeed = "Belt Feed Speed";
+    public static final String indexerSpeed = "Indexer Speed";
     public static final String shooterSpeedRPM = "Shooter/top Shooting Speed RPM";
     public static final String shooterPose = "Shooter/Relative Location and angle of shooter";
     public static final String targetRelativePose = "Shooter/Distance of target Relative to pose";
@@ -38,8 +39,9 @@ public class RobotPreferences {
         registerDoublePreference(topShootingSpeedDutyCycle, 0.7);
         registerDoublePreference(intakeIngestSpeed, -0.2);
         registerDoublePreference(intakeBackwardSpeed, 0.2);
-        registerDoublePreference(beltFeedSpeed, 0.2);
-        registerDoublePreference(shooterSpeedRPM, 3000);
+        registerDoublePreference(beltFeedSpeed, 120);
+        registerDoublePreference(indexerSpeed, 60);
+        registerDoublePreference(shooterSpeedRPM, 0);
         registerPose3dPreference(shooterPose, shooterRobotRelativePose);
         registerPose3dPreference(targetRelativePose);
         registerPose3dPreference(limelight1Pose, limelightConstants.limelight1Pose);
@@ -103,9 +105,18 @@ public class RobotPreferences {
         return utilFunctions.clamp(Preferences.getDouble(intakeIngestSpeed, 0.2), -1.0, 1.0);
     }
 
-    public double shootingSpeedRPM() {
-        return utilFunctions.clamp(Preferences.getDouble(shooterSpeedRPM, 3000), -1.0, 5000);
+    public double beltFeedSpeed() {
+        return utilFunctions.clamp(Preferences.getDouble(beltFeedSpeed, 120.0), 10.0, 500.0);
     }
+
+    public double indexerSpeed() {
+        return utilFunctions.clamp(Preferences.getDouble(intakeIngestSpeed, 60), 10, 500);
+    }
+
+    public double shootingSpeedRPM() {
+        return utilFunctions.clamp(Preferences.getDouble(shooterSpeedRPM, 0), -1.0, 5000);
+    }
+
 
     public Pose3d shooterPose() {
         return getPose3dPreference(shooterPose);
@@ -117,10 +128,6 @@ public class RobotPreferences {
 
     public double intakeBackwardSpeed() {
         return utilFunctions.clamp(Preferences.getDouble(intakeBackwardSpeed, 0.2), -1.0, 1.0);
-    }
-
-    public double beltFeedSpeed() {
-        return utilFunctions.clamp(Preferences.getDouble(beltFeedSpeed, 0.2), -1.0, 1.0);
     }
 
     public double aimbotRadius() {

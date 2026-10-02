@@ -62,8 +62,7 @@
       "SmartDashboard": {
         "Timer": {
           "open": true
-        },
-        "open": true
+        }
       }
     }
   },
