@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.PortForwarder;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.event.EventLoop;
+import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -105,6 +107,11 @@ public class Robot extends TimedRobot{
      */
     @Override
     public void robotInit(){
+        if (RobotBase.isSimulation()) {
+            DriverStationSim.setAllianceStationId(AllianceStationID.Blue2);
+            DriverStationSim.notifyNewData();
+        }
+
       // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
       // immediately when disabled, but then also let it be pushed more 
       disabledTimer = new Timer();
@@ -171,7 +178,7 @@ public class Robot extends TimedRobot{
     }
 
     /**
-     * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
+     * This autonomous runs the autonomous command selected by your {@link SystemManager} class.
      */
     @Override
     public void autonomousInit()
@@ -254,8 +261,6 @@ public class Robot extends TimedRobot{
       
       SmartDashboard.putBoolean("isSim", true);
       Logger.addDataReceiver(new NT4Publisher());
-
-
     }
 
     /**
@@ -265,6 +270,7 @@ public class Robot extends TimedRobot{
   @Override
   public void simulationPeriodic() {
     SimulatedArena.getInstance().simulationPeriodic();
+
     if (blueIsActive!=((Arena2026Rebuilt)SimulatedArena.getInstance()).isActive(true)){
       swaps++;
       blueIsActive= !blueIsActive;
@@ -274,7 +280,6 @@ public class Robot extends TimedRobot{
       }
     }
 
-    
     fuelPublisher.set(SimulatedArena.getInstance().getGamePiecesArrayByType("Fuel"));
 
   }

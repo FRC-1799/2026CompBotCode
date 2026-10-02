@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -15,10 +14,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.Timeout;
-import org.opentest4j.TestAbortedException;
 
 import edu.wpi.first.networktables.IntegerSubscriber;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.helpers.MockHardwareExtension;
 import frc.robot.Robot;
@@ -33,7 +30,7 @@ import frc.robot.Robot;
  * In the event of a failure, gradle will freak out so no checking is necessary beyond the afterTest in build.gradle
 
  */
-public class test {
+public class RobotSanityTests {
 
 
 	Thread robotThread;

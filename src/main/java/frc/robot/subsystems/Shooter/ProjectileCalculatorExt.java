@@ -4,10 +4,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.Mass;
+import edu.wpi.first.units.measure.*;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -20,11 +17,22 @@ public class ProjectileCalculatorExt {
     private static final double TIME_STEP = 0.005;         // 5ms iteration accuracy
     private static final double ERROR_TOLERANCE_METERS = 0.02;
 
-    public record LaunchResult(LinearVelocity launchVelocity, Rotation2d launcherYaw) {}
+    public record LaunchResult(LinearVelocity launchVelocity, Rotation2d launcherYaw) {
+
+        // Multiply this by 2 if shooter only has one flywheel pinching against a bar
+        public AngularVelocity launchAngularVelocity(Distance wheelDiameter) {
+            return ProjectileCalculatorCommon.calculateAngularVelocity(launchVelocity, wheelDiameter);
+        }
+    }
 
     /**
-     * Calculates required relative muzzle velocity and fully compensated Yaw rotation.
-     * Guaranteed to terminate.
+     * @param launcherPose Pose of the launcher in field space (rotation is ignored)
+     * @param targetLocation Target location relative to the launcher (rotation is ignored)
+     * @param platformVelocity Velocity of the platform in field space
+     * @param pitchAngle Angle of the launcher's pitch from the ground
+     * @param ballMass Mass of the ball
+     * @param ballDiameter Diameter of the ball
+     * @return LaunchResult
      */
     public static LaunchResult calculateLaunch(Pose3d launcherPose,
                                                Translation3d targetLocation,
@@ -172,11 +180,15 @@ public class ProjectileCalculatorExt {
     }
 
     /**
-     * The Inverse Function: Simulates the physics forward to determine exactly
-     * where the ball will intersect a targeted landing floor plane height (targetZ),
-     * taking into account drag, launch velocity, yaw, pitch, and platform motion.
-     *
-     * @return A Translation3d representing the final landing coordinates in field space.
+     * @param launcherPose Pose of the launcher in field space (rotation is ignored)
+     * @param launchVelocity Velocity of the projectile in robot space
+     * @param launcherYaw Angle of the launcher's in field space
+     * @param platformVelocity Velocity of the platform in field space
+     * @param pitchAngle Angle of the launcher's pitch from the ground
+     * @param ballMass Mass of the ball
+     * @param ballDiameter Diameter of the ball
+     * @param targetFloorHeight Height of the target from the ground
+     * @return Landing location of the projectile
      */
     public static Translation3d calculateLanding(
             Pose3d launcherPose,

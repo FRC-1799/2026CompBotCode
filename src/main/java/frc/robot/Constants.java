@@ -26,6 +26,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -168,6 +169,19 @@ public final class Constants
     public static final int countsWithoutBallToBeEmpty=50;
 
 
+    public static final Pose3d shooterRobotRelativePose =
+            new Pose3d(
+                    Meters.of(0.3),
+                    Meters.of(0.0),
+                    Meters.of(0.5),
+                    new Rotation3d(
+                            Degrees.of(0),
+                            Degrees.of(0),
+                            Degrees.of(0)
+                    )
+            );
+
+
 
     public static final class topMotorConstants{
 
@@ -179,6 +193,9 @@ public final class Constants
       public static final Distance wheelRadius = Inches.of(4);
       public static final double gearReduction = 1;
       public static final int canID=2;
+
+      public static final Distance WHEEL_DIAMETER = Inches.of(4);
+      public static final Mass WHEEL_MASS = Pounds.of(1);
     }
     public static final class bottomMotorConstants{
 
@@ -190,12 +207,12 @@ public final class Constants
       public static final SimpleMotorFeedforward shooterFeedForward = new SimpleMotorFeedforward(0, 0, 0);
       public static final AngularVelocity shootingSpeedRPM = RPM.of(0);
       public static final int canID=1;
+
+      public static final Distance WHEEL_DIAMETER = Inches.of(3);
+      public static final Mass WHEEL_MASS = Pounds.of(0.25);
     }
 
-
     //public static final simMap = InterpolatingDoubleTreeMap
-
-
   }
 
 
@@ -212,13 +229,16 @@ public final class Constants
     public static final Boolean readLimelight2 = true;
 
     public static final String limelightToggleName = "Limelight Toggle";
-
   }
 
   //constants used for the simulated camera
   public static class cameraConstants{
     public static Transform3d frontAprilTagCameraTrans = new Transform3d();
+  }
 
+  public static final class fieldConstants{
+    public static final Mass FUEL_BALL_MASS = Pounds.of(0.474);
+    public static final Distance FUEL_BALL_DIAMETER = Inches.of(5.91);
   }
 
 }
