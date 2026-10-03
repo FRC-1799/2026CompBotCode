@@ -176,7 +176,7 @@ public final class Constants
                     Meters.of(0.5),
                     new Rotation3d(
                             Degrees.of(0),
-                            Degrees.of(0),
+                            Degrees.of(65),
                             Degrees.of(0)
                     )
             );
