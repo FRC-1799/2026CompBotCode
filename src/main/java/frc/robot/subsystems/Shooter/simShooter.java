@@ -28,10 +28,6 @@ public class simShooter extends Shooter {
                 cooldown = 0.2;
             }
         }
-
-        launchPrediiton = calculateLaunchParameters(
-                new Pose3d(SystemManager.getRealPoseMaple()),
-                SystemManager.swerve.getFieldVelocity());
     }
 
     public void shootInternal() {
