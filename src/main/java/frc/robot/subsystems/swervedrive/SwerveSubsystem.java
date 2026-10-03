@@ -32,6 +32,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -534,16 +535,15 @@ public class SwerveSubsystem extends SubsystemBase
     
 
     //postTrajectory();
-    
 
-    // if (RobotBase.isReal()){
-    //   Pose2d currentPose2d=getPose();
-    //   SmartDashboard.putNumber("robotPositX", currentPose2d.getX());
-    //   SmartDashboard.putNumber("robotPositY", currentPose2d.getY());
-    //   SmartDashboard.putNumber("RobotRotation", currentPose2d.getRotation().getDegrees());
-    //   SmartDashboard.putNumber("robotRotation radians", currentPose2d.getRotation().getRadians());
-    //   SystemManager.m_field.setRobotPose(currentPose2d);
-    // }
+//     if (RobotBase.isReal()){
+//       Pose2d currentPose2d=getPose();
+//       SmartDashboard.putNumber("robotPositX", currentPose2d.getX());
+//       SmartDashboard.putNumber("robotPositY", currentPose2d.getY());
+//       SmartDashboard.putNumber("RobotRotation", currentPose2d.getRotation().getDegrees());
+//       SmartDashboard.putNumber("robotRotation radians", currentPose2d.getRotation().getRadians());
+//       SystemManager.m_field.setRobotPose(currentPose2d);
+//     }
   }
 
   /**

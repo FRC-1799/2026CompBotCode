@@ -23,6 +23,7 @@ import frc.robot.Constants.shooterConstants.topMotorConstants;
 import frc.robot.FieldPosits;
 import frc.robot.RobotPreferences;
 import frc.robot.SystemManager;
+import frc.robot.Utils.DebugUtil;
 import frc.robot.Utils.utilFunctions;
 import yams.mechanisms.config.FlyWheelConfig;
 import yams.mechanisms.velocity.FlyWheel;
@@ -114,7 +115,7 @@ public abstract class Shooter extends SubsystemBase{
     //
     // Belt Motor
     //
-    private final TalonFX beltMotor = new TalonFX(bottomMotorConstants.canID);
+    private final TalonFX beltMotor = new TalonFX(Constants.shooterConstants.beltMotorID);
 
     private final SmartMotorControllerConfig beltMotorConfig = new SmartMotorControllerConfig(this)
             .withClosedLoopController(topMotorConstants.P, topMotorConstants.I, topMotorConstants.D, RPM.of(10000), RPM.per(Second).of(1000))
@@ -153,14 +154,19 @@ public abstract class Shooter extends SubsystemBase{
 
         topShooter.updateTelemetry();
         //bottomShooter.updateTelemetry();
-        
-        if (state==shooterState.shooting){
 
-            count--;
-            if (count==0){
-                indexerShouldBeOn=!indexerShouldBeOn;
-                count = indexerShouldBeOn? 10: 2;
-            }
+        if(RobotBase.isReal()) {
+            launchPrediiton = calculateLaunchParameters(
+                    new Pose3d(SystemManager.getSwervePose()),
+                    SystemManager.swerve.getFieldVelocity());
+        } else {
+            launchPrediiton = calculateLaunchParameters(
+                    new Pose3d(SystemManager.getRealPoseMaple()),
+                    SystemManager.swerve.getFieldVelocity());
+        }
+
+
+        if (state==shooterState.shooting){
             if (indexerShouldBeOn){
                 beltFlyWheel.setMechanismVelocitySetpoint(RPM.of(pref.beltFeedSpeed()));
                 indexerFlyWheel.setMechanismVelocitySetpoint(RPM.of(pref.indexerSpeed()));
@@ -174,36 +180,30 @@ public abstract class Shooter extends SubsystemBase{
             beltFlyWheel.setDutyCycleSetpoint(0.0);
             indexerFlyWheel.setDutyCycleSetpoint(0.0);
         }
-
-        if(RobotBase.isReal()) {
-            launchPrediiton = calculateLaunchParameters(
-                    new Pose3d(SystemManager.getSwervePose()),
-                    SystemManager.swerve.getFieldVelocity());
-        } else {
-            launchPrediiton = calculateLaunchParameters(
-                    new Pose3d(SystemManager.getRealPoseMaple()),
-                    SystemManager.swerve.getFieldVelocity());
-        }
-
     }
     
     @Override
     public void simulationPeriodic(){
         topShooter.simIterate();
     }
-    
+
+    int setvCount = 0;
     public void setVelocity() {
-        if (pref.shootingSpeedRPM()<0.01) {
+
+        var rpm = launchPrediiton.launchAngularVelocity(WHEEL_DIAMETER);
+
+        if (rpm.in(RPM)<0.01) {
             topShooter.setDutyCycleSetpoint(0.0);
         } else {
-            var launchResult = calculateLaunchParameters(
-                    new Pose3d(SystemManager.getSwervePose()),
-                    SystemManager.swerve.getFieldVelocity()
-            );
+//            var launchResult = calculateLaunchParameters(
+//                    new Pose3d(SystemManager.getSwervePose()),
+//                    SystemManager.swerve.getFieldVelocity()
+//            );
 
-            topShooter.setMechanismVelocitySetpoint(
-                    launchResult.launchAngularVelocity(WHEEL_DIAMETER)
-            );
+            var wheelspeed = rpm.times(2);
+            topShooter.setMechanismVelocitySetpoint(wheelspeed);
+            DebugUtil.Publish("TopRPM", wheelspeed.in(RPM));
+            DebugUtil.Publish("Count",setvCount++ );
         }
     }
 

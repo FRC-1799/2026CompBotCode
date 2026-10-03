@@ -22,8 +22,8 @@ public class RobotPreferences {
     public static final String bottomShootingSpeedDutyCycle = "Bottom Shooting Speed Duty Cycle";
     public static final String intakeIngestSpeed = "Intake Ingest Speed";
     public static final String intakeBackwardSpeed = "Intake Backward Speed";
-    public static final String beltFeedSpeed = "Belt Feed Speed";
-    public static final String indexerSpeed = "Indexer Speed";
+    public static final String beltFeedSpeed = "Belt Feed RPM";
+    public static final String indexerSpeed = "Indexer RPM";
     public static final String shooterSpeedRPM = "Shooter/top Shooting Speed RPM";
     public static final String shooterPose = "Shooter/Relative Location and angle of shooter";
     public static final String targetRelativePose = "Shooter/Distance of target Relative to pose";

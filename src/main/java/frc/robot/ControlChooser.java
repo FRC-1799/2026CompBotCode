@@ -149,8 +149,8 @@ public class ControlChooser {
         //xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
         xbox1.rightTrigger(0.4, loop).whileTrue(GeneralManager.intaking());
         xbox1.leftTrigger(0.4, loop).whileTrue(new SmartShoot());
-        xbox1.a(loop).toggleOnTrue(new SmartShoot());
-        xbox1.x(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
+        xbox1.a(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
+        //xbox1.x(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
 
@@ -167,16 +167,10 @@ public class ControlChooser {
         EventLoop loop = new EventLoop();
         setDefaultCommand(
                 SystemManager.swerve.driveRobotOrientedCommand(
-                        () -> powerCurve(MathUtil.applyDeadband(
-                                -xbox1.getLeftY(),
-                                0.1), pref.gameControllerAxisMag()),
-                        () -> powerCurve(MathUtil.applyDeadband(
-                                -xbox1.getLeftX(), pref.gameControllerAxisMag()),
-                                0.1),
-                        () -> powerCurve(MathUtil.applyDeadband(
-                                xbox1.getRightX(), pref.gameControllerAxisMag()),
-                                0.1))
-                , SystemManager.swerve, loop);
+                        () -> powerCurve(MathUtil.applyDeadband(-xbox1.getLeftY(), 0.1), pref.gameControllerAxisMag()),
+                        () -> powerCurve(MathUtil.applyDeadband(-xbox1.getRightX(), 0.1), pref.gameControllerAxisMag()),
+                        () -> powerCurve(MathUtil.applyDeadband(-xbox1.getLeftX(), 0.1), pref.gameControllerAxisMag())
+                ), SystemManager.swerve, loop);
 
         // xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpecificState(generalState.intaking)));
         // xbox1.leftTrigger(0.1,loop).whileTrue(new SmartShoot(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpecificState(generalState.shooting)));
@@ -188,10 +182,10 @@ public class ControlChooser {
         // xbox1.a(loop).whileTrue(GeneralManager.shooting());
 
 
-        xbox2.rightTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
-        xbox2.leftTrigger(0.4, loop).toggleOnTrue(GeneralManager.intaking());
-        xbox2.rightBumper(loop).whileTrue(new SmartShoot());
-        xbox2.a(loop).toggleOnTrue(new spitting());
+        xbox1.rightTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
+        xbox1.leftTrigger(0.4, loop).toggleOnTrue(GeneralManager.intaking());
+        xbox1.rightBumper(loop).whileTrue(new SmartShoot());
+        xbox1.a(loop).toggleOnTrue(new spitting());
 
 
         return loop;

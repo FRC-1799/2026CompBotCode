@@ -48,7 +48,7 @@
   "exposure": 3300.0,
   "fiducial_backend": "umich",
   "fiducial_denoise": 0.0,
-  "fiducial_idfilters": "31",
+  "fiducial_idfilters": "",
   "fiducial_locfilters": "",
   "fiducial_qualitythreshold": 2.0,
   "fiducial_resdiv": 2,
