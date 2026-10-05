@@ -140,7 +140,7 @@ public class ControlChooser {
                         () -> powerCurve(MathUtil.applyDeadband(-xbox1.getLeftX(), 0.1), pref.gameControllerAxisMag()),
                         () -> {
                             var overideHeading = getJoystickToHeading(-xbox1.getRightY(), xbox1.getRightX(), 0.1);
-                            return overideHeading.orElseGet(() -> SystemManager.shooter.launchPrediiton.launcherYaw().getRadians());
+                            return overideHeading.orElseGet(() -> SystemManager.calculateLaunchWorker.getLaunchPrediction().launcherYaw().getRadians());
 
                         })
                 , SystemManager.swerve, loop);
@@ -209,7 +209,7 @@ public class ControlChooser {
                         () -> powerCurve(MathUtil.applyDeadband(-ps5_1.getLeftX(), 0.1), 4),
                         () -> {
                             var overideHeading = getJoystickToHeading(-ps5_1.getRightY(), ps5_1.getRightX(), 0.1);
-                            return overideHeading.orElseGet(() -> SystemManager.shooter.launchPrediiton.launcherYaw().getRadians());
+                            return overideHeading.orElseGet(() -> SystemManager.calculateLaunchWorker.getLaunchPrediction().launcherYaw().getRadians());
 
                         })
                 , SystemManager.swerve, loop);

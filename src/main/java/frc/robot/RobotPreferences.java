@@ -10,7 +10,6 @@ import frc.robot.Utils.utilFunctions;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static frc.robot.Constants.shooterConstants.shooterRobotRelativePose;
-import static frc.robot.subsystems.Shooter.ProjectileCalculatorExt.calculateLaunch;
 
 /**
  * Preferences that can be accessed from Elastic, Smart Dashboard, etc.

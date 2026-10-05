@@ -35,9 +35,11 @@ public class simShooter extends Shooter {
         if (SystemManager.intake.getPieceCount() > 0) {
             SystemManager.intake.removePiece();
 
-            var launchResult = calculateLaunchParameters(
-                    new Pose3d(SystemManager.getRealPoseMaple()),
-                    SystemManager.swerve.getFieldVelocity());
+            var launchResult = SystemManager
+                    .calculateLaunchWorker
+                    .getLaunchPrediction();
+
+            if(launchResult.error() > 0.0) return;
 
             var launchVelocity = launchResult.launchVelocity();
 

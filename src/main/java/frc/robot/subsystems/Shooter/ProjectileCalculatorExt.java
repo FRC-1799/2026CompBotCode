@@ -17,7 +17,9 @@ public class ProjectileCalculatorExt {
     private static final double TIME_STEP = 0.005;         // 5ms iteration accuracy
     private static final double ERROR_TOLERANCE_METERS = 0.02;
 
-    public record LaunchResult(LinearVelocity launchVelocity, Rotation2d launcherYaw) {
+    public record LaunchResult(LinearVelocity launchVelocity, Rotation2d launcherYaw, double error) {
+
+        public static final LaunchResult kZero = new LaunchResult(MetersPerSecond.of(0.0), Rotation2d.kZero, 0.0);
 
         // Multiply this by 2 if shooter only has one flywheel pinching against a bar
         public AngularVelocity launchAngularVelocity(Distance wheelDiameter) {
@@ -169,13 +171,15 @@ public class ProjectileCalculatorExt {
             }
         }
 
+        double error = 0;
         if (optimizedV < 0 || optimizedV >= (MAX_VELOCITY_LIMIT - 0.1)) {
-            return null; // Physically unreachable under fixed parameters
+            error = 1;
         }
 
         return new LaunchResult(
                 MetersPerSecond.of(optimizedV),
-                new Rotation2d(optimizedYawRad)
+                new Rotation2d(optimizedYawRad),
+                error
         );
     }
 

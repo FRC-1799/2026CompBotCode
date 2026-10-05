@@ -121,7 +121,7 @@ public class ProjectileLauncherExtTests {
         Distance wheelDiameter = Meters.of(0.254);
         AngularVelocity expectedRPM = RPM.of(1000);
 
-        ProjectileCalculatorExt.LaunchResult result = new ProjectileCalculatorExt.LaunchResult(surfaceVelocity, Rotation2d.kZero);
+        ProjectileCalculatorExt.LaunchResult result = new ProjectileCalculatorExt.LaunchResult(surfaceVelocity, Rotation2d.kZero, 0.0);
 
         AngularVelocity calculatedAngularVelocity = result.launchAngularVelocity(wheelDiameter);
 
@@ -142,7 +142,7 @@ public class ProjectileLauncherExtTests {
         LinearVelocity targetVelocity = MetersPerSecond.of(23.2);
 
         // should be able to hit
-        Translation3d targetGoalGood = new Translation3d(0.5, 0.0, 2.0);
+        Translation3d targetGoalGood = new Translation3d(0.5, 1.0, 2.0);
 
         ProjectileCalculatorExt.LaunchResult launchParamsGood = profileFunction(
                 "profileFunction",
@@ -160,10 +160,10 @@ public class ProjectileLauncherExtTests {
         );
 
         // can be made
-        assertNotNull(launchParamsGood, "Target should be within accessible physics bounds.");
+        assertTrue(launchParamsGood.error() == 0.0, "Target should be within accessible physics bounds.");
 
         // can not be made because angle and target height are not reachable
-        Translation3d targetGoalBad = new Translation3d(0.5, 0.0, 3.0);
+        Translation3d targetGoalBad = new Translation3d(0.5, 1.0, 3.0);
         // Calculate required shooter parameters to hit target
         ProjectileCalculatorExt.LaunchResult launchParamsBad = profileFunction(
                 "profileFunction",
@@ -179,7 +179,7 @@ public class ProjectileLauncherExtTests {
                     );
                 });
 
-        assertNull(launchParamsBad, "Target should exceed accessible physics bounds.");
+        assertTrue(launchParamsBad.error() > 0.0, "Target should exceed accessible physics bounds.");
     }
 
 //    // Created this for testing optimal parameters

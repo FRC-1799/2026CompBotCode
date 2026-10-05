@@ -45,9 +45,6 @@ public abstract class Shooter extends SubsystemBase{
 
     private final RobotPreferences pref = RobotPreferences.getInstance();
 
-    public ProjectileCalculatorExt.LaunchResult launchPrediiton =
-        new ProjectileCalculatorExt.LaunchResult(MetersPerSecond.of(0), Rotation2d.fromDegrees(0));
-
     int count  = 10;
     boolean indexerShouldBeOn=true;
 
@@ -155,16 +152,6 @@ public abstract class Shooter extends SubsystemBase{
         topShooter.updateTelemetry();
         //bottomShooter.updateTelemetry();
 
-        if(RobotBase.isReal()) {
-            launchPrediiton = calculateLaunchParameters(
-                    new Pose3d(SystemManager.getSwervePose()),
-                    SystemManager.swerve.getFieldVelocity());
-        } else {
-            launchPrediiton = calculateLaunchParameters(
-                    new Pose3d(SystemManager.getRealPoseMaple()),
-                    SystemManager.swerve.getFieldVelocity());
-        }
-
 
         if (state==shooterState.shooting){
             if (indexerShouldBeOn){
@@ -190,16 +177,17 @@ public abstract class Shooter extends SubsystemBase{
     int setvCount = 0;
     public void setVelocity() {
 
-        var rpm = launchPrediiton.launchAngularVelocity(WHEEL_DIAMETER);
+        var launchPredict = SystemManager
+                .calculateLaunchWorker
+                .getLaunchPrediction();
+
+        if (launchPredict.error() > 0.0) return;
+
+        var rpm = launchPredict.launchAngularVelocity(WHEEL_DIAMETER);
 
         if (rpm.in(RPM)<0.01) {
             topShooter.setDutyCycleSetpoint(0.0);
         } else {
-//            var launchResult = calculateLaunchParameters(
-//                    new Pose3d(SystemManager.getSwervePose()),
-//                    SystemManager.swerve.getFieldVelocity()
-//            );
-
             var wheelspeed = rpm.times(2);
             topShooter.setMechanismVelocitySetpoint(wheelspeed);
             DebugUtil.Publish("TopRPM", wheelspeed.in(RPM));
@@ -264,48 +252,5 @@ public abstract class Shooter extends SubsystemBase{
         return false; 
     }
 
-    public Pose3d getHubPose() {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            if (alliance.get() == DriverStation.Alliance.Red) {
-                return FieldPosits.toRedAllicance(FieldPosits.hubPose3d);
-            } else {
-                return FieldPosits.hubPose3d;
-            }
-        }
-
-        return FieldPosits.hubPose3d;
-    }
-
-    public ProjectileCalculatorExt.LaunchResult calculateLaunchParameters(Pose3d robotPose3d, ChassisSpeeds robotVelocity) {
-        var rpmPref = RobotPreferences.getInstance().shootingSpeedRPM();
-
-        AngularVelocity launchAngularVelocity;
-
-        if (rpmPref <= 1) {
-            var shooterPoseRel = pref.shooterPose();
-            var pitchAngle = shooterPoseRel.getRotation().getMeasureY();
-            var targetPoseRel = pref.targetRelativePose();
-
-            var shooterPoseTransform = new Transform3d(shooterPoseRel.getTranslation(), shooterPoseRel.getRotation());
-            var targetPoseTransform = new Transform3d(targetPoseRel.getTranslation(), targetPoseRel.getRotation());
-
-            var shooterPose = robotPose3d.plus(shooterPoseTransform);
-            var targetPose = getHubPose();
-
-            var launchResult = calculateLaunch(
-                    shooterPose,
-                    targetPose.getTranslation(),
-                    new Translation2d(robotVelocity.vxMetersPerSecond, robotVelocity.vyMetersPerSecond),
-                    pitchAngle,
-                    Constants.fieldConstants.FUEL_BALL_MASS,
-                    Constants.fieldConstants.FUEL_BALL_DIAMETER
-            );
-
-            return launchResult;
-        } else {
-            return new ProjectileCalculatorExt.LaunchResult(calculateLinearVelocity(RPM.of(rpmPref), WHEEL_DIAMETER), Rotation2d.fromRadians(0));
-        }
-    }
 
 }

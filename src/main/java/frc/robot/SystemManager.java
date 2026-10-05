@@ -18,13 +18,11 @@ import frc.robot.Constants.simConfigs;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.Utils.utilFunctions;
 import frc.robot.subsystems.GeneralManager;
+import frc.robot.subsystems.Shooter.*;
 import frc.robot.subsystems.TimingManager;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.realIntake;
 import frc.robot.subsystems.Intake.simIntake;
-import frc.robot.subsystems.Shooter.Shooter;
-import frc.robot.subsystems.Shooter.realShooter;
-import frc.robot.subsystems.Shooter.simShooter;
 import frc.robot.subsystems.lidar.lidarInterface;
 import frc.robot.subsystems.lidar.realLidar;
 import frc.robot.subsystems.lidar.simLidar;
@@ -54,8 +52,7 @@ public class SystemManager{
     public static Pose2d autoDriveGoal=new Pose2d();
     public static StructPublisher<Pose2d> autoDriveGoalPublisher = NetworkTableInstance.getDefault().getStructTopic("SmartDashboard/AutoDrive/goal", Pose2d.struct).publish();
 
-
-
+    public static CalculateLaunchWorker calculateLaunchWorker;
 
     protected static int score = 0;
     
@@ -115,6 +112,9 @@ public class SystemManager{
             shooter = new realShooter();
         }
 
+        // launch worker is on a different thread because it takes longer than 20ms
+        calculateLaunchWorker = CalculateLaunchWorker.getInstance();
+        calculateLaunchWorker.Start();
 
         //initializes and distributes the managers
 
