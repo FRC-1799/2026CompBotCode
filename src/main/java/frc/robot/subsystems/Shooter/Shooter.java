@@ -41,14 +41,12 @@ public abstract class Shooter extends SubsystemBase{
         shooting
     }
         
-    public shooterState state = shooterState.resting;
+    public shooterState state = shooterState.rev;
 
     private final RobotPreferences pref = RobotPreferences.getInstance();
 
     int count  = 10;
     boolean indexerShouldBeOn=true;
-
-    AngularVelocity wheelSpeed;
 
 
     //
@@ -190,14 +188,11 @@ public abstract class Shooter extends SubsystemBase{
         if (rpm.in(RPM)<0.01) {
             topShooter.setDutyCycleSetpoint(0.0);
         } else {
-            wheelSpeed = rpm.times(2);
-            topShooter.setMechanismVelocitySetpoint(wheelSpeed);
+            var wheelspeed = rpm.times(2);
+            topShooter.setMechanismVelocitySetpoint(wheelspeed);
+            DebugUtil.Publish("TopRPM", wheelspeed.in(RPM));
+            DebugUtil.Publish("Count",setvCount++ );
         }
-    }
-
-    public static boolean isWithin(double target, double value, double percent) {
-        double tolerance = target * (percent / 100.0);
-        return Math.abs(target - value) <= tolerance;
     }
 
     public void startRevving(){
@@ -206,18 +201,14 @@ public abstract class Shooter extends SubsystemBase{
     }
 
     public void startShooting(){
-        if(state != shooterState.rev) {
-            startRevving();
-        }
-        if(isWithin(wheelSpeed.in(RPM), getTopFlywheelSpeed().in(RPM), 20)) {
-            state = shooterState.shooting;
-            setVelocity();
-        }
+        state=shooterState.shooting;
+        setVelocity();
     }
 
     //TODO: This function needs to be fixed
     public void stop(){
-        rest();
+        if (state==shooterState.resting) rest();
+        else startRevving();
     }
 
     public void rest(){
