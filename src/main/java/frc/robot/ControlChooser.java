@@ -151,6 +151,7 @@ public class ControlChooser {
         xbox1.leftTrigger(0.4, loop).whileTrue(new SmartShoot());
         xbox1.a(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
         //xbox1.x(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
+        xbox1.y(loop).whileTrue(GeneralManager.resting());
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
 
@@ -186,6 +187,7 @@ public class ControlChooser {
         xbox1.leftTrigger(0.4, loop).toggleOnTrue(GeneralManager.intaking());
         xbox1.rightBumper(loop).whileTrue(new SmartShoot());
         xbox1.a(loop).toggleOnTrue(new spitting());
+        xbox1.y(loop).whileTrue(GeneralManager.resting());
 
 
         return loop;
@@ -220,6 +222,7 @@ public class ControlChooser {
         ps5_1.L2(loop).whileTrue(new SmartShoot());
         ps5_1.cross(loop).toggleOnTrue(new SmartShoot());
         ps5_1.square(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
+        ps5_1.triangle(loop).whileTrue(GeneralManager.resting());
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
 
@@ -245,6 +248,7 @@ public class ControlChooser {
         ps5_1.L2(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
         //ps5_1.cross(loop).toggleOnTrue(new SmartShoot());
         //ps5_1.square(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
+        ps5_1.triangle(loop).whileTrue(GeneralManager.resting());
 
 
         //ps5_1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
