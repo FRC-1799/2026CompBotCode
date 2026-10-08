@@ -1,5 +1,8 @@
 package frc.robot.subsystems.Shooter;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -64,5 +67,10 @@ public class ProjectileCalculatorCommon {
 
         // Return wrapped explicitly as MetersPerSecond
         return MetersPerSecond.of(velocityMetersPerSecond);
+    }
+
+    public static Rotation2d rotateTowardTarget(Pose2d origin, Pose2d target) {
+        Translation2d delta = target.getTranslation().minus(origin.getTranslation());
+        return delta.getAngle();
     }
 }
