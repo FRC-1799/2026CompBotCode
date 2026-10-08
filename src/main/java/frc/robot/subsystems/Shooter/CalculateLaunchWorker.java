@@ -31,6 +31,7 @@ public class CalculateLaunchWorker {
     Thread worker = null;
     private ProjectileCalculatorExt.LaunchResult launchPrediction = ProjectileCalculatorExt.LaunchResult.kZero;
     private DoublePublisher launchCalcDeltaTimeMs;
+    private DoublePublisher launchCalcRpm;
     private DoublePublisher launchCalcInError;
 
     //
@@ -60,9 +61,10 @@ public class CalculateLaunchWorker {
 
     public void Start() {
         if (launchCalcDeltaTimeMs == null) {
-            var nt = NetworkTableInstance.getDefault().getTable("SmartDashboard");
-            launchCalcDeltaTimeMs = nt.getDoubleTopic("LaunchPredict DeltaTimeAvrMs").publish();
-            launchCalcInError = nt.getDoubleTopic("LaunchPredict Error").publish();
+            var nt = NetworkTableInstance.getDefault().getTable("SmartDashboard/LaunchCalc");
+            launchCalcDeltaTimeMs = nt.getDoubleTopic("DeltaTimeAvrMs").publish();
+            launchCalcInError = nt.getDoubleTopic("Error").publish();
+            launchCalcRpm = nt.getDoubleTopic("Predicted Rpm").publish();
         }
 
         if (worker == null || !worker.isAlive()) {
@@ -125,6 +127,7 @@ public class CalculateLaunchWorker {
             var deltaMs = deltaTime.DeltaMilliSec();
             if (updateCount-- < 0) {
                 launchCalcDeltaTimeMs.set(deltaMs);
+                launchCalcRpm.set(Math.round(result.launchAngularVelocity(WHEEL_DIAMETER).times(2).in(RPM)));
                 updateCount = 10;
             }
 

@@ -8,8 +8,8 @@
         "layouts": [
           {
             "title": "Timer",
-            "x": 384.0,
-            "y": 0.0,
+            "x": 0.0,
+            "y": 256.0,
             "width": 256.0,
             "height": 384.0,
             "type": "List Layout",
@@ -68,7 +68,7 @@
         "containers": [
           {
             "title": "fuelCount",
-            "x": 256.0,
+            "x": 0.0,
             "y": 0.0,
             "width": 128.0,
             "height": 128.0,
@@ -82,7 +82,7 @@
           },
           {
             "title": "TotalScore",
-            "x": 896.0,
+            "x": 768.0,
             "y": 0.0,
             "width": 128.0,
             "height": 128.0,
@@ -96,7 +96,7 @@
           },
           {
             "title": "WastedFuel",
-            "x": 640.0,
+            "x": 128.0,
             "y": 0.0,
             "width": 128.0,
             "height": 128.0,
@@ -109,23 +109,9 @@
             }
           },
           {
-            "title": "general state",
-            "x": 768.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/general state",
-              "period": 0.06,
-              "data_type": "string",
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "Control chooser",
             "x": 0.0,
-            "y": 0.0,
+            "y": 128.0,
             "width": 256.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
@@ -136,16 +122,94 @@
             }
           },
           {
-            "title": "auto chooser",
-            "x": 0.0,
-            "y": 128.0,
+            "title": "Shooter RPM Override ( -1 is auto )",
+            "x": 384.0,
+            "y": 0.0,
             "width": 256.0,
             "height": 128.0,
-            "type": "ComboBox Chooser",
+            "type": "Text Display",
             "properties": {
-              "topic": "/SmartDashboard/auto chooser",
+              "topic": "/Preferences/Shooter/top Shooting Speed RPM",
               "period": 0.06,
-              "sort_options": false
+              "data_type": "double",
+              "show_submit_button": true
+            }
+          },
+          {
+            "title": "Field",
+            "x": 384.0,
+            "y": 384.0,
+            "width": 512.0,
+            "height": 256.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "ShooterState",
+            "x": 384.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter/ShooterState",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Shooter RPM",
+            "x": 512.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter/ShooterTopSpeed",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Predicted Rpm",
+            "x": 384.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/LaunchCalc/Predicted Rpm",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Calc Error",
+            "x": 512.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/LaunchCalc/Error",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
             }
           }
         ]

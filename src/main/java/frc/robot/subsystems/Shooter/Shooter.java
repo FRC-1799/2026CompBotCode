@@ -24,6 +24,7 @@ import frc.robot.FieldPosits;
 import frc.robot.RobotPreferences;
 import frc.robot.SystemManager;
 import frc.robot.Utils.DebugUtil;
+import frc.robot.Utils.RollingAverage;
 import frc.robot.Utils.utilFunctions;
 import yams.mechanisms.config.FlyWheelConfig;
 import yams.mechanisms.velocity.FlyWheel;
@@ -47,6 +48,8 @@ public abstract class Shooter extends SubsystemBase{
 
     int count  = 10;
     boolean indexerShouldBeOn=true;
+
+    RollingAverage topShooterRpmAverage = new RollingAverage(50);
 
 
     //
@@ -145,8 +148,8 @@ public abstract class Shooter extends SubsystemBase{
 
         DebugUtil.Publish("Shooter State", state.toString());
 
-        SmartDashboard.putNumber("Shooter/ShooterTopSpeed", getTopFlywheelSpeed().in(RPM));
-        SmartDashboard.putNumber("Shooter/ShooterBottomSpeed", getBottomFlywheelSpeed().in(RPM));
+        SmartDashboard.putNumber("Shooter/ShooterTopSpeed", topShooterRpmAverage.getAverage(Math.round(getTopFlywheelSpeed().in(RPM))));
+        SmartDashboard.putNumber("Shooter/ShooterBottomSpeed",  getBottomFlywheelSpeed().in(RPM));
         SmartDashboard.putString("Shooter/ShooterState", state.toString());
         SmartDashboard.putNumber("Shooter/ShotDistance", SystemManager.getSwervePose().getTranslation().getDistance(FieldPosits.hubPose2d.getTranslation()));        
         SmartDashboard.putNumber("Shooter/BeltSpeed", beltFlyWheel.getSpeed().in(RPM));
