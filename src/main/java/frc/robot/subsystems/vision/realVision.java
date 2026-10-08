@@ -73,7 +73,6 @@ public class realVision implements aprilTagInterface{
         limelight2.getSettings()
          .withLimelightLEDMode(LEDMode.PipelineControl)
          .withCameraOffset(RobotPreferences.getInstance().getLimelight2Pose())
-
          .save();
 
 
@@ -91,8 +90,8 @@ public class realVision implements aprilTagInterface{
         m_chooser.addOption(Constants.limelightConstants.limelight1Name, Constants.limelightConstants.limelight1Name);
         m_chooser.addOption(Constants.limelightConstants.limelight2Name, Constants.limelightConstants.limelight2Name);
         
-        m_chooser.setDefaultOption(Constants.limelightConstants.limelight1Name, m_chooser_current);
-        m_chooser.onChange((String limelightName)->{limelightForwarding(limelightName);});
+        // m_chooser.setDefaultOption(Constants.limelightConstants.limelight1Name, m_chooser_current);
+        // m_chooser.onChange((String limelightName)->{limelightForwarding(limelightName);});
         
         SmartDashboard.putData("Vision/" + Constants.limelightConstants.limelightToggleName, m_chooser);
 
@@ -242,7 +241,13 @@ public class realVision implements aprilTagInterface{
 
 
     public void limelightForwarding(String limelightSetting) {
-        IntStream.range(5800, 5820).forEach(PortForwarder::remove);
+        IntStream.range(5800, 5810).forEach(PortForwarder::remove);
+
+        try {
+            Thread.sleep(1000);
+        }catch(Exception ex) {
+            // throw away
+        }
 
         IntStream.range(5800, 5810).forEach(port -> {
             PortForwarder.add(port, Objects.equals(limelightSetting, Constants.limelightConstants.limelight1Name) ? "172.29.0.1" : "172.29.1.1", port);
