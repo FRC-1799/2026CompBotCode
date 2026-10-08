@@ -41,7 +41,7 @@ public abstract class Shooter extends SubsystemBase{
         shooting
     }
         
-    public shooterState state = shooterState.rev;
+    public shooterState state = shooterState.resting;
 
     private final RobotPreferences pref = RobotPreferences.getInstance();
 
@@ -143,6 +143,8 @@ public abstract class Shooter extends SubsystemBase{
     @Override
     public void periodic(){
 
+        DebugUtil.Publish("Shooter State", state.toString());
+
         SmartDashboard.putNumber("Shooter/ShooterTopSpeed", getTopFlywheelSpeed().in(RPM));
         SmartDashboard.putNumber("Shooter/ShooterBottomSpeed", getBottomFlywheelSpeed().in(RPM));
         SmartDashboard.putString("Shooter/ShooterState", state.toString());
@@ -176,22 +178,23 @@ public abstract class Shooter extends SubsystemBase{
 
     int setvCount = 0;
     public void setVelocity() {
+        if(state != shooterState.resting) {
+            var launchPredict = SystemManager
+                    .calculateLaunchWorker
+                    .getLaunchPrediction();
 
-        var launchPredict = SystemManager
-                .calculateLaunchWorker
-                .getLaunchPrediction();
+            if (launchPredict.error() > 0.0) return;
 
-        if (launchPredict.error() > 0.0) return;
+            var rpm = launchPredict.launchAngularVelocity(WHEEL_DIAMETER);
 
-        var rpm = launchPredict.launchAngularVelocity(WHEEL_DIAMETER);
-
-        if (rpm.in(RPM)<0.01) {
-            topShooter.setDutyCycleSetpoint(0.0);
-        } else {
-            var wheelspeed = rpm.times(2);
-            topShooter.setMechanismVelocitySetpoint(wheelspeed);
-            DebugUtil.Publish("TopRPM", wheelspeed.in(RPM));
-            DebugUtil.Publish("Count",setvCount++ );
+            if (rpm.in(RPM) < 0.01) {
+                topShooter.setDutyCycleSetpoint(0.0);
+            } else {
+                var wheelspeed = rpm.times(2);
+                topShooter.setMechanismVelocitySetpoint(wheelspeed);
+                DebugUtil.Publish("TopRPM", wheelspeed.in(RPM));
+                DebugUtil.Publish("Count", setvCount++);
+            }
         }
     }
 

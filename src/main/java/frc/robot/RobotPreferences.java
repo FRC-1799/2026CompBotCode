@@ -17,8 +17,6 @@ import static frc.robot.Constants.shooterConstants.shooterRobotRelativePose;
  */
 public class RobotPreferences {
     public static final String preferenceReset = "Preference Reset";
-    public static final String topShootingSpeedDutyCycle = "Top Shooting Speed Duty Cycle";
-    public static final String bottomShootingSpeedDutyCycle = "Bottom Shooting Speed Duty Cycle";
     public static final String intakeIngestSpeed = "Intake Ingest Speed";
     public static final String intakeBackwardSpeed = "Intake Backward Speed";
     public static final String beltFeedSpeed = "Belt Feed RPM";
@@ -35,13 +33,11 @@ public class RobotPreferences {
 
     private RobotPreferences() {
 
-        registerDoublePreference(bottomShootingSpeedDutyCycle, 0.6);
-        registerDoublePreference(topShootingSpeedDutyCycle, 0.7);
         registerDoublePreference(intakeIngestSpeed, -0.2);
         registerDoublePreference(intakeBackwardSpeed, 0.2);
         registerDoublePreference(beltFeedSpeed, 120);
         registerDoublePreference(indexerSpeed, 60);
-        registerDoublePreference(shooterSpeedRPM, 0);
+        registerDoublePreference(shooterSpeedRPM, -1);
         registerPose3dPreference(shooterPose, shooterRobotRelativePose);
         registerPose3dPreference(targetRelativePose);
         registerPose3dPreference(limelight1Pose, limelightConstants.limelight1Pose);
@@ -95,14 +91,6 @@ public class RobotPreferences {
         );
     }
 
-    public double bottomShootingSpeedDutyCycle() {
-        return utilFunctions.clamp(Preferences.getDouble(bottomShootingSpeedDutyCycle, 0.6), -1.0, 1.0);
-    }
-
-    public double topShootingSpeedDutyCycle() {
-        return utilFunctions.clamp(Preferences.getDouble(topShootingSpeedDutyCycle, 0.7), -1.0, 1.0);
-    }
-
     public double intakeIngestSpeed() {
         return utilFunctions.clamp(Preferences.getDouble(intakeIngestSpeed, 0.2), -1.0, 1.0);
     }
@@ -116,7 +104,7 @@ public class RobotPreferences {
     }
 
     public double shootingSpeedRPM() {
-        return utilFunctions.clamp(Preferences.getDouble(shooterSpeedRPM, 0), -1.0, 5000);
+        return utilFunctions.clamp(Preferences.getDouble(shooterSpeedRPM, -1), -1.0, 5000);
     }
 
 

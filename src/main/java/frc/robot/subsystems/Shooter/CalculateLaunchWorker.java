@@ -129,7 +129,7 @@ public class CalculateLaunchWorker {
 
         AngularVelocity launchAngularVelocity;
 
-        if (rpmPref <= 1) {
+        if (rpmPref < 0) {
             var shooterPoseRel = pref.shooterPose();
             var pitchAngle = shooterPoseRel.getRotation().getMeasureY();
             var targetPoseRel = pref.targetRelativePose();
