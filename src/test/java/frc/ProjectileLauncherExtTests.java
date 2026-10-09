@@ -44,7 +44,8 @@ public class ProjectileLauncherExtTests {
                 platformVelocity,
                 pitchAngle,
                 BALL_MASS,
-                BALL_DIAMETER
+                BALL_DIAMETER,
+                0.47
         );
 
         // --- 3. ASSERT ---
@@ -62,7 +63,8 @@ public class ProjectileLauncherExtTests {
                 pitchAngle,
                 BALL_MASS,
                 BALL_DIAMETER,
-                Meters.of(0.0)
+                Meters.of(0.0),
+                0.47
         );
 
         assertNotNull(impactLocation, "Inverse loop tracker should resolve the target intercept plane.");
@@ -90,7 +92,8 @@ public class ProjectileLauncherExtTests {
                 platformVelocity,
                 pitchAngle,
                 BALL_MASS,
-                BALL_DIAMETER
+                BALL_DIAMETER,
+                0.47
         );
 
         // --- 3. ASSERT ---
@@ -107,7 +110,8 @@ public class ProjectileLauncherExtTests {
                 pitchAngle,
                 BALL_MASS,
                 BALL_DIAMETER,
-                Meters.of(0.0)
+                Meters.of(0.0),
+                0.47
         );
 
         assertNotNull(impactLocation, "Inverse simulation should hit ground plane.");
@@ -154,7 +158,8 @@ public class ProjectileLauncherExtTests {
                             platformVelocity,
                             pitchAngle,
                             BALL_MASS,
-                            BALL_DIAMETER
+                            BALL_DIAMETER,
+                            0.47
                     );
                 }
         );
@@ -175,7 +180,8 @@ public class ProjectileLauncherExtTests {
                             platformVelocity,
                             pitchAngle,
                             BALL_MASS,
-                            BALL_DIAMETER
+                            BALL_DIAMETER,
+                            0.47
                     );
                 });
 
