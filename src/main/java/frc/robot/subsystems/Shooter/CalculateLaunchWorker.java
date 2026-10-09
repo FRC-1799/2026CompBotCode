@@ -160,7 +160,8 @@ public class CalculateLaunchWorker {
                 new Translation2d(robotVelocity.vxMetersPerSecond, robotVelocity.vyMetersPerSecond),
                 pitchAngle,
                 Constants.fieldConstants.FUEL_BALL_MASS,
-                Constants.fieldConstants.FUEL_BALL_DIAMETER
+                Constants.fieldConstants.FUEL_BALL_DIAMETER,
+                pref.launchDragCoeff()
         );
 
         return launchResult;

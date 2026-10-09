@@ -12,7 +12,7 @@ public class ProjectileCalculatorExt {
 
     private static final double GRAVITY = 9.80665;
     private static final double AIR_DENSITY = 1.225;        // kg/m^3 (Standard sea level)
-    private static final double DRAG_COEFFICIENT = 0.47;   // Smooth sphere standard
+    public static final double DRAG_COEFFICIENT = 0.47;   // Smooth sphere standard
     private static final double MAX_VELOCITY_LIMIT = 50.0; // m/s safety bound
     private static final double TIME_STEP = 0.005;         // 5ms iteration accuracy
     private static final double ERROR_TOLERANCE_METERS = 0.02;
@@ -41,7 +41,8 @@ public class ProjectileCalculatorExt {
                                                Translation2d platformVelocity,
                                                Angle pitchAngle,
                                                Mass ballMass,
-                                               Distance ballDiameter) {
+                                               Distance ballDiameter,
+                                               Double dragCoeff) {
 
         // 1. Convert WPILib strongly typed wrappers into SI standard units
         double startX = launcherPose.getX();
@@ -61,7 +62,7 @@ public class ProjectileCalculatorExt {
 
         // 2. Pre-calculate continuous 3D drag factors
         double crossSectionalArea = Math.PI * Math.pow(radiusM, 2);
-        double dragFactorK = 0.5 * AIR_DENSITY * DRAG_COEFFICIENT * crossSectionalArea;
+        double dragFactorK = 0.5 * AIR_DENSITY * dragCoeff * crossSectionalArea;
 
         // Base targeted geometric direction
         double dx = targetX - startX;
@@ -202,7 +203,8 @@ public class ProjectileCalculatorExt {
             Angle pitchAngle,
             Mass ballMass,
             Distance ballDiameter,
-            Distance targetFloorHeight) {
+            Distance targetFloorHeight,
+            Double dragCoeff) {
 
         // 1. Convert strongly-typed parameters to standard SI metrics
         double startX = launcherPose.getX();
@@ -222,7 +224,7 @@ public class ProjectileCalculatorExt {
 
         // 2. Pre-calculate the aerodynamic cross-sectional drag coefficient constant
         double crossSectionalArea = Math.PI * Math.pow(radiusM, 2);
-        double dragFactorK = 0.5 * AIR_DENSITY * DRAG_COEFFICIENT * crossSectionalArea;
+        double dragFactorK = 0.5 * AIR_DENSITY * dragCoeff * crossSectionalArea;
 
         // 3. Compute relative vector velocities mapping out of the launcher frame
         double vRelX = vMag * Math.cos(pitchRad) * Math.cos(yawRad);

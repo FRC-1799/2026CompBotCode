@@ -24,10 +24,12 @@ public class RobotPreferences {
     public static final String shooterSpeedRPM = "Shooter/top Shooting Speed RPM";
     public static final String shooterPose = "Shooter/Relative Location and angle of shooter";
     public static final String targetRelativePose = "Shooter/Distance of target Relative to pose";
+    public static final String launchDragCoeff = "Shooter/Drag Coefficient";
     public static final String limelight1Pose = "Limelight 1 Pose";
     public static final String limelight2Pose = "Limelight 2 Pose";
     public static final String aimbotRadius = "Aimbot Radius";
     public static final String gameControllerAxisMag = "Game Controller Axis Magnitude";
+    
     private static RobotPreferences instance = null;
 
 
@@ -40,11 +42,14 @@ public class RobotPreferences {
         registerDoublePreference(shooterSpeedRPM, -1);
         registerPose3dPreference(shooterPose, shooterRobotRelativePose);
         registerPose3dPreference(targetRelativePose);
+        registerDoublePreference(launchDragCoeff, 0.47);   // Smooth sphere standard. Wiki on drag coefficient for sphere
         registerPose3dPreference(limelight1Pose, limelightConstants.limelight1Pose);
         registerPose3dPreference(limelight2Pose, limelightConstants.limelight2Pose);
         registerDoublePreference(aimbotRadius, shooterConstants.shootRadius);
         registerDoublePreference(aimbotRadius, shooterConstants.shootRadius);
         registerDoublePreference(gameControllerAxisMag, 4.0);
+        registerDoublePreference(gameControllerAxisMag, 4.0);
+        
     }
 
     public static void registerPose3dPreference(String key, Pose3d val) {
@@ -114,6 +119,10 @@ public class RobotPreferences {
 
     public Pose3d targetRelativePose() {
         return getPose3dPreference(targetRelativePose);
+    }
+
+    public double launchDragCoeff() {
+        return utilFunctions.clamp(Preferences.getDouble(launchDragCoeff, 0.47), 0, 2);
     }
 
     public double intakeBackwardSpeed() {

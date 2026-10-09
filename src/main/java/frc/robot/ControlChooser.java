@@ -167,22 +167,20 @@ public class ControlChooser {
 
 
         // press a little to spin up shooter. All the way it shoots. 3 seconds after release it will rest.
-        xbox1.leftTrigger(0.8, loop).whileTrue(ShooterShootCommand()).whileFalse(ShooterRevCommand());
-        xbox1.leftTrigger(0.1, loop).whileTrue(ShooterRevCommand()).whileFalse(waitSeconds(3).andThen(ShooterRestCommand()));
-
+        xbox1.rightTrigger(0.1, loop).whileTrue(ShooterRevCommand()).whileFalse(waitSeconds(3).andThen(ShooterRestCommand()));
+        xbox1.rightTrigger(0.8, loop).whileTrue(ShooterShootCommand()).whileFalse(ShooterRevCommand());
+        
         //xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
         //xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
-        xbox1.rightTrigger(0.4, loop).whileTrue(GeneralManager.intaking());
+        xbox1.leftTrigger(0.4, loop).whileTrue(GeneralManager.intaking());
         //xbox1.leftTrigger(0.4, loop).whileTrue(new SmartShoot());
-        xbox1.leftTrigger(0.1, loop).whileTrue(ShooterShootCommand()).whileFalse(ShooterRevCommand());
-        xbox1.leftTrigger(0.8, loop).whileTrue(ShooterRevCommand()).whileFalse(waitSeconds(5).andThen(ShooterRestCommand()));
-        xbox1.a(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
+        // xbox1.a(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
         //xbox1.x(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
 
         //xbox1.a(loop).whileTrue(GeneralManager.shooting());
-        xbox1.b(loop).whileTrue(GeneralManager.spitting());
+        xbox1.x(loop).whileTrue(GeneralManager.spitting());
 
         return loop;
     }
@@ -210,13 +208,13 @@ public class ControlChooser {
 
 
         // press a little to spin up shooter. All the way it shoots. 3 seconds after release it will rest.
-        xbox1.leftTrigger(0.8, loop).whileTrue(ShooterShootCommand()).whileFalse(ShooterRevCommand());
-        xbox1.leftTrigger(0.1, loop).whileTrue(ShooterRevCommand()).whileFalse(waitSeconds(3).andThen(ShooterRestCommand()));
+        xbox1.rightTrigger(0.1, loop).whileTrue(ShooterRevCommand()).whileFalse(waitSeconds(3).andThen(ShooterRestCommand()));
+        xbox1.rightTrigger(0.8, loop).whileTrue(ShooterShootCommand()).whileFalse(ShooterRevCommand());
 
-        xbox1.rightTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
+        xbox1.leftTrigger(0.4, loop).whileTrue(GeneralManager.shooting());
         //xbox1.leftTrigger(0.4, loop).toggleOnTrue(GeneralManager.intaking());
         //xbox1.rightBumper(loop).whileTrue(new SmartShoot());
-        xbox1.a(loop).toggleOnTrue(new spitting());
+        xbox1.x(loop).toggleOnTrue(new spitting());
 
 
         return loop;
@@ -246,19 +244,19 @@ public class ControlChooser {
                 , SystemManager.swerve, loop);
 
         // press a little to spin up shooter. All the way it shoots. 3 seconds after release it will rest.
-        ps5_1.L2(0.75, loop).whileTrue(ShooterShootCommand()).whileFalse(ShooterRevCommand());
-        ps5_1.L2(-0.75, loop).whileTrue(ShooterRevCommand()).whileFalse(waitSeconds(3).andThen(ShooterRestCommand()));
+        ps5_1.R2(0.75, loop).whileTrue(ShooterShootCommand()).whileFalse(ShooterRevCommand());
+        ps5_1.R2(-0.75, loop).whileTrue(ShooterRevCommand()).whileFalse(waitSeconds(3).andThen(ShooterRestCommand()));
 
         //xbox1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
         //xbox1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->xbox1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
-        ps5_1.R2(loop).whileTrue(GeneralManager.intaking());
+        ps5_1.L2(loop).whileTrue(GeneralManager.intaking());
         //ps5_1.cross(loop).toggleOnTrue(new SmartShoot());
         //ps5_1.square(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
 
         //xbox1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
 
         //xbox1.a(loop).whileTrue(GeneralManager.shooting());
-        ps5_1.circle(loop).whileTrue(GeneralManager.spitting());
+        ps5_1.square(loop).whileTrue(GeneralManager.spitting());
 
         return loop;
     }
@@ -274,12 +272,12 @@ public class ControlChooser {
                 ), SystemManager.swerve, loop);
 
         // press a little to spin up shooter. All the way it shoots. 3 seconds after release it will rest.
-        ps5_1.L2(0.75, loop).whileTrue(ShooterShootCommand()).whileFalse(ShooterRevCommand());
-        ps5_1.L2(-0.75, loop).whileTrue(ShooterRevCommand()).whileFalse(waitSeconds(3).andThen(ShooterRestCommand()));
+        ps5_1.R2(0.75, loop).whileTrue(ShooterShootCommand()).whileFalse(ShooterRevCommand());
+        ps5_1.R2(-0.75, loop).whileTrue(ShooterRevCommand()).whileFalse(waitSeconds(3).andThen(ShooterRestCommand()));
 
         //ps5_1.rightTrigger(0.4,loop).whileTrue(new IntakeHandoff()).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.intaking)));
         //ps5_1.leftTrigger(0.1,loop).whileTrue(new ShootHandoff(()->ps5_1.getLeftTriggerAxis()>0.5)).onFalse(new InstantCommand(()->GeneralManager.cancelSpesificState(generalState.shooting)));
-        ps5_1.R2(loop).whileTrue(GeneralManager.intaking());
+        ps5_1.L2(loop).whileTrue(GeneralManager.intaking());
         //ps5_1.L2(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
         //ps5_1.cross(loop).toggleOnTrue(new SmartShoot());
         //ps5_1.square(loop).whileTrue(new SequentialCommandGroup(GeneralManager.shooting().until(() -> !SystemManager.shooter.hasPiecesRemaining())));
@@ -288,7 +286,7 @@ public class ControlChooser {
         //ps5_1.leftTrigger(0.4, loop).whileTrue(new AimAtPoint(FieldPosits.hubPose2d));
 
         //ps5_1.a(loop).whileTrue(GeneralManager.shooting());
-        ps5_1.circle(loop).whileTrue(GeneralManager.spitting());
+        ps5_1.square(loop).whileTrue(GeneralManager.spitting());
 
 
         return loop;
